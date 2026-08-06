@@ -577,6 +577,7 @@
     $$('[data-font-set]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.fontSet === level));
     });
+    checkHeaderWrap();       // 글자가 커지면 메뉴가 아래로 접힐 수 있습니다
   }
 
   function setTheme(name) {
@@ -587,10 +588,50 @@
     });
   }
 
+  /* 테마: 귀여움(cute) / 심플(simple) */
+  function setStyle(name) {
+    document.documentElement.setAttribute('data-style', name);
+    prefs.set('style', name);
+    $$('[data-style-set]').forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.styleSet === name));
+    });
+    checkHeaderWrap();       // 모양이 바뀌면 줄바꿈 여부도 달라집니다
+  }
+
   /* 저장된 설정을 화면에 먼저 반영 (깜빡임 없이) */
   function initPrefs() {
     setFont(String(prefs.get('font', '1')));
     setTheme(prefs.get('theme', 'light'));
+    setStyle(prefs.get('style', 'cute'));
+  }
+
+  /* ------------------------------------------------------------
+     헤더가 두 줄로 접혔는지 확인
+     글자를 아주 크게 하면 메뉴가 아래로 내려갑니다. 그때 로고만
+     왼쪽 끝에 남아 허전하므로 가운데 정렬로 바꿔 줍니다.
+     ------------------------------------------------------------ */
+  function checkHeaderWrap() {
+    const inner = $('.header__inner');
+    const logo = $('.logo');
+    const nav = $('.nav');
+    if (!inner || !logo || !nav) return;
+    /* 판정 중에는 클래스를 떼고 원래 배치로 재어야 합니다 */
+    inner.classList.remove('is-wrapped');
+    const wrapped = nav.offsetTop > logo.offsetTop + logo.offsetHeight / 2;
+    inner.classList.toggle('is-wrapped', wrapped);
+  }
+
+  function initHeaderWrap() {
+    checkHeaderWrap();
+    window.addEventListener('resize', checkHeaderWrap);
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(() => checkHeaderWrap());
+      ro.observe(document.documentElement);
+    }
+    /* 글꼴이 늦게 도착해 글자 폭이 달라질 수 있어 한 번 더 확인 */
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(checkHeaderWrap).catch(() => {});
+    }
   }
 
   /* ============================================================
@@ -650,6 +691,8 @@
       b.setAttribute('aria-pressed', String(b.dataset.fontSet === document.documentElement.getAttribute('data-font'))));
     $$('[data-theme-set]').forEach(b =>
       b.setAttribute('aria-pressed', String(b.dataset.themeSet === document.documentElement.getAttribute('data-theme'))));
+    $$('[data-style-set]').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.styleSet === document.documentElement.getAttribute('data-style'))));
   }
 
   function initSettings() {
@@ -658,6 +701,8 @@
       if (f) { setFont(f.dataset.fontSet); return; }
       const th = e.target.closest && e.target.closest('[data-theme-set]');
       if (th) { setTheme(th.dataset.themeSet); return; }
+      const st = e.target.closest && e.target.closest('[data-style-set]');
+      if (st) { setStyle(st.dataset.styleSet); return; }
       const tab = e.target.closest && e.target.closest('[data-set-tab]');
       if (tab) { showSetTab(tab.dataset.setTab); }
     });
@@ -666,6 +711,7 @@
     window.addEventListener('malang:langchange', () => {
       refreshAll();
       renderSettings();
+      checkHeaderWrap();
       if (currentPage() === 'streak') renderStreak();
     });
   }
@@ -1858,6 +1904,7 @@
   initSettings();
   initAuth();            // 예비 방식(기기 저장)의 로그인 정보 복구
   refreshAll();
+  initHeaderWrap();
   initRouter();          // 페이지 표시는 맨 마지막에 (다른 준비가 끝난 뒤)
   initCloud();           // Firebase 는 준비되는 대로 이어서 붙습니다
 })();

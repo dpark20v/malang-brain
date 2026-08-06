@@ -46,7 +46,9 @@
   --r-md: 24px;
   --r-lg: 32px;
   --r-xl: 44px;
-  --r-full: 999px;
+  --r-full: 999px;           /* 동그라미 (로고·아이콘·프로필) */
+  --r-pill: 999px;           /* 알약 (버튼·메뉴·칩) — 심플 테마에서 각지게 바뀝니다 */
+  --hairline: 0px;           /* 심플 테마에서만 쓰는 얇은 선 두께 */
 
   --shadow-sm: 0 4px 14px rgba(126, 102, 200, 0.08);
   --shadow-md: 0 10px 30px rgba(126, 102, 200, 0.12);
@@ -217,7 +219,7 @@ button { font-family: inherit; cursor: pointer; }
 .nav { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-left: auto; }
 .nav a {
   padding: 0.55rem 1.05rem;
-  border-radius: var(--r-full);
+  border-radius: var(--r-pill);
   font-weight: 700; font-size: calc(0.95rem * var(--text-scale));
   color: var(--ink-soft);
   transition: background 0.18s, color 0.18s, transform 0.18s;
@@ -238,7 +240,7 @@ button { font-family: inherit; cursor: pointer; }
   display: flex; align-items: center; gap: 0.3rem;
   background: var(--white);
   border: 2px solid var(--line);
-  border-radius: var(--r-full);
+  border-radius: var(--r-pill);
   padding: 0.28rem 0.6rem;
   box-shadow: var(--shadow-sm);
 }
@@ -256,7 +258,7 @@ button { font-family: inherit; cursor: pointer; }
 /* ---------- 4. 버튼 ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  border: none; border-radius: var(--r-full);
+  border: none; border-radius: var(--r-pill);
   font-weight: 800; font-size: calc(1rem * var(--text-scale));
   padding: 0.85rem 1.6rem;
   transition: transform 0.16s, box-shadow 0.16s, background 0.16s;
@@ -305,7 +307,7 @@ button { font-family: inherit; cursor: pointer; }
   display: inline-block;
   background: var(--white); color: var(--lav-700);
   border: 2px solid var(--lav-200);
-  border-radius: var(--r-full);
+  border-radius: var(--r-pill);
   padding: 0.5rem 1.2rem;
   font-size: calc(0.9rem * var(--text-scale)); font-weight: 700;
   box-shadow: var(--shadow-sm);
@@ -321,7 +323,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .hero__chips li {
   background: var(--white);
-  border-radius: var(--r-full);
+  border-radius: var(--r-pill);
   padding: 0.6rem 1.25rem;
   font-size: calc(0.92rem * var(--text-scale)); font-weight: 700; color: var(--ink-soft);
   box-shadow: var(--shadow-sm);
@@ -418,7 +420,7 @@ button { font-family: inherit; cursor: pointer; }
 .topic__sub {
   font-size: calc(0.72rem * var(--text-scale)); font-weight: 800; vertical-align: middle;
   background: var(--lav-200); color: var(--lav-700);
-  padding: 0.22rem 0.7rem; border-radius: var(--r-full);
+  padding: 0.22rem 0.7rem; border-radius: var(--r-pill);
   margin-left: 0.35rem;
 }
 .topic--mint  .topic__sub { background: var(--mint-200);  color: #34806c; }
@@ -497,7 +499,7 @@ button { font-family: inherit; cursor: pointer; }
 .gcard__desc { font-size: calc(0.93rem * var(--text-scale)); color: var(--ink-soft); flex: 1; }
 .gcard__best {
   font-size: calc(0.82rem * var(--text-scale)); font-weight: 800; color: var(--lav-700);
-  background: var(--lav-100); border-radius: var(--r-full);
+  background: var(--lav-100); border-radius: var(--r-pill);
   padding: 0.4rem 1rem; align-self: center;
 }
 .gcard .btn { width: 100%; }
@@ -542,7 +544,7 @@ button { font-family: inherit; cursor: pointer; }
 
 .hud { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.4rem; }
 .hud__item {
-  background: var(--white); border-radius: var(--r-full);
+  background: var(--white); border-radius: var(--r-pill);
   padding: 0.45rem 1.1rem; font-size: calc(0.88rem * var(--text-scale)); font-weight: 800;
   color: var(--ink-soft); box-shadow: var(--shadow-sm);
 }
@@ -675,7 +677,7 @@ button { font-family: inherit; cursor: pointer; }
 .countdown {
   display: inline-block;
   background: var(--peach-100); color: #b85f3c;
-  border-radius: var(--r-full); padding: 0.4rem 1.2rem;
+  border-radius: var(--r-pill); padding: 0.4rem 1.2rem;
   font-weight: 900; font-size: calc(1rem * var(--text-scale)); margin-bottom: 1rem;
 }
 
@@ -810,7 +812,7 @@ button { font-family: inherit; cursor: pointer; }
   display: flex; align-items: center; gap: 0.45rem;
   background: var(--lav-50); color: var(--ink-mute);
   border: 2px solid var(--line);
-  border-radius: var(--r-full);
+  border-radius: var(--r-pill);
   padding: 0.4rem 1rem 0.4rem 0.45rem;
   font-size: calc(0.85rem * var(--text-scale)); font-weight: 800;
 }
@@ -866,7 +868,7 @@ button { font-family: inherit; cursor: pointer; }
 .whoami {
   display: inline-block;
   background: var(--lav-100); color: var(--lav-700);
-  border-radius: var(--r-full); padding: 0.4rem 1.1rem;
+  border-radius: var(--r-pill); padding: 0.4rem 1.1rem;
   font-size: calc(0.9rem * var(--text-scale)); font-weight: 800;
   word-break: break-all;
 }
@@ -960,7 +962,7 @@ button { font-family: inherit; cursor: pointer; }
 .flame__label { font-size: calc(1.1rem * var(--text-scale)); font-weight: 900; color: var(--ink); margin-top: 0.5rem; }
 .flame__status {
   display: inline-block; margin-top: 1rem;
-  background: var(--white); border-radius: var(--r-full);
+  background: var(--white); border-radius: var(--r-pill);
   padding: 0.6rem 1.4rem;
   font-size: calc(0.95rem * var(--text-scale)); font-weight: 800; color: var(--ink-soft);
   box-shadow: var(--shadow-sm);
@@ -1038,7 +1040,7 @@ button { font-family: inherit; cursor: pointer; }
   position: fixed; left: 50%; bottom: 2rem; transform: translateX(-50%);
   z-index: 300;
   background: var(--ink); color: #fff;
-  border-radius: var(--r-full);
+  border-radius: var(--r-pill);
   padding: 1rem 1.8rem;
   font-size: calc(1rem * var(--text-scale)); font-weight: 800;
   box-shadow: var(--shadow-lg);
@@ -1259,3 +1261,227 @@ button { font-family: inherit; cursor: pointer; }
   }
   .setnav__item { width: auto; flex: none; white-space: nowrap; }
 }
+
+/* ============================================================
+   18. 테마 「심플」 — 한세실업 홈페이지를 참고한 어른스러운 UI
+   ------------------------------------------------------------
+   벤치마킹에서 뽑은 특징:
+     · border-radius 0  (각진 모서리)
+     · 그림자 없음 → 얇은 선(1px)으로 구분
+     · 검정·슬레이트 회색 위주, 포인트는 테라코타 하나
+     · 자간을 넓게 (+0.02 ~ +0.08em)
+   모양(각짐·선)은 여기서, 색은 밝은/어두운 화면별로 아래에서 정합니다.
+   ============================================================ */
+html[data-style="simple"] {
+  --r-sm: 0px; --r-md: 0px; --r-lg: 0px; --r-xl: 0px; --r-pill: 0px;
+  --hairline: 1px;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+}
+
+/* --- 심플 · 밝은 화면 --- */
+html[data-style="simple"][data-theme="light"] {
+  --lav-50:  #ffffff;        /* 페이지 바탕: 순백 */
+  --lav-100: #f6f6f9;
+  --lav-200: #e5e7eb;
+  --lav-300: #d7dde5;
+  --lav-500: #2d3748;        /* 강조: 슬레이트 */
+  --lav-600: #1a202c;
+  --lav-700: #2d3748;
+
+  --mint-100: #f2f5f4; --mint-200: #dfe6e4; --mint-600: #4a6b62;
+  --peach-100: #faf4f1; --peach-200: #ebdcd4; --peach-600: #b85c38;   /* 포인트 */
+  --lemon-100: #f9f7f1; --lemon-200: #e8e2d2; --lemon-600: #8a7440;
+  --pink-100: #f8f4f2;  --pink-200: #e6d9d3;  --pink-600: #b85c38;
+
+  --ink:      #111418;
+  --ink-soft: #4a5568;
+  --ink-mute: #8b95a3;
+
+  --white: #ffffff;
+  --line:  #e5e7eb;
+
+  --header-bg: rgba(255, 255, 255, 0.94);
+  --backdrop:  rgba(17, 20, 24, 0.5);
+}
+
+/* --- 심플 · 어두운 화면 --- */
+html[data-style="simple"][data-theme="dark"] {
+  --lav-50:  #14161a;
+  --lav-100: #1c1f24;
+  --lav-200: #2a2f36;
+  --lav-300: #3c434c;
+  --lav-500: #c9d2dd;
+  --lav-600: #e3e8ee;
+  --lav-700: #dbe2ea;
+
+  --mint-100: #1a221f; --mint-200: #2b3a35; --mint-600: #7fa89c;
+  --peach-100: #241b16; --peach-200: #3d2c23; --peach-600: #d98a63;
+  --lemon-100: #221f16; --lemon-200: #3a3527; --lemon-600: #c0a86a;
+  --pink-100: #221a17;  --pink-200: #3a2b25;  --pink-600: #d98a63;
+
+  --ink:      #eceef1;
+  --ink-soft: #a8b1bd;
+  --ink-mute: #79828e;
+
+  --white: #1c1f24;
+  --line:  #2a2f36;
+
+  --header-bg: rgba(20, 22, 26, 0.94);
+  --backdrop:  rgba(0, 0, 0, 0.65);
+}
+
+/* ---------- 심플: 글자 ---------- */
+html[data-style="simple"] body { letter-spacing: 0.01em; }
+html[data-style="simple"] h1,
+html[data-style="simple"] h2,
+html[data-style="simple"] h3 { letter-spacing: 0.005em; font-weight: 700; }
+html[data-style="simple"] .eyebrow { letter-spacing: 0.24em; color: var(--ink-mute); }
+html[data-style="simple"] .logo__text { font-weight: 700; letter-spacing: 0.06em; }
+html[data-style="simple"] .section__head h2 { font-weight: 700; }
+
+/* ---------- 심플: 그림자 대신 선 ---------- */
+html[data-style="simple"] .topic,
+html[data-style="simple"] .gcard,
+html[data-style="simple"] .pick,
+html[data-style="simple"] .help__card,
+html[data-style="simple"] .panel,
+html[data-style="simple"] .setcard,
+html[data-style="simple"] .setnav,
+html[data-style="simple"] .mecard,
+html[data-style="simple"] .flamebox,
+html[data-style="simple"] .statrow li,
+html[data-style="simple"] .today__progress,
+html[data-style="simple"] .check,
+html[data-style="simple"] .badge-item,
+html[data-style="simple"] .opt,
+html[data-style="simple"] .modal__panel {
+  border-width: var(--hairline);
+  border-color: var(--line);
+}
+
+/* ---------- 심플: 납작하게 (그라데이션 제거) ---------- */
+html[data-style="simple"] .hero { background: var(--lav-50); }
+html[data-style="simple"] .blob { display: none; }
+html[data-style="simple"] .topic--lav,
+html[data-style="simple"] .topic--mint,
+html[data-style="simple"] .topic--peach,
+html[data-style="simple"] .topic--lemon { background: var(--white); }
+html[data-style="simple"] .help__card--call,
+html[data-style="simple"] .mecard--signin,
+html[data-style="simple"] .badge-item.is-earned { background: var(--white); }
+html[data-style="simple"] .flamebox,
+html[data-style="simple"] .flamebox.is-cold { background: var(--white); }
+html[data-style="simple"] .section--tinted { background: var(--lav-100); }
+
+/* 주제 카드는 색 대신 위쪽 굵은 선으로 구분 */
+html[data-style="simple"] .topic { border-top-width: 3px; }
+html[data-style="simple"] .topic--lav   { border-top-color: var(--ink); }
+html[data-style="simple"] .topic--mint  { border-top-color: var(--mint-600); }
+html[data-style="simple"] .topic--peach { border-top-color: var(--peach-600); }
+html[data-style="simple"] .topic--lemon { border-top-color: var(--lemon-600); }
+
+/* ---------- 심플: 버튼 ---------- */
+html[data-style="simple"] .btn--primary {
+  background: var(--lav-600); color: var(--white);
+  box-shadow: none; letter-spacing: 0.04em;
+}
+html[data-style="simple"] .btn--primary:hover { background: var(--ink); box-shadow: none; }
+html[data-style="simple"] .btn--ghost {
+  border-width: var(--hairline); border-color: var(--ink-soft);
+  color: var(--ink); letter-spacing: 0.04em;
+}
+html[data-style="simple"] .btn:hover { transform: none; }
+html[data-style="simple"] .btn:active { transform: none; }
+
+/* ---------- 심플: 메뉴 ---------- */
+html[data-style="simple"] .nav a {
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+}
+html[data-style="simple"] .nav a:hover { background: transparent; color: var(--ink); transform: none; }
+html[data-style="simple"] .nav a[aria-current="page"] {
+  background: transparent; color: var(--ink);
+  border-bottom-color: var(--ink);
+  box-shadow: none;
+}
+html[data-style="simple"] .nav a[aria-current="page"]:hover { background: transparent; color: var(--ink); }
+
+/* ---------- 심플: 움직임 줄이기 ---------- */
+html[data-style="simple"] .pick:hover,
+html[data-style="simple"] .gcard:hover,
+html[data-style="simple"] .check:hover,
+html[data-style="simple"] .opt:hover,
+html[data-style="simple"] .badge-item.is-earned:hover { transform: none; }
+html[data-style="simple"] .pick:hover,
+html[data-style="simple"] .gcard:hover { border-color: var(--ink); }
+html[data-style="simple"] .flame__emoji { animation: none; }
+
+/* ---------- 심플: 설정 왼쪽 바 ---------- */
+html[data-style="simple"] .setnav__item[aria-current="true"] {
+  background: var(--lav-200); color: var(--ink);
+}
+html[data-style="simple"] .setnav__ic {
+  background: var(--lav-100);
+  border: var(--hairline) solid var(--line);
+  border-radius: 0;
+}
+html[data-style="simple"] .setnav__ic--font,
+html[data-style="simple"] .setnav__ic--theme,
+html[data-style="simple"] .setnav__ic--style,
+html[data-style="simple"] .setnav__ic--lang { background: var(--lav-100); }
+
+/* ---------- 심플: 그 외 ---------- */
+html[data-style="simple"] .opt[aria-pressed="true"] {
+  background: var(--lav-100); border-color: var(--ink); box-shadow: none;
+}
+html[data-style="simple"] .opt[aria-pressed="true"]::after { color: var(--ink); }
+html[data-style="simple"] .mcard { background: var(--lav-200); }
+html[data-style="simple"] .mcard::before { color: var(--ink-soft); }
+html[data-style="simple"] .mcard.is-flipped,
+html[data-style="simple"] .mcard.is-matched { background: var(--white); border: var(--hairline) solid var(--line); }
+html[data-style="simple"] .steps li.is-on {
+  background: var(--lav-600); border-color: var(--lav-600); box-shadow: none;
+}
+html[data-style="simple"] .pad { border-radius: 0; }
+html[data-style="simple"] .toast { border-radius: 0; }
+
+/* ---------- 19. 테마 고르기 미리보기 ---------- */
+.optrow--style { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.opt--style { padding: 1rem 0.8rem 1.1rem; gap: 0.55rem; }
+.opt--style small {
+  font-size: calc(0.76rem * var(--text-scale));
+  font-weight: 600; color: var(--ink-mute); line-height: 1.5;
+}
+
+.stylepreview {
+  width: 100%; height: 4.6rem;
+  display: block; position: relative;
+  padding: 0.5rem;
+  overflow: hidden;
+}
+.stylepreview__bar, .stylepreview__card, .stylepreview__btn { position: absolute; display: block; }
+.stylepreview__bar  { left: 0.5rem; right: 0.5rem; top: 0.5rem; height: 0.85rem; }
+.stylepreview__card { left: 0.5rem; width: 45%; top: 1.7rem; bottom: 0.5rem; }
+.stylepreview__btn  { right: 0.5rem; width: 40%; top: 2.4rem; height: 1.1rem; }
+
+/* 귀여움 미리보기: 둥글둥글 + 파스텔 보라 */
+.stylepreview--cute { background: #faf8ff; border-radius: 14px; border: 2px solid #e7ddff; }
+.stylepreview--cute .stylepreview__bar  { background: #efe9ff; border-radius: 999px; }
+.stylepreview--cute .stylepreview__card { background: #fff; border-radius: 12px; border: 2px solid #e7ddff; }
+.stylepreview--cute .stylepreview__btn  { background: linear-gradient(135deg,#a48bec,#8b6fe0); border-radius: 999px; }
+
+/* 심플 미리보기: 각짐 + 회색 */
+.stylepreview--simple { background: #fff; border-radius: 0; border: 1px solid #e5e7eb; }
+.stylepreview--simple .stylepreview__bar  { background: #f6f6f9; border-bottom: 1px solid #e5e7eb; }
+.stylepreview--simple .stylepreview__card { background: #fff; border: 1px solid #e5e7eb; }
+.stylepreview--simple .stylepreview__btn  { background: #2d3748; }
+
+/* ---------- 20. 헤더가 두 줄이 될 때 ----------
+   글자를 아주 크게 하면 메뉴가 아래로 내려가면서
+   로고만 왼쪽 끝에 덩그러니 남습니다. 그때는 가운데로 모읍니다. */
+.header__inner.is-wrapped { justify-content: center; }
+.header__inner.is-wrapped .logo { margin: 0 auto 0.2rem; }
+.header__inner.is-wrapped .nav  { margin-left: 0; width: 100%; justify-content: center; }

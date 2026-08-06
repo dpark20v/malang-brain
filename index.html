@@ -357,6 +357,10 @@
               <span class="setnav__ic setnav__ic--font" aria-hidden="true">🔤</span>
               <span data-i18n="set.nav.font"></span>
             </button>
+            <button type="button" class="setnav__item" data-set-tab="style">
+              <span class="setnav__ic setnav__ic--style" aria-hidden="true">🎨</span>
+              <span data-i18n="set.nav.style"></span>
+            </button>
             <button type="button" class="setnav__item" data-set-tab="theme">
               <span class="setnav__ic setnav__ic--theme" aria-hidden="true">🌗</span>
               <span data-i18n="set.nav.theme"></span>
@@ -389,6 +393,32 @@
               </button>
             </div>
             <p class="sample" data-i18n="set.sample"></p>
+          </section>
+
+          <!-- 테마 -->
+          <section class="setcard settab" data-tab="style">
+            <h3 class="setcard__title" data-i18n="set.style"></h3>
+            <p class="setcard__desc" data-i18n="set.style.d"></p>
+            <div class="optrow optrow--style" role="group">
+              <button type="button" class="opt opt--style" data-style-set="cute">
+                <span class="stylepreview stylepreview--cute" aria-hidden="true">
+                  <span class="stylepreview__bar"></span>
+                  <span class="stylepreview__card"></span>
+                  <span class="stylepreview__btn"></span>
+                </span>
+                <span data-i18n="set.style.cute"></span>
+                <small data-i18n="set.style.cute.d"></small>
+              </button>
+              <button type="button" class="opt opt--style" data-style-set="simple">
+                <span class="stylepreview stylepreview--simple" aria-hidden="true">
+                  <span class="stylepreview__bar"></span>
+                  <span class="stylepreview__card"></span>
+                  <span class="stylepreview__btn"></span>
+                </span>
+                <span data-i18n="set.style.simple"></span>
+                <small data-i18n="set.style.simple.d"></small>
+              </button>
+            </div>
           </section>
 
           <!-- 화면 색 -->
