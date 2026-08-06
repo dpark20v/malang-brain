@@ -59,6 +59,117 @@
         </div>
       </div>
 
+      <!-- ===== 숫자로 보는 치매 ===== -->
+      <div class="section section--tinted">
+        <div class="section__head">
+          <p class="eyebrow" data-i18n="st.eyebrow"></p>
+          <h2 data-i18n="st.title"></h2>
+          <p class="section__desc" data-i18n-html="st.desc"></p>
+        </div>
+
+        <ul class="figs">
+          <li class="fig"><b class="fig__n" data-i18n="st.n1"></b><span class="fig__c" data-i18n-html="st.c1"></span></li>
+          <li class="fig"><b class="fig__n" data-i18n="st.n2"></b><span class="fig__c" data-i18n-html="st.c2"></span></li>
+          <li class="fig"><b class="fig__n" data-i18n="st.n3"></b><span class="fig__c" data-i18n-html="st.c3"></span></li>
+          <li class="fig"><b class="fig__n" data-i18n="st.n4"></b><span class="fig__c" data-i18n-html="st.c4"></span></li>
+        </ul>
+
+        <p class="ruralnote" data-i18n-html="st.rural"></p>
+
+        <!-- 증가 추이 그래프 -->
+        <div class="panel">
+          <h3 class="panel__title" data-i18n="gr.title"></h3>
+          <p class="panel__desc" data-i18n-html="gr.desc"></p>
+          <ul class="bars">
+            <li class="bar"><span class="bar__v" data-i18n="gr.v1"></span>
+              <span class="bar__fill" style="--h:31%"></span><span class="bar__x" data-i18n="gr.y1"></span></li>
+            <li class="bar"><span class="bar__v" data-i18n="gr.v2"></span>
+              <span class="bar__fill" style="--h:45%"></span><span class="bar__x" data-i18n="gr.y2"></span></li>
+            <li class="bar"><span class="bar__v" data-i18n="gr.v3"></span>
+              <span class="bar__fill" style="--h:72%"></span><span class="bar__x" data-i18n="gr.y3"></span></li>
+            <li class="bar bar--peak"><span class="bar__v" data-i18n="gr.v4"></span>
+              <span class="bar__fill" style="--h:100%"></span><span class="bar__x" data-i18n="gr.y4"></span></li>
+          </ul>
+        </div>
+
+        <!-- 나이별 -->
+        <div class="panel">
+          <h3 class="panel__title" data-i18n="ag.title"></h3>
+          <p class="panel__desc" data-i18n-html="ag.desc"></p>
+          <ul class="rows">
+            <li class="row"><span class="row__k" data-i18n="ag.a1"></span>
+              <span class="row__t"><span class="row__f" style="--w:24%"></span></span><b class="row__v">9.25%</b></li>
+            <li class="row"><span class="row__k" data-i18n="ag.a2"></span>
+              <span class="row__t"><span class="row__f" style="--w:53%"></span></span><b class="row__v">20%</b></li>
+            <li class="row row--peak"><span class="row__k" data-i18n="ag.a3"></span>
+              <span class="row__t"><span class="row__f" style="--w:100%"></span></span><b class="row__v">38%</b></li>
+          </ul>
+        </div>
+
+        <!-- 왜 늘어날까 -->
+        <div class="panel">
+          <h3 class="panel__title" data-i18n="wy.title"></h3>
+          <ol class="whys">
+            <li><b data-i18n="wy.1.t"></b><p data-i18n-html="wy.1.d"></p></li>
+            <li><b data-i18n="wy.2.t"></b><p data-i18n-html="wy.2.d"></p></li>
+            <li><b data-i18n="wy.3.t"></b><p data-i18n-html="wy.3.d"></p></li>
+            <li><b data-i18n="wy.4.t"></b><p data-i18n-html="wy.4.d"></p></li>
+          </ol>
+          <p class="hopebox" data-i18n-html="wy.hope"></p>
+        </div>
+
+        <p class="srcnote" data-i18n="st.source"></p>
+      </div>
+
+      <!-- ===== 치매의 증상과 증세 ===== -->
+      <div class="section">
+        <div class="section__head">
+          <p class="eyebrow" data-i18n="sy.eyebrow"></p>
+          <h2 data-i18n="sy.title"></h2>
+          <p class="section__desc" data-i18n-html="sy.desc"></p>
+        </div>
+
+        <!-- 건망증 vs 치매 -->
+        <div class="panel">
+          <h3 class="panel__title" data-i18n="sy.diff.t"></h3>
+          <div class="vs">
+            <div class="vs__col vs__col--ok">
+              <b data-i18n="sy.diff.a"></b>
+              <ul>
+                <li data-i18n="sy.diff.a1"></li><li data-i18n="sy.diff.a2"></li>
+                <li data-i18n="sy.diff.a3"></li><li data-i18n="sy.diff.a4"></li>
+              </ul>
+            </div>
+            <div class="vs__col vs__col--warn">
+              <b data-i18n="sy.diff.b"></b>
+              <ul>
+                <li data-i18n="sy.diff.b1"></li><li data-i18n="sy.diff.b2"></li>
+                <li data-i18n="sy.diff.b3"></li><li data-i18n="sy.diff.b4"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="symgroup" data-i18n="sy.g1"></h3>
+        <div class="syms">
+          <article class="sym"><b data-i18n="sy.1.t"></b><p data-i18n="sy.1.d"></p><span class="sym__e" data-i18n="sy.1.e"></span></article>
+          <article class="sym"><b data-i18n="sy.2.t"></b><p data-i18n="sy.2.d"></p><span class="sym__e" data-i18n="sy.2.e"></span></article>
+          <article class="sym"><b data-i18n="sy.3.t"></b><p data-i18n="sy.3.d"></p><span class="sym__e" data-i18n="sy.3.e"></span></article>
+          <article class="sym"><b data-i18n="sy.4.t"></b><p data-i18n="sy.4.d"></p><span class="sym__e" data-i18n="sy.4.e"></span></article>
+        </div>
+
+        <h3 class="symgroup" data-i18n="sy.g2"></h3>
+        <div class="syms">
+          <article class="sym"><b data-i18n="sy.5.t"></b><p data-i18n="sy.5.d"></p><span class="sym__e" data-i18n="sy.5.e"></span></article>
+          <article class="sym"><b data-i18n="sy.6.t"></b><p data-i18n="sy.6.d"></p><span class="sym__e" data-i18n="sy.6.e"></span></article>
+        </div>
+
+        <div class="symcta">
+          <p data-i18n-html="sy.cta"></p>
+          <a class="btn btn--primary btn--big" href="#help" data-i18n="sy.btn"></a>
+        </div>
+      </div>
+
       <div class="section">
         <div class="section__head">
           <p class="eyebrow" data-i18n="home.eyebrow">무엇부터 해볼까요?</p>
