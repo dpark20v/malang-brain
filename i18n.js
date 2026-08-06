@@ -393,7 +393,31 @@
     'ab.greet.d': '말랑뇌를 찾아 주신 분들께 드리는 인사입니다.',
     'ab.over.t': '개요',
     'ab.over.d': '말랑뇌가 어떤 곳인지 한눈에 보실 수 있습니다.',
-    'ab.soon': '이곳에 들어갈 내용은 곧 채워집니다. 조금만 기다려 주세요.'
+    'ab.soon': '이곳에 들어갈 내용은 곧 채워집니다. 조금만 기다려 주세요.',
+    'ab.hero.d': '대한민국을 넘어, 전 세계의 치매 발병률을 낮추는 것을 목표로 합니다.',
+    'crumb.home': '홈',
+
+    'gt.lead': '치매는 어느 날 갑자기, 아주 가까운 곳에서 찾아옵니다.',
+    'gt.p1': '평생 가족을 위해 살아오신 할머니, 할아버지의 기억이 조금씩 흐려지는 모습을 지켜본 사람이라면 압니다. 치매는 환자 한 사람만의 병이 아니라, 그 곁을 지키는 가족 모두가 함께 앓는 병이라는 것을요.',
+    'gt.p2': '「말랑뇌」는 바로 그 마음에서 출발했습니다. 누군가의 소중한 사람이 조금이라도 더 또렷한 기억으로, 조금이라도 더 오래 웃을 수 있기를 바라는 마음. 그리고 아직 건강한 우리 모두가 미리 준비하고 예방할 수 있도록 돕고 싶다는 마음입니다.',
+    'gt.h1': '우리가 믿는 것',
+    'gt.p3': '<b>기억은 사라져도 사랑은 사라지지 않습니다.</b>',
+    'gt.p4': '말랑뇌는 치매를 앓는 분들과 그 가족들의 마음을 함께 지키고, 아직 오지 않은 미래를 준비하는 모든 이들의 곁에 있겠습니다.',
+    'gt.p5': '대한민국을 넘어 전 세계의 치매 발병률을 낮추는 그날까지, 말랑뇌는 멈추지 않습니다.',
+    'gt.sign': '말랑뇌 대표 박건희',
+
+    'ov.lead': '치매는 특별한 누군가에게만 찾아오는 병이 아닙니다.',
+    'ov.h1': '치매, 남의 이야기가 아닙니다',
+    'ov.p1': '고령화가 빠르게 진행되면서 국내 치매 환자 수는 1990년 약 20만 명에서 2024년 <b>약 97만 명</b>에 이르렀고, 이대로라면 2039년에는 200만 명, 2050년에는 300만 명에 이를 것으로 예상됩니다.',
+    'ov.p2': '더 놀라운 사실은, 같은 나이대를 기준으로 보면 개인의 발병 위험 자체는 생활습관과 관리를 통해 낮출 수 있다는 것입니다. 즉, 치매는 막연히 두려워할 병이 아니라 <b>오늘부터 준비하고 대비할 수 있는 병</b>입니다.',
+    'ov.h2': '말랑뇌의 미션',
+    'ov.mission': '대한민국을 넘어, 전 세계의 치매 발병률을 낮추는 것.',
+    'ov.p3': '거창하게 들릴 수 있지만, 시작은 작습니다. 한 사람 한 사람이 치매를 올바르게 이해하고, 일상에서 뇌 건강을 챙기는 습관을 만드는 것. 그 작은 변화들이 모여 큰 흐름을 만든다고 믿습니다.',
+    'ov.h3': '말랑뇌가 하는 일',
+    'ov.do1.t': '1. 치매 예방 정보',
+    'ov.do1.d': '과학적으로 검증된 치매 예방 방법을 누구나 이해하기 쉽게 전달합니다. 어렵고 딱딱한 의학 정보가 아니라, 오늘 당장 실천할 수 있는 습관 중심의 정보입니다.',
+    'ov.do2.t': '2. 두뇌 건강 게임',
+    'ov.do2.d': '재미있게 즐기다 보면 자연스럽게 인지 기능을 자극할 수 있는 게임 콘텐츠를 제공합니다. 예방은 지루한 숙제가 아니라 즐거운 습관이 될 수 있습니다.'
   },
 
   /* ================= English ================= */
@@ -695,7 +719,31 @@
     'ab.greet.d': 'A welcome message for everyone who visits MalangNoe.',
     'ab.over.t': 'Overview',
     'ab.over.d': 'What MalangNoe is, at a glance.',
-    'ab.soon': 'This part is being written. Please check back soon.'
+    'ab.soon': 'This part is being written. Please check back soon.',
+    'ab.hero.d': 'Our goal is to lower the rate of dementia — in Korea, and beyond it, everywhere.',
+    'crumb.home': 'Home',
+
+    'gt.lead': 'Dementia arrives one day without warning, and it arrives very close to home.',
+    'gt.p1': 'Anyone who has watched a grandmother or grandfather — someone who spent a lifetime caring for their family — slowly lose the edges of their memory already knows this: dementia is not the illness of one patient. It is carried by every family member who stays beside them.',
+    'gt.p2': 'MalangNoe began from exactly that feeling. The wish that someone precious might hold on to clearer memories a little longer, and smile a little longer. And the wish to help all of us who are still healthy prepare and prevent it in advance.',
+    'gt.h1': 'What we believe',
+    'gt.p3': '<b>Memory may fade, but love does not.</b>',
+    'gt.p4': 'MalangNoe will stand beside those living with dementia and their families, and beside everyone preparing for a future that has not yet come.',
+    'gt.p5': 'Until the day the rate of dementia falls in Korea and across the world, MalangNoe will not stop.',
+    'gt.sign': 'Geonhui Park, Founder of MalangNoe',
+
+    'ov.lead': 'Dementia is not an illness that visits only certain people.',
+    'ov.h1': 'Dementia is not somebody else’s story',
+    'ov.p1': 'As the population ages rapidly, the number of people with dementia in Korea has grown from roughly 200,000 in 1990 to <b>about 970,000 in 2024</b>. On the current course it is projected to reach 2 million by 2039 and 3 million by 2050.',
+    'ov.p2': 'What is more striking is this: at the same age, an individual’s own risk can still be lowered through daily habits and care. Dementia is not something to fear vaguely — it is <b>something you can prepare for, starting today</b>.',
+    'ov.h2': 'Our mission',
+    'ov.mission': 'To lower the rate of dementia in Korea, and beyond it, everywhere.',
+    'ov.p3': 'It may sound grand, but it starts small. One person at a time understanding dementia correctly, and building daily habits that look after the brain. We believe those small changes add up to a large current.',
+    'ov.h3': 'What MalangNoe does',
+    'ov.do1.t': '1. Prevention you can act on',
+    'ov.do1.d': 'We take scientifically supported ways to prevent dementia and explain them so anyone can follow. Not dense medical language — habits you can start today.',
+    'ov.do2.t': '2. Brain health games',
+    'ov.do2.d': 'Games that stimulate thinking naturally, simply by being fun to play. Prevention does not have to be dull homework; it can be a habit you enjoy.'
   },
 
   /* ================= 日本語 ================= */
@@ -997,7 +1045,31 @@
     'ab.greet.d': 'マランノェを訪ねてくださった皆さまへのごあいさつです。',
     'ab.over.t': '概要',
     'ab.over.d': 'マランノェがどんな場所か、ひと目でわかります。',
-    'ab.soon': 'ここに入る内容はまもなく用意されます。少々お待ちください。'
+    'ab.soon': 'ここに入る内容はまもなく用意されます。少々お待ちください。',
+    'ab.hero.d': '韓国を越えて、世界の認知症発症率を下げることを目指しています。',
+    'crumb.home': 'ホーム',
+
+    'gt.lead': '認知症はある日突然、とても身近なところにやって来ます。',
+    'gt.p1': '家族のために生きてこられたおばあさん、おじいさんの記憶が少しずつ薄れていく姿を見守った人なら分かります。認知症は患者さん一人だけの病ではなく、そばで支えるご家族みんなが一緒に背負う病だということを。',
+    'gt.p2': '「マランノェ」はまさにその思いから始まりました。誰かの大切な人が、少しでもはっきりした記憶で、少しでも長く笑っていられますように。そしてまだ健康な私たちみんなが、あらかじめ備え、予防できるようお手伝いしたいという思いです。',
+    'gt.h1': '私たちが信じていること',
+    'gt.p3': '<b>記憶は消えても、愛は消えません。</b>',
+    'gt.p4': 'マランノェは、認知症を患う方とそのご家族の心を一緒に守り、まだ来ていない未来に備えるすべての人のそばにいます。',
+    'gt.p5': '韓国を越えて世界の認知症発症率を下げるその日まで、マランノェは立ち止まりません。',
+    'gt.sign': 'マランノェ代表 パク・ゴンヒ',
+
+    'ov.lead': '認知症は、特別な誰かだけにやって来る病ではありません。',
+    'ov.h1': '認知症は他人事ではありません',
+    'ov.p1': '高齢化が急速に進み、韓国国内の認知症患者数は1990年の約20万人から2024年には<b>約97万人</b>に達しました。このままでは2039年に200万人、2050年には300万人に上ると見込まれています。',
+    'ov.p2': 'さらに驚くべきことに、同じ年齢で比べると、個人の発症リスク自体は生活習慣と管理によって下げられます。つまり認知症は漠然と恐れる病ではなく、<b>今日から備えられる病</b>なのです。',
+    'ov.h2': 'マランノェのミッション',
+    'ov.mission': '韓国を越えて、世界の認知症発症率を下げること。',
+    'ov.p3': '大げさに聞こえるかもしれませんが、始まりは小さなことです。一人ひとりが認知症を正しく理解し、毎日の暮らしで脳の健康を気づかう習慣をつくること。その小さな変化が集まって大きな流れになると信じています。',
+    'ov.h3': 'マランノェがしていること',
+    'ov.do1.t': '1. 認知症予防の情報',
+    'ov.do1.d': '科学的に確かめられた予防法を、誰にでも分かるようにお伝えします。難しい医学の言葉ではなく、今日すぐ実践できる習慣中心の情報です。',
+    'ov.do2.t': '2. 脳の健康ゲーム',
+    'ov.do2.d': '楽しく遊んでいるうちに自然と認知機能を刺激できるゲームをご用意しました。予防は退屈な宿題ではなく、楽しい習慣にできます。'
   },
 
   /* ================= 中文 ================= */
@@ -1299,7 +1371,31 @@
     'ab.greet.d': '写给每一位来到软软脑的朋友。',
     'ab.over.t': '概要',
     'ab.over.d': '一眼了解软软脑是个什么样的地方。',
-    'ab.soon': '这里的内容正在准备中，请稍候。'
+    'ab.soon': '这里的内容正在准备中，请稍候。',
+    'ab.hero.d': '我们的目标是降低韩国乃至全世界的痴呆发病率。',
+    'crumb.home': '首页',
+
+    'gt.lead': '痴呆常常在某一天突然到来，而且就发生在身边。',
+    'gt.p1': '看着一生为家人操劳的奶奶、爷爷记忆一点点变模糊的人都明白：痴呆不是病人一个人的病，而是守在身边的一家人一起承受的病。',
+    'gt.p2': '「软软脑」正是从这份心意出发的。希望某个人珍视的家人能多留住一些清晰的记忆，能多笑一会儿；也希望帮助还健康的我们提前准备、提前预防。',
+    'gt.h1': '我们所相信的',
+    'gt.p3': '<b>记忆会消失，爱不会。</b>',
+    'gt.p4': '软软脑会和痴呆患者及其家人一起守护那份心意，也会陪在每一位为尚未到来的未来做准备的人身边。',
+    'gt.p5': '直到韩国乃至全世界的痴呆发病率降下来的那一天，软软脑不会停下脚步。',
+    'gt.sign': '软软脑代表 朴健熙',
+
+    'ov.lead': '痴呆不是只降临在某些特定人身上的病。',
+    'ov.h1': '痴呆不是别人的故事',
+    'ov.p1': '随着老龄化快速推进，韩国国内痴呆患者人数已从1990年的约20万人增加到2024年的<b>约97万人</b>。照此下去，预计2039年将达到200万人，2050年将达到300万人。',
+    'ov.p2': '更值得注意的是，在同一年龄段中，个人的发病风险本身可以通过生活习惯和管理来降低。也就是说，痴呆不是只能一味害怕的病，而是<b>从今天就能着手准备和应对的病</b>。',
+    'ov.h2': '软软脑的使命',
+    'ov.mission': '降低韩国乃至全世界的痴呆发病率。',
+    'ov.p3': '听起来也许很宏大，但起点很小：让每一个人正确理解痴呆，并在日常中养成照顾大脑健康的习惯。我们相信，这些小小的改变汇聚起来会形成大的潮流。',
+    'ov.h3': '软软脑做的事',
+    'ov.do1.t': '1. 痴呆预防信息',
+    'ov.do1.d': '把经过科学验证的预防方法，用人人都能看懂的方式讲清楚。不是艰涩的医学术语，而是今天就能开始做的习惯。',
+    'ov.do2.t': '2. 脑健康游戏',
+    'ov.do2.d': '在快乐游戏的过程中自然地刺激认知功能。预防不必是枯燥的作业，也可以成为让人期待的习惯。'
   }
   };
 

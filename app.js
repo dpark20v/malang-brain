@@ -542,7 +542,8 @@
       if (el) el.classList.toggle('is-active', p === id);
     });
 
-    $$('.nav a').forEach((a) => {
+    /* 위쪽 메뉴와 「플랫폼 소개」 안쪽 작은 탭, 둘 다 지금 위치를 표시합니다 */
+    $$('.nav a, .subnav a').forEach((a) => {
       const target = (a.getAttribute('href') || '').replace('#', '');
       if (target === id) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
@@ -680,7 +681,8 @@
   const REVEAL_SEL = [
     '.section__head', '.bignum', '.fig', '.ruralnote', '.panel',
     '.symgroup', '.sym', '.symcta', '.pick', '.topic', '.gcard',
-    '.help__card', '.flamebox', '.statrow', '.setcard', '.mecard', '.prose'
+    '.help__card', '.flamebox', '.statrow', '.setcard', '.mecard',
+    '.pagetitle', '.prose'
   ].join(',');
 
   let revealOn = false;

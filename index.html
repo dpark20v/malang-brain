@@ -8,14 +8,14 @@
 
   <!-- ===== 글꼴 =====
        본문(한국어 포함) : Pretendard  — 화면에서 읽기 편한 고딕
-       로고 「말랑뇌」   : Nanum Brush Script — 붓으로 휘날려 쓴 손글씨
+       로고 「말랑뇌」   : Yeon Sung — 둥근 붓글씨 (휘날리지 않고 차분하게)
        큰 인사말         : Jua — 동글동글 귀여운 글씨
        글꼴이 늦게 와도 글자는 먼저 보이도록 display=swap 을 씁니다. -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Yeon+Sung&display=swap" />
 
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
@@ -234,18 +234,36 @@
       </div>
     </section>
 
-    <!-- ======================= 플랫폼 소개 · 인삿말 =======================
-         내용은 나중에 채웁니다. 지금은 제목과 빈 자리만 있습니다. -->
+    <!-- ======================= 플랫폼 소개 · 인사말 =======================
+         구조: 큰 사진 띠 → 아래 작은 탭 → 제목+길찾기 → 본문 -->
     <section class="page" id="greeting" tabindex="-1">
-      <div class="section">
-        <div class="section__head">
-          <p class="eyebrow" data-i18n="ab.eyebrow"></p>
-          <h2 data-i18n="ab.greet.t">인삿말</h2>
-          <p class="section__desc" data-i18n="ab.greet.d"></p>
+      <div class="pagehero">
+        <div class="pagehero__inner">
+          <p class="pagehero__en">ABOUT MALANGNOE</p>
+          <p class="pagehero__desc" data-i18n="ab.hero.d"></p>
         </div>
+      </div>
+
+      <nav class="subnav" data-i18n-aria="ab.eyebrow" aria-label="플랫폼 소개">
+        <a href="#greeting" data-i18n="nav.greeting">인사말</a>
+        <a href="#overview" data-i18n="nav.overview">개요</a>
+      </nav>
+
+      <div class="section section--doc">
+        <header class="pagetitle">
+          <h2 data-i18n="ab.greet.t">인사말</h2>
+          <p class="crumb"><span data-i18n="crumb.home"></span> › <span data-i18n="ab.eyebrow"></span> › <span data-i18n="ab.greet.t"></span></p>
+        </header>
 
         <article class="prose" id="greetingBody">
-          <p class="prose__soon" data-i18n="ab.soon"></p>
+          <p class="prose__lead" data-i18n="gt.lead"></p>
+          <p data-i18n="gt.p1"></p>
+          <p data-i18n="gt.p2"></p>
+          <h3 data-i18n="gt.h1"></h3>
+          <p data-i18n-html="gt.p3"></p>
+          <p data-i18n="gt.p4"></p>
+          <p data-i18n="gt.p5"></p>
+          <p class="prose__sign" data-i18n="gt.sign"></p>
         </article>
 
         <nav class="pagenav">
@@ -257,15 +275,41 @@
 
     <!-- ======================= 플랫폼 소개 · 개요 ======================= -->
     <section class="page" id="overview" tabindex="-1">
-      <div class="section">
-        <div class="section__head">
-          <p class="eyebrow" data-i18n="ab.eyebrow"></p>
-          <h2 data-i18n="ab.over.t">개요</h2>
-          <p class="section__desc" data-i18n="ab.over.d"></p>
+      <div class="pagehero">
+        <div class="pagehero__inner">
+          <p class="pagehero__en">ABOUT MALANGNOE</p>
+          <p class="pagehero__desc" data-i18n="ab.hero.d"></p>
         </div>
+      </div>
+
+      <nav class="subnav" data-i18n-aria="ab.eyebrow" aria-label="플랫폼 소개">
+        <a href="#greeting" data-i18n="nav.greeting">인사말</a>
+        <a href="#overview" data-i18n="nav.overview">개요</a>
+      </nav>
+
+      <div class="section section--doc">
+        <header class="pagetitle">
+          <h2 data-i18n="ab.over.t">개요</h2>
+          <p class="crumb"><span data-i18n="crumb.home"></span> › <span data-i18n="ab.eyebrow"></span> › <span data-i18n="ab.over.t"></span></p>
+        </header>
 
         <article class="prose" id="overviewBody">
-          <p class="prose__soon" data-i18n="ab.soon"></p>
+          <p class="prose__lead" data-i18n="ov.lead"></p>
+          <h3 data-i18n="ov.h1"></h3>
+          <p data-i18n-html="ov.p1"></p>
+          <p data-i18n-html="ov.p2"></p>
+          <h3 data-i18n="ov.h2"></h3>
+          <p class="prose__big" data-i18n="ov.mission"></p>
+          <p data-i18n="ov.p3"></p>
+          <h3 data-i18n="ov.h3"></h3>
+          <div class="doitem">
+            <p class="doitem__t" data-i18n="ov.do1.t"></p>
+            <p data-i18n="ov.do1.d"></p>
+          </div>
+          <div class="doitem">
+            <p class="doitem__t" data-i18n="ov.do2.t"></p>
+            <p data-i18n="ov.do2.d"></p>
+          </div>
         </article>
 
         <nav class="pagenav">

@@ -7,13 +7,13 @@
 :root {
   /* 글꼴 세 가지
      --font-sans : 본문 전부. 한국어는 Pretendard 로 나옵니다.
-     --font-logo : 로고 「말랑뇌」. 붓으로 휘날려 쓴 손글씨.
+     --font-logo : 로고 「말랑뇌」. 둥근 붓글씨 — 손맛은 남기되 획이 날리지 않습니다.
      --font-cute : 큰 인사말. 동글동글 귀여운 글씨.
      뒤쪽 글꼴은 앞 글꼴에 없는 글자(일본어·중국어 등)를 대신 그려 줍니다. */
   --font-sans: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo",
                "Noto Sans KR", "Hiragino Sans", "Yu Gothic",
                "Microsoft YaHei", "맑은 고딕", "Malgun Gothic", system-ui, sans-serif;
-  --font-logo: "Nanum Brush Script", var(--font-sans);
+  --font-logo: "Yeon Sung", var(--font-sans);
   --font-cute: "Jua", var(--font-sans);
 
   /* 파스텔 팔레트 */
@@ -224,15 +224,15 @@ button { font-family: inherit; cursor: pointer; }
   font-size: calc(1.25rem * var(--text-scale)); font-weight: 800; color: var(--ink);
   display: flex; flex-direction: column; line-height: 1.2;
 }
-/* 「말랑뇌」는 붓으로 휘날려 쓴 손글씨.
-   붓글씨는 같은 크기라도 작아 보여서 1.5배쯤 키우고, 굵기는 400 하나뿐입니다. */
+/* 「말랑뇌」는 둥근 붓글씨.
+   손글씨는 같은 크기라도 작아 보여서 조금 키웁니다. 굵기는 400 하나뿐입니다. */
 .logo__name {
   font-family: var(--font-logo);
   font-weight: 400;
-  font-size: 1.5em;
+  font-size: 1.42em;
   line-height: 1;
-  letter-spacing: 0.005em;
-  padding-top: 0.06em;
+  letter-spacing: 0;
+  padding-top: 0.04em;
 }
 .logo__text small { font-size: calc(0.62rem * var(--text-scale)); font-weight: 600; color: var(--ink-mute); margin-top: 0.15em; }
 
@@ -1153,20 +1153,125 @@ button { font-family: inherit; cursor: pointer; }
 .toast[hidden] { display: none; }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 18px); } }
 
-/* ---------- 12-B. 플랫폼 소개 (인삿말 · 개요) ----------
-   글은 나중에 채웁니다. 지금은 읽기 좋은 폭과 「준비 중」 자리만 잡아 둡니다. */
+/* ---------- 12-B. 플랫폼 소개 (인사말 · 개요) ----------
+   구조: 사진 띠(pagehero) → 작은 탭(subnav) → 제목+길찾기(pagetitle) → 본문(prose) */
+
+/* 위쪽 사진 띠.
+   사진이 밝고 환한 공간이라 어둡게 덮지 않습니다. 대신 왼쪽만 하얗게 살짝
+   덮어 글씨가 앉을 자리를 만들고, 글씨는 진한 색으로 씁니다. (다크 모드는 반대) */
+.pagehero {
+  position: relative;
+  min-height: 20rem;
+  display: grid; align-items: center;
+  padding: 3.5rem 1.25rem;
+  background-image:
+    linear-gradient(95deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.78) 38%,
+                          rgba(255, 255, 255, 0.34) 68%, rgba(255, 255, 255, 0.06) 100%),
+    url("img/about-hero.jpg");
+  background-size: cover;
+  background-position: center 62%;
+  border-bottom: 2px solid var(--line);
+}
+.pagehero__inner { max-width: var(--maxw); margin: 0 auto; width: 100%; }
+.pagehero__en {
+  font-size: calc(clamp(2rem, 5vw, 3.2rem) * var(--text-scale));
+  font-weight: 900; color: #241c3d;
+  letter-spacing: 0.01em; line-height: 1.1;
+  margin-bottom: 0.9rem;
+}
+.pagehero__desc {
+  font-size: calc(1.02rem * var(--text-scale));
+  font-weight: 600; color: #4a4266;
+  max-width: 32rem;
+}
+/* 다크 모드에서는 사진을 어둡게 덮고 글씨를 하얗게 */
+html[data-theme="dark"] .pagehero {
+  background-image:
+    linear-gradient(95deg, rgba(18, 18, 22, 0.93) 0%, rgba(18, 18, 22, 0.78) 38%,
+                          rgba(18, 18, 22, 0.45) 68%, rgba(18, 18, 22, 0.18) 100%),
+    url("img/about-hero.jpg");
+}
+html[data-theme="dark"] .pagehero__en { color: #fff; }
+html[data-theme="dark"] .pagehero__desc { color: rgba(255, 255, 255, 0.82); }
+
+/* 사진 바로 아래 작은 탭 — 한세 홈페이지의 「인사말 · 연혁 · 비전」 자리 */
+.subnav {
+  display: flex; justify-content: center; gap: 0.5rem;
+  flex-wrap: wrap;
+  background: var(--white);
+  border-bottom: 2px solid var(--line);
+  padding: 0 1rem;
+}
+.subnav a {
+  position: relative;
+  padding: 1.15rem 1.9rem;
+  font-weight: 700; font-size: calc(1rem * var(--text-scale));
+  color: var(--ink-mute);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.18s, border-color 0.18s;
+}
+.subnav a:hover { color: var(--ink); text-decoration: none; }
+.subnav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--lav-500); }
+
+/* 제목은 왼쪽, 지금 어디인지 알려 주는 길찾기는 오른쪽 */
+.section--doc { padding-top: 3.5rem; }
+.pagetitle {
+  max-width: var(--maxw); margin: 0 auto 3rem;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap;
+  padding-bottom: 1.4rem;
+  border-bottom: 2px solid var(--line);
+}
+.pagetitle h2 {
+  font-size: calc(clamp(1.8rem, 4.2vw, 2.5rem) * var(--text-scale));
+  font-weight: 900; color: var(--ink);
+}
+.crumb { font-size: calc(0.85rem * var(--text-scale)); color: var(--ink-mute); font-weight: 600; }
+
 .prose {
   max-width: 46rem;
   margin: 0 auto;
   font-size: calc(1.05rem * var(--text-scale));
   color: var(--ink-soft);
-  line-height: 1.9;
+  line-height: 1.95;
 }
-.prose p + p { margin-top: 1.1rem; }
+.prose p + p { margin-top: 1.15rem; }
+.prose__lead {
+  font-size: calc(clamp(1.25rem, 2.6vw, 1.6rem) * var(--text-scale));
+  font-weight: 800; color: var(--ink);
+  line-height: 1.55; margin-bottom: 2.2rem;
+}
 .prose h3 {
-  font-size: calc(1.25rem * var(--text-scale));
-  color: var(--ink); margin: 2rem 0 0.8rem;
+  font-size: calc(1.3rem * var(--text-scale));
+  font-weight: 800; color: var(--ink);
+  margin: 2.8rem 0 1rem;
+  padding-left: 0.85rem;
+  border-left: 4px solid var(--lav-300);
 }
+.prose b { color: var(--ink); }
+.prose__big {
+  font-size: calc(1.3rem * var(--text-scale));
+  font-weight: 800; color: var(--lav-700);
+  background: var(--lav-100);
+  border-radius: var(--r-lg);
+  padding: 1.3rem 1.5rem;
+  text-align: center;
+}
+.prose__sign {
+  margin-top: 2.8rem; padding-top: 1.6rem;
+  border-top: 2px solid var(--line);
+  text-align: right; font-weight: 800; color: var(--ink);
+}
+/* 「말랑뇌가 하는 일」 항목 */
+.doitem {
+  background: var(--white);
+  border: 2px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 1.3rem 1.5rem;
+  margin-top: 1rem;
+}
+.doitem__t { font-weight: 800; color: var(--ink); margin-bottom: 0.4rem; }
 .prose__soon {
   background: var(--white);
   border: 2px dashed var(--lav-200);
@@ -1187,7 +1292,7 @@ button { font-family: inherit; cursor: pointer; }
   font-size: calc(0.92rem * var(--text-scale));
 }
 .footer__logo { font-size: calc(1.3rem * var(--text-scale)); font-weight: 900; color: var(--ink); margin-bottom: 0.8rem; }
-.footer__logo span { font-family: var(--font-logo); font-weight: 400; font-size: 1.45em; line-height: 1; }
+.footer__logo span { font-family: var(--font-logo); font-weight: 400; font-size: 1.4em; line-height: 1; }
 .footer p + p { margin-top: 0.8rem; }
 .footer__small { font-size: calc(0.8rem * var(--text-scale)); color: var(--ink-mute); }
 

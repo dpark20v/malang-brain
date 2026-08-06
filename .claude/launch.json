@@ -4,8 +4,12 @@
     {
       "name": "malang",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4173"],
-      "port": 4173
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4923"
+      ],
+      "port": 4923
     }
   ]
 }
