@@ -1001,15 +1001,6 @@ button { font-family: inherit; cursor: pointer; }
 .footer__logo { font-size: 1.3rem; font-weight: 900; color: var(--ink); margin-bottom: 0.8rem; }
 .footer p + p { margin-top: 0.8rem; }
 .footer__small { font-size: 0.8rem; color: var(--ink-mute); }
-.footer__org {
-  margin-top: 1.6rem;
-  padding-top: 1.2rem;
-  border-top: 2px solid var(--lav-200);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--ink-mute);
-}
 
 /* ---------- 14. 반응형 ---------- */
 @media (max-width: 900px) {
