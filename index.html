@@ -47,7 +47,20 @@
             <a href="#overview" data-i18n="nav.overview">개요</a>
           </div>
         </div>
-        <a href="#learn"    data-i18n="nav.learn">📚 배우기</a>
+        <!-- 배우기: 마우스를 올리면 하얀 상자가 펼쳐집니다 (플랫폼 소개와 같은 방식)
+             안쪽 네 칸은 각각 따로 떨어진 페이지입니다 -->
+        <div class="nav__item" id="learnMenu">
+          <button type="button" class="nav__btn" id="learnBtn" aria-expanded="false" aria-controls="learnDrop">
+            <span data-i18n="nav.learn">📚 배우기</span>
+            <span class="nav__caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="nav__drop" id="learnDrop">
+            <a href="#learn-cog"><span aria-hidden="true">🧩</span> <span data-i18n="l1.title">인지 훈련</span></a>
+            <a href="#learn-move"><span aria-hidden="true">🚶</span> <span data-i18n="l2.title">신체 운동</span></a>
+            <a href="#learn-social"><span aria-hidden="true">💬</span> <span data-i18n="l3.title">사회적 활동</span></a>
+            <a href="#learn-life"><span aria-hidden="true">🌙</span> <span data-i18n="l4.title">생활 습관</span></a>
+          </div>
+        </div>
         <a href="#play"     data-i18n="nav.play">🎮 두뇌게임</a>
         <a href="#streak"   data-i18n="nav.streak">🔥 말랑 스트리크</a>
         <a href="#help"     data-i18n="nav.help">📞 도움받기</a>
@@ -331,116 +344,252 @@
       </div>
     </section>
 
-    <!-- ======================= 배우기 ======================= -->
-    <section class="page" id="learn" tabindex="-1">
-      <div class="section">
-        <div class="section__head">
-          <p class="eyebrow" data-i18n="learn.eyebrow">생활 습관</p>
-          <h2 data-i18n="learn.title">📚 치매를 늦추는 생활 습관 배우기</h2>
-          <p class="section__desc" data-i18n-html="learn.desc"></p>
+    <!-- ======================= 배우기 · 인지 훈련 ======================= -->
+    <section class="page" id="learn-cog" tabindex="-1">
+      <div class="pagehero">
+        <div class="pagehero__inner">
+          <p class="pagehero__en">LEARN</p>
+          <p class="pagehero__desc" data-i18n="learn.hero.d"></p>
         </div>
+      </div>
 
-        <div class="topics">
+      <nav class="subnav" data-i18n-aria="learn.section" aria-label="배우기">
+        <a href="#learn-cog"    data-i18n="l1.title">인지 훈련</a>
+        <a href="#learn-move"   data-i18n="l2.title">신체 운동</a>
+        <a href="#learn-social" data-i18n="l3.title">사회적 활동</a>
+        <a href="#learn-life"   data-i18n="l4.title">생활 습관</a>
+      </nav>
 
-          <article class="topic topic--lav">
-            <header class="topic__head">
-              <span class="topic__emoji" aria-hidden="true">🧩</span>
-              <div>
-                <h3><span data-i18n="l1.title">인지 훈련</span> <span class="topic__sub" data-i18n="l1.sub">두뇌 자극</span></h3>
-                <p data-i18n-html="l1.desc"></p>
-              </div>
-            </header>
-            <details class="tip"><summary data-i18n-html="l1.a.t"></summary><div class="tip__body">
-              <p data-i18n-html="l1.a.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.a.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l1.b.t"></summary><div class="tip__body">
-              <p data-i18n-html="l1.b.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.b.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l1.c.t"></summary><div class="tip__body">
-              <p data-i18n-html="l1.c.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.c.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l1.d.t"></summary><div class="tip__body">
-              <p data-i18n-html="l1.d.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.d.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l1.e.t"></summary><div class="tip__body">
-              <p data-i18n-html="l1.e.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.e.w"></span></p>
-              <p class="tip__link" data-i18n-html="l1.e.link"></p></div></details>
-          </article>
+      <div class="section section--doc">
+        <header class="pagetitle">
+          <h2><span aria-hidden="true">🧩</span> <span data-i18n="l1.title">인지 훈련</span></h2>
+          <p class="crumb"><span data-i18n="crumb.home"></span> › <span data-i18n="learn.section"></span> › <span data-i18n="l1.title"></span></p>
+        </header>
 
-          <article class="topic topic--mint">
-            <header class="topic__head">
-              <span class="topic__emoji" aria-hidden="true">🚶</span>
-              <div>
-                <h3><span data-i18n="l2.title">신체 운동</span> <span class="topic__sub" data-i18n="l2.sub">가장 확실한 방법</span></h3>
-                <p data-i18n-html="l2.desc"></p>
-              </div>
-            </header>
-            <details class="tip" open><summary data-i18n-html="l2.a.t"></summary><div class="tip__body">
-              <p data-i18n-html="l2.a.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.a.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l2.b.t"></summary><div class="tip__body">
-              <p data-i18n-html="l2.b.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.b.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l2.c.t"></summary><div class="tip__body">
-              <p data-i18n-html="l2.c.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.c.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l2.d.t"></summary><div class="tip__body">
-              <p data-i18n-html="l2.d.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.d.w"></span></p></div></details>
-          </article>
+        <article class="prose">
+          <p class="prose__lead" data-i18n-html="l1.lead"></p>
+          <p data-i18n-html="l1.p1"></p>
+          <p data-i18n-html="l1.p2"></p>
 
-          <article class="topic topic--peach">
-            <header class="topic__head">
-              <span class="topic__emoji" aria-hidden="true">💬</span>
-              <div>
-                <h3><span data-i18n="l3.title">사회적 활동</span> <span class="topic__sub" data-i18n="l3.sub">혼자 있지 않기</span></h3>
-                <p data-i18n-html="l3.desc"></p>
-              </div>
-            </header>
-            <details class="tip"><summary data-i18n-html="l3.a.t"></summary><div class="tip__body">
-              <p data-i18n-html="l3.a.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.a.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l3.b.t"></summary><div class="tip__body">
-              <p data-i18n-html="l3.b.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.b.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l3.c.t"></summary><div class="tip__body">
-              <p data-i18n-html="l3.c.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.c.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l3.d.t"></summary><div class="tip__body">
-              <p data-i18n-html="l3.d.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.d.w"></span></p></div></details>
-          </article>
+          <h3 data-i18n="learn.h.how"></h3>
+          <details class="tip"><summary data-i18n-html="l1.a.t"></summary><div class="tip__body">
+            <p data-i18n-html="l1.a.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.a.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l1.b.t"></summary><div class="tip__body">
+            <p data-i18n-html="l1.b.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.b.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l1.c.t"></summary><div class="tip__body">
+            <p data-i18n-html="l1.c.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.c.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l1.d.t"></summary><div class="tip__body">
+            <p data-i18n-html="l1.d.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.d.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l1.e.t"></summary><div class="tip__body">
+            <p data-i18n-html="l1.e.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.e.w"></span></p>
+            <p class="tip__link" data-i18n-html="l1.e.link"></p></div></details>
+          <details class="tip"><summary data-i18n-html="l1.f.t"></summary><div class="tip__body">
+            <p data-i18n-html="l1.f.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.f.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l1.g.t"></summary><div class="tip__body">
+            <p data-i18n-html="l1.g.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.g.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l1.h.t"></summary><div class="tip__body">
+            <p data-i18n-html="l1.h.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l1.h.w"></span></p></div></details>
 
-          <article class="topic topic--lemon">
-            <header class="topic__head">
-              <span class="topic__emoji" aria-hidden="true">🌙</span>
-              <div>
-                <h3><span data-i18n="l4.title">생활 습관</span> <span class="topic__sub" data-i18n="l4.sub">혈관이 곧 뇌</span></h3>
-                <p data-i18n-html="l4.desc"></p>
-              </div>
-            </header>
-            <details class="tip"><summary data-i18n-html="l4.a.t"></summary><div class="tip__body">
-              <p data-i18n-html="l4.a.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.a.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l4.b.t"></summary><div class="tip__body">
-              <p data-i18n-html="l4.b.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.b.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l4.c.t"></summary><div class="tip__body">
-              <p data-i18n-html="l4.c.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.c.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l4.d.t"></summary><div class="tip__body">
-              <p data-i18n-html="l4.d.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.d.w"></span></p></div></details>
-            <details class="tip"><summary data-i18n-html="l4.e.t"></summary><div class="tip__body">
-              <p data-i18n-html="l4.e.b"></p>
-              <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.e.w"></span></p></div></details>
-          </article>
-
-        </div>
+          <h3 data-i18n="learn.h.one"></h3>
+          <p class="prose__big" data-i18n-html="l1.one"></p>
+        </article>
 
         <nav class="pagenav">
           <a class="btn btn--ghost"   href="#home" data-i18n="nav.prev.home"></a>
+          <a class="btn btn--primary" href="#learn-move" data-i18n="nav.n.l2"></a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ======================= 배우기 · 신체 운동 ======================= -->
+    <section class="page" id="learn-move" tabindex="-1">
+      <div class="pagehero">
+        <div class="pagehero__inner">
+          <p class="pagehero__en">LEARN</p>
+          <p class="pagehero__desc" data-i18n="learn.hero.d"></p>
+        </div>
+      </div>
+
+      <nav class="subnav" data-i18n-aria="learn.section" aria-label="배우기">
+        <a href="#learn-cog"    data-i18n="l1.title">인지 훈련</a>
+        <a href="#learn-move"   data-i18n="l2.title">신체 운동</a>
+        <a href="#learn-social" data-i18n="l3.title">사회적 활동</a>
+        <a href="#learn-life"   data-i18n="l4.title">생활 습관</a>
+      </nav>
+
+      <div class="section section--doc">
+        <header class="pagetitle">
+          <h2><span aria-hidden="true">🚶</span> <span data-i18n="l2.title">신체 운동</span></h2>
+          <p class="crumb"><span data-i18n="crumb.home"></span> › <span data-i18n="learn.section"></span> › <span data-i18n="l2.title"></span></p>
+        </header>
+
+        <article class="prose">
+          <p class="prose__lead" data-i18n-html="l2.lead"></p>
+          <p data-i18n-html="l2.p1"></p>
+          <p data-i18n-html="l2.p2"></p>
+
+          <h3 data-i18n="learn.h.how"></h3>
+          <details class="tip"><summary data-i18n-html="l2.a.t"></summary><div class="tip__body">
+            <p data-i18n-html="l2.a.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.a.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l2.b.t"></summary><div class="tip__body">
+            <p data-i18n-html="l2.b.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.b.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l2.c.t"></summary><div class="tip__body">
+            <p data-i18n-html="l2.c.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.c.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l2.d.t"></summary><div class="tip__body">
+            <p data-i18n-html="l2.d.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.d.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l2.e.t"></summary><div class="tip__body">
+            <p data-i18n-html="l2.e.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.e.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l2.f.t"></summary><div class="tip__body">
+            <p data-i18n-html="l2.f.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.f.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l2.g.t"></summary><div class="tip__body">
+            <p data-i18n-html="l2.g.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l2.g.w"></span></p></div></details>
+
+          <h3 data-i18n="learn.h.one"></h3>
+          <p class="prose__big" data-i18n-html="l2.one"></p>
+        </article>
+
+        <nav class="pagenav">
+          <a class="btn btn--ghost"   href="#learn-cog" data-i18n="nav.p.l1"></a>
+          <a class="btn btn--primary" href="#learn-social" data-i18n="nav.n.l3"></a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ======================= 배우기 · 사회적 활동 ======================= -->
+    <section class="page" id="learn-social" tabindex="-1">
+      <div class="pagehero">
+        <div class="pagehero__inner">
+          <p class="pagehero__en">LEARN</p>
+          <p class="pagehero__desc" data-i18n="learn.hero.d"></p>
+        </div>
+      </div>
+
+      <nav class="subnav" data-i18n-aria="learn.section" aria-label="배우기">
+        <a href="#learn-cog"    data-i18n="l1.title">인지 훈련</a>
+        <a href="#learn-move"   data-i18n="l2.title">신체 운동</a>
+        <a href="#learn-social" data-i18n="l3.title">사회적 활동</a>
+        <a href="#learn-life"   data-i18n="l4.title">생활 습관</a>
+      </nav>
+
+      <div class="section section--doc">
+        <header class="pagetitle">
+          <h2><span aria-hidden="true">💬</span> <span data-i18n="l3.title">사회적 활동</span></h2>
+          <p class="crumb"><span data-i18n="crumb.home"></span> › <span data-i18n="learn.section"></span> › <span data-i18n="l3.title"></span></p>
+        </header>
+
+        <article class="prose">
+          <p class="prose__lead" data-i18n-html="l3.lead"></p>
+          <p data-i18n-html="l3.p1"></p>
+          <p data-i18n-html="l3.p2"></p>
+
+          <h3 data-i18n="learn.h.how"></h3>
+          <details class="tip"><summary data-i18n-html="l3.a.t"></summary><div class="tip__body">
+            <p data-i18n-html="l3.a.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.a.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l3.b.t"></summary><div class="tip__body">
+            <p data-i18n-html="l3.b.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.b.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l3.c.t"></summary><div class="tip__body">
+            <p data-i18n-html="l3.c.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.c.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l3.d.t"></summary><div class="tip__body">
+            <p data-i18n-html="l3.d.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.d.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l3.e.t"></summary><div class="tip__body">
+            <p data-i18n-html="l3.e.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.e.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l3.f.t"></summary><div class="tip__body">
+            <p data-i18n-html="l3.f.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.f.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l3.g.t"></summary><div class="tip__body">
+            <p data-i18n-html="l3.g.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l3.g.w"></span></p></div></details>
+
+          <h3 data-i18n="learn.h.one"></h3>
+          <p class="prose__big" data-i18n-html="l3.one"></p>
+        </article>
+
+        <nav class="pagenav">
+          <a class="btn btn--ghost"   href="#learn-move" data-i18n="nav.p.l2"></a>
+          <a class="btn btn--primary" href="#learn-life" data-i18n="nav.n.l4"></a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ======================= 배우기 · 생활 습관 ======================= -->
+    <section class="page" id="learn-life" tabindex="-1">
+      <div class="pagehero">
+        <div class="pagehero__inner">
+          <p class="pagehero__en">LEARN</p>
+          <p class="pagehero__desc" data-i18n="learn.hero.d"></p>
+        </div>
+      </div>
+
+      <nav class="subnav" data-i18n-aria="learn.section" aria-label="배우기">
+        <a href="#learn-cog"    data-i18n="l1.title">인지 훈련</a>
+        <a href="#learn-move"   data-i18n="l2.title">신체 운동</a>
+        <a href="#learn-social" data-i18n="l3.title">사회적 활동</a>
+        <a href="#learn-life"   data-i18n="l4.title">생활 습관</a>
+      </nav>
+
+      <div class="section section--doc">
+        <header class="pagetitle">
+          <h2><span aria-hidden="true">🌙</span> <span data-i18n="l4.title">생활 습관</span></h2>
+          <p class="crumb"><span data-i18n="crumb.home"></span> › <span data-i18n="learn.section"></span> › <span data-i18n="l4.title"></span></p>
+        </header>
+
+        <article class="prose">
+          <p class="prose__lead" data-i18n-html="l4.lead"></p>
+          <p data-i18n-html="l4.p1"></p>
+          <p data-i18n-html="l4.p2"></p>
+
+          <h3 data-i18n="learn.h.how"></h3>
+          <details class="tip"><summary data-i18n-html="l4.a.t"></summary><div class="tip__body">
+            <p data-i18n-html="l4.a.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.a.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l4.b.t"></summary><div class="tip__body">
+            <p data-i18n-html="l4.b.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.b.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l4.c.t"></summary><div class="tip__body">
+            <p data-i18n-html="l4.c.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.c.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l4.d.t"></summary><div class="tip__body">
+            <p data-i18n-html="l4.d.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.d.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l4.e.t"></summary><div class="tip__body">
+            <p data-i18n-html="l4.e.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.e.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l4.f.t"></summary><div class="tip__body">
+            <p data-i18n-html="l4.f.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.f.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l4.g.t"></summary><div class="tip__body">
+            <p data-i18n-html="l4.g.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.g.w"></span></p></div></details>
+          <details class="tip"><summary data-i18n-html="l4.h.t"></summary><div class="tip__body">
+            <p data-i18n-html="l4.h.b"></p>
+            <p class="tip__why"><b data-i18n="why"></b> <span data-i18n-html="l4.h.w"></span></p></div></details>
+
+          <h3 data-i18n="learn.h.one"></h3>
+          <p class="prose__big" data-i18n-html="l4.one"></p>
+        </article>
+
+        <nav class="pagenav">
+          <a class="btn btn--ghost"   href="#learn-social" data-i18n="nav.p.l3"></a>
           <a class="btn btn--primary" href="#play" data-i18n="nav.next.play"></a>
         </nav>
       </div>
