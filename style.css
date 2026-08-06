@@ -1563,6 +1563,44 @@ html[data-mode="easy"] #aboutMenu,
 html[data-mode="easy"] #learnMenu { display: none; }
 html[data-mode="easy"] .nav__easylearn { display: block; }
 
+/* 이지에서는 위쪽 사진을 빼고, 그 자리에 「어디로 갈지 고르는 바」를
+   눈에 잘 띄게 둡니다. 사진이 크게 자리를 차지하면 정작 눌러야 할 곳이
+   화면 아래로 밀려나 어디로 가야 할지 알기 어렵습니다. */
+html[data-mode="easy"] .pagehero { display: none; }
+
+html[data-mode="easy"] .subnav {
+  gap: 0.6rem;
+  padding: 1.3rem 1rem;
+  background: var(--lav-100);
+  border-bottom: 3px solid var(--lav-200);
+}
+html[data-mode="easy"] .subnav a {
+  padding: 0.85rem 1.35rem;
+  border: 3px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--white);
+  color: var(--ink);
+  font-size: calc(1.02rem * var(--text-scale));
+  margin-bottom: 0;
+  transition: transform 0.15s, border-color 0.15s;
+}
+html[data-mode="easy"] .subnav a:hover { transform: translateY(-2px); border-color: var(--lav-300); }
+html[data-mode="easy"] .subnav a[aria-current="page"] {
+  background: linear-gradient(135deg, var(--lav-500), var(--lav-600));
+  color: #fff; border-color: var(--lav-600);
+  box-shadow: 0 6px 16px rgba(139, 111, 224, 0.3);
+}
+/* 글자만으로는 구분이 더디니 그림을 붙여 줍니다 (말로 옮길 필요가 없어요) */
+html[data-mode="easy"] .subnav a[href="#learn-cog"]::before    { content: "🧩 "; }
+html[data-mode="easy"] .subnav a[href="#learn-move"]::before   { content: "🚶 "; }
+html[data-mode="easy"] .subnav a[href="#learn-social"]::before { content: "💬 "; }
+html[data-mode="easy"] .subnav a[href="#learn-life"]::before   { content: "🌙 "; }
+html[data-mode="easy"] .subnav a[href="#greeting"]::before     { content: "👋 "; }
+html[data-mode="easy"] .subnav a[href="#overview"]::before     { content: "📋 "; }
+
+html[data-style="simple"][data-mode="easy"] .subnav a { border-radius: var(--r-sm); border-width: var(--hairline); }
+html[data-style="simple"][data-mode="easy"] .subnav a[aria-current="page"] { box-shadow: none; }
+
 /* 이지에서는 설명글이 두 줄로 들어가므로 버튼을 조금 넉넉하게 */
 .optrow--mode .opt { padding: 1.2rem 0.9rem; }
 .optrow--mode .opt small {
