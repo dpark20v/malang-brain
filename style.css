@@ -1282,22 +1282,24 @@ html[data-style="simple"] {
 
 /* --- 심플 · 밝은 화면 --- */
 html[data-style="simple"][data-theme="light"] {
-  --lav-50:  #ffffff;        /* 페이지 바탕: 순백 */
-  --lav-100: #f6f6f9;
-  --lav-200: #e5e7eb;
+  /* 한세실업 홈페이지 CSS 에서 실제로 쓰이는 값을 그대로 가져왔습니다.
+     슬레이트 계열(#16202d ~ #6d8094) + 노란 포인트(#ffd943 · #f5b301) */
+  --lav-50:  #fafafa;        /* 페이지 바탕 */
+  --lav-100: #f0f2f7;
+  --lav-200: #e2e8f0;
   --lav-300: #d7dde5;
-  --lav-500: #2d3748;        /* 강조: 슬레이트 */
-  --lav-600: #1a202c;
-  --lav-700: #2d3748;
+  --lav-500: #31435a;        /* 강조: 슬레이트 */
+  --lav-600: #2d3748;
+  --lav-700: #16202d;
 
   --mint-100: #f2f5f4; --mint-200: #dfe6e4; --mint-600: #4a6b62;
-  --peach-100: #faf4f1; --peach-200: #ebdcd4; --peach-600: #b85c38;   /* 포인트 */
-  --lemon-100: #f9f7f1; --lemon-200: #e8e2d2; --lemon-600: #8a7440;
+  --peach-100: #faf4f1; --peach-200: #ebdcd4; --peach-600: #b85c38;   /* 그들의 갈색 */
+  --lemon-100: #fff8e3; --lemon-200: #ffd943; --lemon-600: #f5b301;   /* 그들의 노랑 */
   --pink-100: #f8f4f2;  --pink-200: #e6d9d3;  --pink-600: #b85c38;
 
-  --ink:      #111418;
+  --ink:      #16202d;
   --ink-soft: #4a5568;
-  --ink-mute: #8b95a3;
+  --ink-mute: #6d8094;
 
   --white: #ffffff;
   --line:  #e5e7eb;
@@ -1404,7 +1406,7 @@ html[data-style="simple"] .nav a {
 html[data-style="simple"] .nav a:hover { background: transparent; color: var(--ink); transform: none; }
 html[data-style="simple"] .nav a[aria-current="page"] {
   background: transparent; color: var(--ink);
-  border-bottom-color: var(--ink);
+  border-bottom-color: var(--lemon-600);   /* 노란 밑줄 — 그들의 시그니처 */
   box-shadow: none;
 }
 html[data-style="simple"] .nav a[aria-current="page"]:hover { background: transparent; color: var(--ink); }
@@ -1485,3 +1487,14 @@ html[data-style="simple"] .toast { border-radius: 0; }
 .header__inner.is-wrapped { justify-content: center; }
 .header__inner.is-wrapped .logo { margin: 0 auto 0.2rem; }
 .header__inner.is-wrapped .nav  { margin-left: 0; width: 100%; justify-content: center; }
+
+/* ---------- 심플: 노란 포인트 (한세실업 시그니처) ----------
+   슬레이트 일색이면 밋밋하므로, 그들이 쓰는 노랑을
+   "지금 여기" 를 가리키는 자리에만 아껴서 씁니다. */
+html[data-style="simple"] .flame__num      { color: var(--lemon-600); }
+html[data-style="simple"] .calcell--full   { background: var(--lemon-600); color: #3a2c05; }
+html[data-style="simple"] .dot--full       { background: var(--lemon-600); }
+html[data-style="simple"] .eyebrow         { color: var(--lemon-600); }
+html[data-style="simple"] .topic           { border-top: 3px solid var(--lemon-600); }
+html[data-style="simple"] .ring            { background: conic-gradient(var(--lemon-600) calc(var(--p, 0) * 1%), var(--lav-200) 0); }
+html[data-style="simple"] .badge-item.is-earned { border-color: var(--lemon-200); }
