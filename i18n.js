@@ -481,7 +481,7 @@
     'ab.hero.d': '대한민국을 넘어, 전 세계의 치매 발병률을 낮추는 것을 목표로 합니다.',
     'crumb.home': '홈',
 
-    'gt.lead': '안녕하십니까.<br />치매 예방·치료 정보 플랫폼 「말랑뇌」 대표 박건희입니다.',
+    'gt.lead': '안녕하십니까.<br />치매 예방 정보 플랫폼 「말랑뇌」 대표 박건희입니다.',
     'gt.p1': '「말랑뇌」는 누구나 쉽고 재미있게 치매를 예방할 수 있도록, 과학적으로 검증된 예방 정보와 두뇌 건강을 지키는 게임 콘텐츠와 생활습관을 제공하는 공간입니다.',
     'gt.p2': '치매는 특별한 누군가에게만 찾아오는 병이 아닙니다. 언젠가는 저와 여러분뿐만이 아니라, 우리 가족에게도 찾아올 수 있는 병입니다. 그렇기에 「말랑뇌」는 작은 습관과 꾸준한 관심이 큰 변화를 만든다는 믿음으로, 대한민국을 넘어 전 세계의 치매 발병률을 낮추는 그날까지 멈추지 않겠습니다.',
     'gt.quote': '기억은 사라져도 사랑은 사라지지 않습니다.',
@@ -899,7 +899,7 @@
     'ab.hero.d': 'Our goal is to lower the rate of dementia — in Korea, and beyond it, everywhere.',
     'crumb.home': 'Home',
 
-    'gt.lead': 'Hello.<br />I am Geonhui Park, founder of MalangNoe, a platform for dementia prevention and care information.',
+    'gt.lead': 'Hello.<br />I am Geonhui Park, founder of MalangNoe, a platform for dementia prevention information.',
     'gt.p1': 'MalangNoe is a place where anyone can prevent dementia easily and enjoyably — bringing together scientifically verified prevention information, brain health games, and everyday habits that protect the mind.',
     'gt.p2': 'Dementia is not an illness that visits only certain people. One day it may come not only to you or to me, but to our families. That is why MalangNoe holds to the belief that small habits and steady attention create large change, and why we will not stop until the day the rate of dementia falls in Korea and across the world.',
     'gt.quote': 'Memory may fade, but love does not.',
@@ -1317,7 +1317,7 @@
     'ab.hero.d': '韓国を越えて、世界の認知症発症率を下げることを目指しています。',
     'crumb.home': 'ホーム',
 
-    'gt.lead': 'こんにちは。<br />認知症の予防・治療情報プラットフォーム「マランノェ」代表のパク・ゴンヒです。',
+    'gt.lead': 'こんにちは。<br />認知症予防情報プラットフォーム「マランノェ」代表のパク・ゴンヒです。',
     'gt.p1': '「マランノェ」は、誰もが手軽に楽しく認知症を予防できるように、科学的に確かめられた予防情報と、脳の健康を守るゲームコンテンツ、そして生活習慣をお届けする場所です。',
     'gt.p2': '認知症は、特別な誰かだけにやって来る病ではありません。いつかは私やあなただけでなく、私たちの家族にも訪れうる病です。だからこそ「マランノェ」は、小さな習慣と変わらぬ関心が大きな変化を生むと信じ、韓国を越えて世界の認知症発症率を下げるその日まで立ち止まりません。',
     'gt.quote': '記憶は消えても、愛は消えません。',
@@ -1735,7 +1735,7 @@
     'ab.hero.d': '我们的目标是降低韩国乃至全世界的痴呆发病率。',
     'crumb.home': '首页',
 
-    'gt.lead': '您好。<br />我是痴呆预防·治疗信息平台「软软脑」代表朴健熙。',
+    'gt.lead': '您好。<br />我是痴呆预防信息平台「软软脑」代表朴健熙。',
     'gt.p1': '「软软脑」是一个让每个人都能轻松、愉快地预防痴呆的地方，汇集了经过科学验证的预防信息、守护大脑健康的游戏内容，以及日常生活习惯。',
     'gt.p2': '痴呆不是只降临在某些特定人身上的病。有一天，它可能不只找上我和您，也可能找上我们的家人。正因如此，「软软脑」相信小小的习惯和持续的关注能带来大的改变，并将一直走下去，直到韩国乃至全世界的痴呆发病率降下来的那一天。',
     'gt.quote': '记忆会消失，爱不会。',
