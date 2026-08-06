@@ -229,6 +229,8 @@
     'set.theme.dark': '🌙 어두운 화면',
     'set.lang': '🌐 언어 / Language',
     'set.lang.d': '화면에 나오는 말을 바꿉니다.',
+    'set.nav.font': '글자 크기', 'set.nav.theme': '화면 색', 'set.nav.lang': '언어', 'set.nav.account': '계정',
+    'set.signedout': '로그인하기',
     'set.account': '👤 로그인',
     'set.sample': '가나다 ABC 123',
 
@@ -468,6 +470,8 @@
     'set.theme': '🌗 Screen color', 'set.theme.d': 'If the screen feels too bright, try the dark one.',
     'set.theme.light': '☀️ Light', 'set.theme.dark': '🌙 Dark',
     'set.lang': '🌐 Language', 'set.lang.d': 'Changes the words shown on screen.',
+    'set.nav.font': 'Text size', 'set.nav.theme': 'Appearance', 'set.nav.lang': 'Language', 'set.nav.account': 'Account',
+    'set.signedout': 'Sign in',
     'set.account': '👤 Login', 'set.sample': 'Sample ABC 123',
 
     'me.title': '👤 My records', 'me.desc': 'Everything you have built up so far.',
@@ -681,6 +685,8 @@
     'set.theme': '🌗 画面の色', 'set.theme.d': 'まぶしいときは暗い画面をお試しください。',
     'set.theme.light': '☀️ 明るい画面', 'set.theme.dark': '🌙 暗い画面',
     'set.lang': '🌐 言語 / Language', 'set.lang.d': '画面に出る言葉を変えます。',
+    'set.nav.font': '文字の大きさ', 'set.nav.theme': '画面の色', 'set.nav.lang': '言語', 'set.nav.account': 'アカウント',
+    'set.signedout': 'ログインする',
     'set.account': '👤 ログイン', 'set.sample': 'あいう ABC 123',
 
     'me.title': '👤 わたしの記録', 'me.desc': 'これまで積み重ねた記録です。',
@@ -894,6 +900,8 @@
     'set.theme': '🌗 屏幕颜色', 'set.theme.d': '觉得刺眼的话，试试深色屏幕。',
     'set.theme.light': '☀️ 浅色', 'set.theme.dark': '🌙 深色',
     'set.lang': '🌐 语言 / Language', 'set.lang.d': '更改屏幕上显示的语言。',
+    'set.nav.font': '文字大小', 'set.nav.theme': '屏幕颜色', 'set.nav.lang': '语言', 'set.nav.account': '账号',
+    'set.signedout': '去登录',
     'set.account': '👤 登录', 'set.sample': '示例 ABC 123',
 
     'me.title': '👤 我的记录', 'me.desc': '这是到目前为止积累的记录。',

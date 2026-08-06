@@ -351,10 +351,30 @@
           <p class="section__desc" data-i18n="set.desc"></p>
         </div>
 
-        <div class="setlist">
+        <div class="setpage">
+
+          <!-- 왼쪽 바 -->
+          <nav class="setnav" id="setNav">
+            <button type="button" class="setprofile" data-set-tab="account" id="setProfile"></button>
+            <button type="button" class="setnav__item" data-set-tab="font">
+              <span class="setnav__ic setnav__ic--font" aria-hidden="true">🔤</span>
+              <span data-i18n="set.nav.font"></span>
+            </button>
+            <button type="button" class="setnav__item" data-set-tab="theme">
+              <span class="setnav__ic setnav__ic--theme" aria-hidden="true">🌗</span>
+              <span data-i18n="set.nav.theme"></span>
+            </button>
+            <button type="button" class="setnav__item" data-set-tab="lang">
+              <span class="setnav__ic setnav__ic--lang" aria-hidden="true">🌐</span>
+              <span data-i18n="set.nav.lang"></span>
+            </button>
+          </nav>
+
+          <!-- 오른쪽 내용 -->
+          <div class="setpane">
 
           <!-- 글자 크기 -->
-          <section class="setcard">
+          <section class="setcard settab" data-tab="font">
             <h3 class="setcard__title" data-i18n="set.font"></h3>
             <p class="setcard__desc" data-i18n="set.font.d"></p>
             <div class="optrow" role="group">
@@ -375,7 +395,7 @@
           </section>
 
           <!-- 화면 색 -->
-          <section class="setcard">
+          <section class="setcard settab" data-tab="theme">
             <h3 class="setcard__title" data-i18n="set.theme"></h3>
             <p class="setcard__desc" data-i18n="set.theme.d"></p>
             <div class="optrow" role="group">
@@ -391,17 +411,19 @@
           </section>
 
           <!-- 언어 -->
-          <section class="setcard">
+          <section class="setcard settab" data-tab="lang">
             <h3 class="setcard__title" data-i18n="set.lang"></h3>
             <p class="setcard__desc" data-i18n="set.lang.d"></p>
             <div class="optrow optrow--lang" id="langRow" role="group"></div>
           </section>
 
-        </div>
+          <!-- 계정 -->
+          <section class="settab" data-tab="account">
+            <div class="me" id="meBody"></div>
+          </section>
 
-        <!-- 로그인 / 내 기록 -->
-        <h3 class="setsection" data-i18n="set.account"></h3>
-        <div class="me" id="meBody"></div>
+          </div><!-- /setpane -->
+        </div><!-- /setpage -->
 
         <nav class="pagenav">
           <a class="btn btn--ghost"   href="#home"   data-i18n="nav.prev.home"></a>

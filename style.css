@@ -1194,3 +1194,95 @@ button { font-family: inherit; cursor: pointer; }
 
 /* 글자 크기 조절에서 제외 (칸이 정해져 있음) */
 .opt__flag { font-size: 1.6rem; }
+
+/* ---------- 17. 설정: 왼쪽 바 + 오른쪽 내용 (macOS 시스템 설정 방식) ---------- */
+.setpage {
+  max-width: var(--maxw); margin: 0 auto;
+  display: grid; grid-template-columns: 17rem 1fr; gap: 1.4rem;
+  align-items: start;
+}
+
+.setnav {
+  background: var(--white);
+  border: 3px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 0.8rem;
+  box-shadow: var(--shadow-md);
+  position: sticky; top: 7rem;
+  display: flex; flex-direction: column; gap: 0.25rem;
+}
+
+/* 맨 위 프로필 (애플 ID 자리) */
+.setprofile {
+  display: flex; align-items: center; gap: 0.75rem;
+  width: 100%; text-align: left;
+  border: none; background: transparent;
+  border-radius: var(--r-lg);
+  padding: 0.8rem 0.7rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 2px solid var(--line);
+  transition: background 0.15s;
+}
+.setprofile:hover { background: var(--lav-50); }
+.setprofile[aria-current="true"] { background: var(--lav-100); }
+.setprofile__pic {
+  width: 3.2rem; height: 3.2rem; flex: none;
+  border-radius: var(--r-full); object-fit: cover;
+  background: var(--lav-200);
+  display: grid; place-items: center; font-size: 1.5rem;
+}
+.setprofile__txt { min-width: 0; display: flex; flex-direction: column; }
+.setprofile__name {
+  font-weight: 900; color: var(--ink);
+  font-size: calc(1rem * var(--text-scale));
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.setprofile__sub {
+  font-size: calc(0.75rem * var(--text-scale)); color: var(--ink-mute); font-weight: 700;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.setnav__item {
+  display: flex; align-items: center; gap: 0.7rem;
+  width: 100%; text-align: left;
+  border: none; background: transparent;
+  border-radius: var(--r-md);
+  padding: 0.6rem 0.7rem;
+  font-family: inherit; font-weight: 800; color: var(--ink);
+  font-size: calc(0.95rem * var(--text-scale));
+  transition: background 0.15s;
+}
+.setnav__item:hover { background: var(--lav-50); }
+.setnav__item[aria-current="true"] {
+  background: linear-gradient(135deg, var(--lav-500), var(--lav-600));
+  color: #fff;
+}
+.setnav__ic {
+  width: 2.1rem; height: 2.1rem; flex: none;
+  border-radius: 9px;
+  display: grid; place-items: center;
+  font-size: 1.05rem;
+  background: var(--lav-200);
+}
+.setnav__ic--font  { background: #cfe0ff; }
+.setnav__ic--theme { background: #d9d4f2; }
+.setnav__ic--lang  { background: #c9ecdd; }
+
+/* 오른쪽 내용: 한 번에 하나만 */
+.setpane { min-width: 0; }
+.settab { display: none; }
+.settab.is-on { display: block; animation: page-in 0.22s ease-out; }
+.setpane .setcard { box-shadow: var(--shadow-md); }
+
+@media (max-width: 860px) {
+  .setpage { grid-template-columns: 1fr; }
+  .setnav {
+    position: static; flex-direction: row; overflow-x: auto;
+    align-items: center; padding: 0.6rem;
+  }
+  .setprofile {
+    border-bottom: none; border-right: 2px solid var(--line);
+    margin-bottom: 0; margin-right: 0.4rem; width: auto; flex: none;
+  }
+  .setnav__item { width: auto; flex: none; white-space: nowrap; }
+}

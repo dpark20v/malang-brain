@@ -596,7 +596,38 @@
   /* ============================================================
      1-B. 설정 페이지
      ============================================================ */
+  let setTab = 'font';          // 설정에서 지금 보고 있는 항목
+
+  function showSetTab(name) {
+    setTab = name;
+    $$('.settab').forEach(el => el.classList.toggle('is-on', el.dataset.tab === name));
+    $$('[data-set-tab]').forEach(b =>
+      b.setAttribute('aria-current', String(b.dataset.setTab === name)));
+    if (name === 'account') { renderMe(); renderGoogleButton(); }
+  }
+
+  /* 왼쪽 바 맨 위 프로필 (애플 ID 자리) */
+  function renderSetProfile() {
+    const el = $('#setProfile');
+    if (!el) return;
+    const pic = currentUser
+      ? avatarHtml(currentUser, 'setprofile__pic')
+      : '<span class="setprofile__pic">👤</span>';
+    const name = currentUser ? currentUser.name : t('set.signedout');
+    const sub = currentUser
+      ? (currentUser.email || t('log.acct.mail'))
+      : t('set.nav.account');
+    el.innerHTML = `
+      ${pic}
+      <span class="setprofile__txt">
+        <span class="setprofile__name">${name}</span>
+        <span class="setprofile__sub">${sub}</span>
+      </span>`;
+  }
+
   function renderSettings() {
+    renderSetProfile();
+    showSetTab(setTab);
     /* 언어 선택 버튼은 사전에 등록된 언어로 만들어 줍니다 */
     const row = $('#langRow');
     if (row && !row.dataset.ready) {
@@ -626,7 +657,9 @@
       const f = e.target.closest && e.target.closest('[data-font-set]');
       if (f) { setFont(f.dataset.fontSet); return; }
       const th = e.target.closest && e.target.closest('[data-theme-set]');
-      if (th) { setTheme(th.dataset.themeSet); }
+      if (th) { setTheme(th.dataset.themeSet); return; }
+      const tab = e.target.closest && e.target.closest('[data-set-tab]');
+      if (tab) { showSetTab(tab.dataset.setTab); }
     });
 
     /* 언어가 바뀌면 JS 로 만든 화면도 다시 그립니다 */
@@ -1498,6 +1531,12 @@
           <span class="account__name">${t('log.btn')}</span>
         </a>`;
     }
+
+    /* 헤더의 계정 칩을 누르면 설정의 「계정」 항목이 바로 열리도록 */
+    const chip = $('.account__btn', box);
+    if (chip) chip.addEventListener('click', () => { setTab = 'account'; });
+
+    renderSetProfile();      // 왼쪽 바 맨 위 프로필도 함께 갱신
 
     /* 푸터의 저장 위치 안내 — 로그인 여부에 따라 사실이 달라집니다 */
     const priv = $('#footerPrivacy');
