@@ -311,10 +311,11 @@ button { font-family: inherit; cursor: pointer; }
     transform: translate(-50%, 0);
   }
 }
-/* 버튼과 상자 사이의 빈 틈에서도 마우스가 끊기지 않도록 다리를 놓습니다 */
+/* 버튼과 상자 사이의 빈 틈에서도 마우스가 끊기지 않도록 다리를 놓습니다.
+   좌우로 조금 넉넉하게 빼 두어야 상자가 옆으로 밀렸을 때도 이어집니다. */
 .nav__drop::before {
   content: ""; position: absolute;
-  left: 0; right: 0; top: -0.6rem; height: 0.6rem;
+  left: -1.5rem; right: -1.5rem; top: -0.75rem; height: 0.75rem;
 }
 .nav__drop a {
   display: block;
@@ -1307,13 +1308,9 @@ html[data-theme="dark"] .pagehero__desc { color: rgba(255, 255, 255, 0.82); }
   html { font-size: 18px; }
   .header__inner { padding: 0.6rem 1rem; }
   .nav { order: 3; width: 100%; margin-left: 0; justify-content: center; }
-  /* 작은 화면에서는 펼쳐지는 상자가 화면 밖으로 나가지 않도록
-     메뉴 전체 폭에 맞춰 가운데로 붙입니다. */
-  .nav__item { position: static; }
-  .nav__drop {
-    left: 50%; right: auto;
-    min-width: min(20rem, calc(100vw - 2rem));
-  }
+  /* 상자는 어떤 화면 크기에서도 「플랫폼 소개」 버튼 바로 밑에 붙습니다.
+     (헤더 전체 아래에 붙이면 마우스로 내려가는 도중 상자가 닫혀 버립니다) */
+  .nav__drop { min-width: min(16rem, calc(100vw - 2rem)); }
   .fontctl__label { display: none; }
   .flame__num { font-size: calc(3.6rem * var(--text-scale)); }
   .flame__emoji { font-size: calc(3rem * var(--text-scale)); }
