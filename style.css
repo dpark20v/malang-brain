@@ -1238,10 +1238,11 @@ html[data-theme="dark"] .pagehero__desc { color: rgba(255, 255, 255, 0.82); }
   line-height: 1.95;
 }
 .prose p + p { margin-top: 1.15rem; }
+/* 소제목 바로 아래 오는 첫 문장 — 조금 크고 진하게 */
 .prose__lead {
-  font-size: calc(clamp(1.25rem, 2.6vw, 1.6rem) * var(--text-scale));
+  font-size: calc(clamp(1.15rem, 2.3vw, 1.4rem) * var(--text-scale));
   font-weight: 800; color: var(--ink);
-  line-height: 1.55; margin-bottom: 2.2rem;
+  line-height: 1.6;
 }
 .prose h3 {
   font-size: calc(1.3rem * var(--text-scale));
@@ -1250,6 +1251,7 @@ html[data-theme="dark"] .pagehero__desc { color: rgba(255, 255, 255, 0.82); }
   padding-left: 0.85rem;
   border-left: 4px solid var(--lav-300);
 }
+.prose > :first-child { margin-top: 0; }
 .prose b { color: var(--ink); }
 .prose__big {
   font-size: calc(1.3rem * var(--text-scale));
