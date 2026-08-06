@@ -170,9 +170,9 @@
       Object.keys(localStorage)
         .filter(k => k.indexOf('malang:u:guest:') === 0)
         .forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
-      toast('그동안의 기록을 가져왔어요 📦');
+      toast(t('log.moved'));
     } else {
-      toast(`${profile.name}님, 반가워요! 👋`);
+      toast(t('log.hi', { name: profile.name }));
     }
 
     refreshAll();
@@ -196,7 +196,7 @@
     prefs.del('session');
     userId = 'guest';
     refreshAll();
-    if (!silent) toast('나왔어요. 다시 로그인해 주세요.');
+    if (!silent) toast(t('log.bye'));
   }
 
   /* ------------------------------------------------------------
@@ -335,7 +335,7 @@
     refreshAll();
     cloud.save(collectLocal());        // 합친 결과를 서버에도 올려 둡니다
 
-    toast(`${currentUser.name}님, 반가워요! 👋`);
+    toast(t('log.hi', { name: currentUser.name }));
   }
 
   /* 시작할 때: 이미 로그인되어 있으면 그대로 이어 갑니다 */
@@ -510,7 +510,7 @@
       if (googleReady()) {
         clearInterval(wait);
         initGoogle();
-        if (currentPage() === 'me') renderGoogleButton();
+        if (currentPage() === 'settings') renderGoogleButton();
       } else if (tries > 20) {
         clearInterval(wait);
       }
@@ -522,8 +522,9 @@
      주소의 #뒤 이름으로 어떤 페이지를 보여줄지 정합니다.
      예) #play → 두뇌게임 페이지. 뒤로가기·새로고침도 그대로 유지돼요.
      ============================================================ */
-  const PAGES = ['home', 'learn', 'play', 'streak', 'help', 'me'];
-  const ALIASES = { today: 'streak', login: 'me' };   // 예전 주소도 계속 열리도록
+  const PAGES = ['home', 'learn', 'play', 'streak', 'help', 'settings'];
+  /* 예전 주소도 계속 열리도록 */
+  const ALIASES = { today: 'streak', login: 'settings', me: 'settings' };
 
   function currentPage() {
     let id = decodeURIComponent(location.hash).replace(/^#\/?/, '');
@@ -549,7 +550,7 @@
     window.scrollTo(0, 0);
 
     if (id === 'streak') renderStreak();        // 날짜가 바뀌었을 수 있으니 새로 그림
-    if (id === 'me') { renderMe(); renderGoogleButton(); }
+    if (id === 'settings') { renderSettings(); renderMe(); renderGoogleButton(); }
 
     const page = document.getElementById(id);
     if (page) page.focus({ preventScroll: true });  // 화면 낭독기 사용자를 위해
@@ -570,19 +571,70 @@
   /* ============================================================
      1. 글자 크기 조절
      ============================================================ */
-  function initFontControl() {
-    const saved = String(prefs.get('font', '1'));
-    setFont(saved);
-    $$('[data-font-set]').forEach((btn) => {
-      btn.addEventListener('click', () => setFont(btn.dataset.fontSet));
+  function setFont(level) {
+    document.documentElement.setAttribute('data-font', level);
+    prefs.set('font', level);
+    $$('[data-font-set]').forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.fontSet === level));
     });
-    function setFont(level) {
-      document.documentElement.setAttribute('data-font', level);
-      prefs.set('font', level);
-      $$('[data-font-set]').forEach((b) => {
-        b.setAttribute('aria-pressed', String(b.dataset.fontSet === level));
+  }
+
+  function setTheme(name) {
+    document.documentElement.setAttribute('data-theme', name);
+    prefs.set('theme', name);
+    $$('[data-theme-set]').forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.themeSet === name));
+    });
+  }
+
+  /* 저장된 설정을 화면에 먼저 반영 (깜빡임 없이) */
+  function initPrefs() {
+    setFont(String(prefs.get('font', '1')));
+    setTheme(prefs.get('theme', 'light'));
+  }
+
+  /* ============================================================
+     1-B. 설정 페이지
+     ============================================================ */
+  function renderSettings() {
+    /* 언어 선택 버튼은 사전에 등록된 언어로 만들어 줍니다 */
+    const row = $('#langRow');
+    if (row && !row.dataset.ready) {
+      const L = window.MALANG_I18N.LANGS;
+      row.innerHTML = Object.keys(L).map(code => `
+        <button type="button" class="opt" data-lang-set="${code}">
+          <span class="opt__flag" aria-hidden="true">${L[code].flag}</span>
+          <span>${L[code].label}</span>
+        </button>`).join('');
+      $$('[data-lang-set]', row).forEach((btn) => {
+        btn.onclick = () => window.MALANG_I18N.set(btn.dataset.langSet);
       });
+      row.dataset.ready = '1';
     }
+
+    /* 지금 값에 체크 표시 */
+    const now = window.MALANG_I18N.get();
+    $$('[data-lang-set]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.langSet === now)));
+    $$('[data-font-set]').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.fontSet === document.documentElement.getAttribute('data-font'))));
+    $$('[data-theme-set]').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.themeSet === document.documentElement.getAttribute('data-theme'))));
+  }
+
+  function initSettings() {
+    document.addEventListener('click', (e) => {
+      const f = e.target.closest && e.target.closest('[data-font-set]');
+      if (f) { setFont(f.dataset.fontSet); return; }
+      const th = e.target.closest && e.target.closest('[data-theme-set]');
+      if (th) { setTheme(th.dataset.themeSet); }
+    });
+
+    /* 언어가 바뀌면 JS 로 만든 화면도 다시 그립니다 */
+    window.addEventListener('malang:langchange', () => {
+      refreshAll();
+      renderSettings();
+      if (currentPage() === 'streak') renderStreak();
+    });
   }
 
   /* ============================================================
@@ -1179,56 +1231,27 @@
      9. 게임 목록 & 카드
      ============================================================ */
   const GAMES = [
-    {
-      id: 'reverse', emoji: '🔢', title: '거꾸로 숫자',
-      desc: '나온 숫자를 거꾸로 입력해요. 정보를 붙잡고 뒤집는 <b>작업기억</b> 훈련.',
-      bestLabel: (v) => v ? `🏆 최고 ${v}자리` : '아직 기록이 없어요',
-      mount: gameReverse
-    },
-    {
-      id: 'memory', emoji: '🃏', title: '짝 맞추기',
-      desc: '같은 그림 카드를 찾아요. 위치를 떠올리는 <b>단기 기억</b> 훈련.',
-      bestLabel: (v) => v ? `🏆 최소 ${v}번` : '아직 기록이 없어요',
-      mount: gameMemory
-    },
-    {
-      id: 'math', emoji: '➕', title: '암산 훈련',
-      desc: '60초 동안 계산기 없이 풀어요. <b>주의력과 처리 속도</b> 훈련.',
-      bestLabel: (v) => v ? `🏆 최고 ${v}문제` : '아직 기록이 없어요',
-      mount: gameMath
-    },
-    {
-      id: 'shopping', emoji: '🛒', title: '장보기 기억',
-      desc: '장 볼 물건 5개를 외웠다가 찾아요. 실생활에 가장 가까운 훈련.',
-      bestLabel: (v) => v ? `🏆 최고 ${v}개` : '아직 기록이 없어요',
-      mount: gameShopping
-    },
-    {
-      id: 'stroop', emoji: '🎨', title: '색깔 맞추기',
-      desc: '글자 뜻 말고 <b>색깔</b>을 골라요. 헷갈림을 참는 <b>억제력</b> 훈련.',
-      bestLabel: (v) => v ? `🏆 최고 ${v}개` : '아직 기록이 없어요',
-      mount: gameStroop
-    },
-    {
-      id: 'sequence', emoji: '💡', title: '순서 기억',
-      desc: '불빛이 켜진 순서대로 눌러요. <b>순서 기억력</b> 훈련.',
-      bestLabel: (v) => v ? `🏆 최고 ${v}단계` : '아직 기록이 없어요',
-      mount: gameSequence
-    }
+    { id: 'reverse',  emoji: '🔢', best: 'digits',    mount: gameReverse },
+    { id: 'memory',   emoji: '🃏', best: 'moves',     mount: gameMemory },
+    { id: 'math',     emoji: '➕', best: 'questions', mount: gameMath },
+    { id: 'shopping', emoji: '🛒', best: 'items',     mount: gameShopping },
+    { id: 'stroop',   emoji: '🎨', best: 'items',     mount: gameStroop },
+    { id: 'sequence', emoji: '💡', best: 'rounds',    mount: gameSequence }
   ];
 
   function renderGameCards() {
     const grid = $('#gameGrid');
     if (!grid) return;
     grid.innerHTML = GAMES.map((g) => {
-      const best = store.get('best:' + g.id, 0);
+      const v = store.get('best:' + g.id, 0);
+      const label = v ? t('g.best.' + g.best, { n: v }) : t('g.norecord');
       return `
         <article class="gcard">
           <span class="gcard__emoji" aria-hidden="true">${g.emoji}</span>
-          <h3 class="gcard__title">${g.title}</h3>
-          <p class="gcard__desc">${g.desc}</p>
-          <span class="gcard__best">${g.bestLabel(best)}</span>
-          <button type="button" class="btn btn--primary" data-game="${g.id}">시작하기 →</button>
+          <h3 class="gcard__title">${t('g.' + g.id + '.t')}</h3>
+          <p class="gcard__desc">${t('g.' + g.id + '.d')}</p>
+          <span class="gcard__best">${label}</span>
+          <button type="button" class="btn btn--primary" data-game="${g.id}">${t('g.start')}</button>
         </article>`;
     }).join('');
 
@@ -1236,7 +1259,7 @@
       btn.onclick = () => {
         const g = GAMES.find(x => x.id === btn.dataset.game);
         clearTimers();
-        openModal(`${g.emoji} ${g.title}`, g.mount);
+        openModal(`${g.emoji} ${t('g.' + g.id + '.t')}`, g.mount);
       };
     });
   }
@@ -1245,14 +1268,10 @@
      10. 오늘의 실천 체크리스트
      ============================================================ */
   const TASKS = [
-    { id: 'walk',   emoji: '🚶', text: '20~30분 걷기',        sub: '10분씩 나눠서 해도 좋아요' },
-    { id: 'talk',   emoji: '💬', text: '누군가와 대화하기',    sub: '전화나 영상통화도 괜찮아요' },
-    { id: 'game',   emoji: '🎮', text: '두뇌게임 한 가지 하기', sub: '위 게임 중 아무거나 하나' },
-    { id: 'sleep',  emoji: '😴', text: '어젯밤 7시간 이상 잤어요', sub: '자는 동안 뇌가 청소를 해요' },
-    { id: 'water',  emoji: '💧', text: '물 6잔 이상 마시기',   sub: '탈수는 기억력을 떨어뜨려요' },
-    { id: 'hand',   emoji: '🪥', text: '반대 손으로 무언가 하기', sub: '양치질, 숟가락질 등' },
-    { id: 'road',   emoji: '🗺️', text: '새로운 길로 다녀오기',  sub: '평소와 다른 길 한 번' },
-    { id: 'veggie', emoji: '🥗', text: '채소·생선 챙겨 먹기',   sub: '견과류 한 줌도 좋아요' }
+    { id: 'walk', emoji: '🚶' }, { id: 'talk', emoji: '💬' },
+    { id: 'game', emoji: '🎮' }, { id: 'sleep', emoji: '😴' },
+    { id: 'water', emoji: '💧' }, { id: 'hand', emoji: '🪥' },
+    { id: 'road', emoji: '🗺️' }, { id: 'veggie', emoji: '🥗' }
   ];
 
   const dayKey = (d) =>
@@ -1287,8 +1306,8 @@
       const s = calcStreak();
       updateBestStreak(s);
       const hit = MILESTONES.find(m => m.days === s);
-      if (hit) toast(`${hit.emoji} ${hit.name} 배지 획득! ${s}일 연속이에요!`, 4500);
-      else toast(`🔥 오늘 달성! ${s}일 연속이에요`, 3600);
+      if (hit) toast(t('streak.toast.badge', { emoji: hit.emoji, name: msName(hit), n: s }), 4500);
+      else toast(t('streak.toast.done', { n: s }), 3600);
       beep(880, 160);
       after(160, () => beep(1170, 220));
     }
@@ -1300,13 +1319,13 @@
     const key = todayKey();
     const state = store.get('check:' + key, {});
 
-    list.innerHTML = TASKS.map((t) => `
+    list.innerHTML = TASKS.map((task) => `
       <li>
         <label class="check">
-          <input type="checkbox" data-task="${t.id}" ${state[t.id] ? 'checked' : ''} />
+          <input type="checkbox" data-task="${task.id}" ${state[task.id] ? 'checked' : ''} />
           <span class="check__box" aria-hidden="true">✓</span>
-          <span class="check__emoji" aria-hidden="true">${t.emoji}</span>
-          <span class="check__text">${t.text}<small>${t.sub}</small></span>
+          <span class="check__emoji" aria-hidden="true">${task.emoji}</span>
+          <span class="check__text">${t('t.' + task.id)}<small>${t('t.' + task.id + '.s')}</small></span>
         </label>
       </li>`).join('');
 
@@ -1336,18 +1355,7 @@
     $('#ringNum').textContent = count;
     ring.style.setProperty('--p', Math.round((count / TASKS.length) * 100));
 
-    const msgs = [
-      '오늘 하나만이라도 시작해 볼까요? 🌱',
-      '좋아요, 첫 걸음을 뗐어요! 👏',
-      '하나만 더 하면 오늘 달성이에요 🙂',
-      '오늘 달성! 불꽃이 하루 늘었어요 🔥',
-      '벌써 절반이에요! 대단해요 ✨',
-      '오늘 정말 잘하고 계세요 🌷',
-      '뇌가 아주 신났겠는데요? 🧠',
-      '거의 다 왔어요! 조금만 더 💪',
-      '오늘의 실천 완성! 최고예요 🏆'
-    ];
-    $('#todayMsg').textContent = msgs[Math.min(count, msgs.length - 1)];
+    $('#todayMsg').textContent = t('msg.' + Math.min(count, 8));
   }
 
   /* ============================================================
@@ -1359,13 +1367,10 @@
      어제가 비어 있으면 그때 끊긴 것으로 봅니다. (스냅챗 방식과 같아요)
      ============================================================ */
   const MILESTONES = [
-    { days: 3,   emoji: '🌱', name: '새싹' },
-    { days: 7,   emoji: '🔥', name: '일주일' },
-    { days: 14,  emoji: '⭐', name: '2주' },
-    { days: 30,  emoji: '🏆', name: '한 달' },
-    { days: 50,  emoji: '💎', name: '50일' },
-    { days: 100, emoji: '💯', name: '100일' }
+    { days: 3, emoji: '🌱' }, { days: 7, emoji: '🔥' }, { days: 14, emoji: '⭐' },
+    { days: 30, emoji: '🏆' }, { days: 50, emoji: '💎' }, { days: 100, emoji: '💯' }
   ];
+  const msName = (m) => t('b.' + m.days);
 
   function calcStreak() {
     const log = store.get('log', {});
@@ -1414,15 +1419,15 @@
     box.classList.toggle('is-cold', streak === 0);
     $('#flameNum').textContent = streak;
     $('#flameEmoji').textContent = doneToday ? '🔥' : (streak > 0 ? '⌛' : '🕯️');
-    $('#flameLabel').textContent = streak > 0 ? '일 연속 실천 중!' : '아직 불꽃이 없어요';
+    $('#flameLabel').textContent = streak > 0 ? t('streak.on') : t('streak.off');
 
     let status;
     if (doneToday) {
-      status = `오늘 실천 완료! 내일도 이어가면 ${streak + 1}일이 돼요 ✨`;
+      status = t('streak.done', { n: streak + 1 });
     } else if (streak > 0) {
-      status = `⌛ 오늘 ${STREAK_GOAL - count}가지만 더 하면 불꽃이 이어져요 (자정까지 약 ${hoursLeftToday()}시간)`;
+      status = t('streak.pending', { n: STREAK_GOAL - count, h: hoursLeftToday() });
     } else {
-      status = `오늘 ${STREAK_GOAL}가지를 실천하면 불꽃이 시작돼요 🔥`;
+      status = t('streak.start', { goal: STREAK_GOAL });
     }
     $('#flameStatus').textContent = status;
 
@@ -1432,9 +1437,12 @@
     $('#statBest').textContent = best;
     $('#statTotal').textContent = total;
     $('#statToday').textContent = `${count}/${TASKS.length}`;
-    $('#statNext').textContent = next ? `${next.emoji} ${next.days - streak}일` : '전부 달성!';
-    const goalEl = $('#goalCount');
-    if (goalEl) goalEl.textContent = STREAK_GOAL;
+    $('#statNext').textContent = next ? `${next.emoji} ${next.days - streak}` : t('streak.alldone');
+    const dEl = $('#streakDesc');
+    if (dEl) dEl.innerHTML = t('streak.desc', { goal: STREAK_GOAL });
+    const head = $('#calHead');
+    if (head) head.innerHTML = (t('cal.days') || '일,월,화,수,목,금,토').split(',')
+      .map(d => `<li>${d}</li>`).join('');
 
     /* 배지 */
     $('#badges').innerHTML = MILESTONES.map((m) => {
@@ -1442,8 +1450,8 @@
       return `
         <li class="badge-item ${earned ? 'is-earned' : ''}">
           <em>${earned ? m.emoji : '🔒'}</em>
-          <b>${m.name}</b>
-          <span>${m.days}일 연속</span>
+          <b>${msName(m)}</b>
+          <span>${t('streak.days', { n: m.days })}</span>
         </li>`;
     }).join('');
 
@@ -1487,7 +1495,7 @@
       box.innerHTML = `
         <a class="account__btn" href="#me">
           <span class="account__avatar">👤</span>
-          <span class="account__name">로그인</span>
+          <span class="account__name">${t('log.btn')}</span>
         </a>`;
     }
 
@@ -1495,20 +1503,15 @@
     const priv = $('#footerPrivacy');
     if (priv) {
       const onServer = !!(cloud && cloud.user && currentUser && currentUser.kind === 'firebase');
-      priv.innerHTML = onServer
-        ? `🔒 로그인 중이라 기록이 <b>구글 파이어베이스 서버(싱가포르)</b>에 저장됩니다.
-           그래서 다른 휴대폰·컴퓨터에서도 보여요.<br />
-           저장되는 것은 이메일·이름과 실천 기록, 게임 점수뿐입니다.`
-        : `지금은 로그인하지 않아서 기록이 <b>이 기기 안에만</b> 저장됩니다.
-           로그인하시면 서버에 저장되어 다른 기기에서도 볼 수 있어요.`;
+      priv.innerHTML = onServer ? t('foot.cloud') : t('foot.local');
     }
 
     /* 홈 인사말도 이름에 맞춰 바꿔 줍니다 */
     const greet = $('#heroGreeting');
     if (greet) {
       greet.textContent = currentUser
-        ? `🌿 ${currentUser.name}님, 오늘도 반가워요` + (streak ? ` · 🔥${streak}일째` : '')
-        : '🌿 하루 15분, 집에서 시작하는 뇌 건강';
+        ? t('hero.greet', { name: currentUser.name }) + (streak ? ` · 🔥${streak}` : '')
+        : t('hero.badge');
     }
   }
 
@@ -1523,12 +1526,10 @@
 
     const records = GAMES.map((g) => {
       const v = store.get('best:' + g.id, 0);
-      return `<li><b>${v || '-'}</b><span>${g.emoji} ${g.title}</span></li>`;
+      return `<li><b>${v || '-'}</b><span>${g.emoji} ${t('g.' + g.id + '.t')}</span></li>`;
     }).join('');
 
     if (currentUser) {
-      $('#meTitle').textContent = '👤 내 기록';
-      $('#meDesc').textContent = '지금까지 쌓은 기록이에요.';
       body.innerHTML = `
         <div class="mecard">
           <div class="profile">
@@ -1540,35 +1541,31 @@
             </div>
           </div>
           <div class="me__actions">
-            <button type="button" class="btn btn--ghost" id="btnSignOut">🚪 로그아웃</button>
+            <button type="button" class="btn btn--ghost" id="btnSignOut">${t('me.signout')}</button>
           </div>
         </div>
 
         <div class="mecard">
-          <h3>🔥 말랑 스트리크</h3>
+          <h3>${t('me.streak')}</h3>
           <ul class="recordlist">
-            <li><b>${streak}</b><span>지금 연속</span></li>
-            <li><b>${best}</b><span>최고 기록</span></li>
-            <li><b>${total}</b><span>총 달성일</span></li>
+            <li><b>${streak}</b><span>${t('me.now')}</span></li>
+            <li><b>${best}</b><span>${t('streak.best')}</span></li>
+            <li><b>${total}</b><span>${t('streak.total')}</span></li>
           </ul>
         </div>
 
         <div class="mecard">
-          <h3>🎮 게임 최고 기록</h3>
+          <h3>${t('me.games')}</h3>
           <ul class="recordlist">${records}</ul>
         </div>
 
         <div class="mecard">
-          <p>${cloud && cloud.user
-            ? '기록이 <b>서버에 안전하게 저장</b>돼요.<br />휴대폰이든 컴퓨터든 같은 이메일로 들어오면 그대로 보입니다.'
-            : '기록은 <b>지금 쓰는 이 기기 안에만</b> 저장돼요.<br />다른 휴대폰이나 컴퓨터에서는 보이지 않습니다.'}</p>
+          <p>${cloud && cloud.user ? t('me.saved.cloud') : t('me.saved.local')}</p>
           <div class="me__actions">
-            <button type="button" class="btn btn--danger" id="btnReset">기록 모두 지우기</button>
+            <button type="button" class="btn btn--danger" id="btnReset">${t('me.reset')}</button>
           </div>
         </div>`;
     } else {
-      $('#meTitle').textContent = '👋 로그인';
-      $('#meDesc').textContent = '이메일을 넣어 주세요. 처음이시면 그 자리에서 바로 만들어 드려요.';
       renderLoginFlow(body);
     }
 
@@ -1577,7 +1574,7 @@
 
     const resetBtn = $('#btnReset');
     if (resetBtn) resetBtn.onclick = async () => {
-      if (!window.confirm(`${currentUser.name}님의 스트리크와 게임 기록이 모두 지워집니다. 정말 지울까요?`)) return;
+      if (!window.confirm(t('me.confirm.reset', { name: currentUser.name }))) return;
       store.clear();
       /* 서버에도 빈 상태를 올려야 다른 기기에서 되살아나지 않습니다 */
       if (cloud && cloud.user) {
@@ -1585,7 +1582,7 @@
         try { await cloud.flush(); } catch (e) {}
       }
       refreshAll();
-      toast('기록을 모두 지웠어요.');
+      toast(t('me.toast.reset'));
     };
   }
 
@@ -1600,16 +1597,16 @@
     body.innerHTML = `
       <div class="mecard mecard--signin">
         <ol class="steps" id="steps">
-          <li class="is-on">이메일</li>
-          <li>비밀번호</li>
-          <li>이름</li>
+          <li class="is-on">${t('log.step1')}</li>
+          <li>${t('log.step2')}</li>
+          <li>${t('log.step3')}</li>
         </ol>
         <div id="stepBody"></div>
-        <p class="mecard__hint">로그인하지 않아도 모든 기능은 그대로 쓸 수 있어요 🙂</p>
+        <p class="mecard__hint">${t('log.free')}</p>
       </div>
 
       <div class="mecard" id="googleCard" hidden>
-        <p class="mecard__hint">또는</p>
+        <p class="mecard__hint">${t('log.or')}</p>
         <div class="gsi" id="gsiButton"></div>
       </div>`;
 
@@ -1630,18 +1627,18 @@
     function stepEmail() {
       setStep(1);
       stepBody.innerHTML = `
-        <label class="fieldlabel" for="fEmail">이메일</label>
+        <label class="fieldlabel" for="fEmail">${t('log.email')}</label>
         <input type="email" class="bigfield" id="fEmail" inputmode="email"
                autocomplete="username" placeholder="example@gmail.com" value="${email}" />
-        <p class="fieldhelp">평소 쓰시는 이메일 주소를 그대로 넣으시면 돼요.</p>
+        <p class="fieldhelp">${t('log.email.h')}</p>
         <div class="me__actions">
-          <button type="button" class="btn btn--primary btn--big" id="fNext">다음 →</button>
+          <button type="button" class="btn btn--primary btn--big" id="fNext">${t('log.next')}</button>
         </div>`;
       const input = $('#fEmail');
       input.focus();
       const go = () => {
         const v = input.value.trim();
-        if (!isEmail(v)) { toast('이메일 주소를 정확히 넣어 주세요.'); input.focus(); return; }
+        if (!isEmail(v)) { toast(t('log.e.email')); input.focus(); return; }
         email = v;
         existing = findByEmail(v);
         stepPassword();
@@ -1658,25 +1655,20 @@
       const neutral = !!cloud;
       stepBody.innerHTML = `
         <p class="whoami">${email}</p>
-        <label class="fieldlabel" for="fPw">비밀번호</label>
+        <label class="fieldlabel" for="fPw">${t('log.pw')}</label>
         <div class="pwwrap">
           <input type="password" class="bigfield" id="fPw"
                  autocomplete="${isNew ? 'new-password' : 'current-password'}"
-                 placeholder="${MIN_PW}자 이상" />
-          <button type="button" class="pweye" id="fEye" aria-label="비밀번호 보기">👁️</button>
+                 placeholder="${t('log.pw.ph', { n: MIN_PW })}" />
+          <button type="button" class="pweye" id="fEye" aria-label="${t('log.pw.show')}">👁️</button>
         </div>
-        <p class="fieldhelp">${neutral
-          ? '처음이시면 여기 넣으신 비밀번호로 계정을 만들어 드려요.'
-          : '이 사이트에서 쓰실 비밀번호를 정해 주세요.'}</p>
-        <p class="warnbox">
-          ⚠️ <b>이 사이트에서만 쓰는 비밀번호예요.</b><br />
-          구글·은행·카카오에서 쓰시는 비밀번호는 넣지 마세요.
-        </p>
+        <p class="fieldhelp">${neutral ? t('log.pw.h1') : t('log.pw.h2')}</p>
+        <p class="warnbox">${t('log.pw.warn')}</p>
         <div class="me__actions">
           <button type="button" class="btn btn--primary btn--big" id="fNext">
-            ${neutral ? '다음 →' : (isNew ? '다음 →' : '들어가기 →')}
+            ${neutral ? t('log.next') : (isNew ? t('log.next') : t('log.enter'))}
           </button>
-          <button type="button" class="btn btn--ghost" id="fBack">← 뒤로</button>
+          <button type="button" class="btn btn--ghost" id="fBack">${t('log.back')}</button>
         </div>`;
 
       const input = $('#fPw');
@@ -1689,17 +1681,17 @@
 
       const restore = () => {
         const btn = $('#fNext');
-        if (btn) { btn.disabled = false; btn.textContent = existing ? '들어가기 →' : '다음 →'; }
+        if (btn) { btn.disabled = false; btn.textContent = existing ? t('log.enter') : t('log.next'); }
       };
 
       const go = async () => {
         const pw = input.value;
         if (pw.length < MIN_PW) {
-          toast(`비밀번호는 ${MIN_PW}자 이상으로 넣어 주세요.`); input.focus(); return;
+          toast(t('log.e.pw', { n: MIN_PW })); input.focus(); return;
         }
         const btn = $('#fNext');
         btn.disabled = true;
-        btn.textContent = '잠시만요…';
+        btn.textContent = t('log.wait');
 
         /* --- Firebase 를 쓸 수 있을 때 --- */
         if (cloud) {
@@ -1723,7 +1715,7 @@
 
         /* --- 예비 방식 (인터넷이 없거나 Firebase 설정이 없을 때) --- */
         if (!cryptoReady()) {
-          toast('이 브라우저에서는 로그인을 쓸 수 없어요. 인터넷 연결을 확인해 주세요.', 5000);
+          toast(t('log.e.crypto'), 5000);
           restore();
           return;
         }
@@ -1731,7 +1723,7 @@
           if (existing) {
             const ok = await verifyPassword(existing, pw);
             if (!ok) {
-              toast('비밀번호가 맞지 않아요. 다시 넣어 주세요.');
+              toast(t('log.e.wrong'));
               input.value = ''; input.focus();
               restore();
               return;
@@ -1755,15 +1747,13 @@
       setStep(2);
       stepBody.innerHTML = `
         <p class="whoami">${email}</p>
-        <p class="askbox">
-          이 이메일로 <b>가입된 계정이 없거나</b>,<br />비밀번호가 다른 것 같아요.
-        </p>
+        <p class="askbox">${t('log.ask')}</p>
         <div class="me__actions me__actions--stack">
           <button type="button" class="btn btn--primary btn--big" id="fMake">
-            처음이에요 · 새로 만들기 →
+            ${t('log.ask.new')}
           </button>
           <button type="button" class="btn btn--ghost btn--big" id="fRetry">
-            비밀번호를 다시 넣을게요
+            ${t('log.ask.retry')}
           </button>
         </div>`;
       $('#fMake').onclick = () => stepName(password);
@@ -1775,19 +1765,19 @@
       setStep(3);
       stepBody.innerHTML = `
         <p class="whoami">${email}</p>
-        <label class="fieldlabel" for="fId">아이디</label>
+        <label class="fieldlabel" for="fId">${t('log.id')}</label>
         <input type="text" class="bigfield" id="fId" maxlength="20"
-               autocomplete="off" placeholder="예) sunja77" />
-        <p class="fieldhelp">영어나 숫자로 짧게 지으시면 돼요.</p>
+               autocomplete="off" placeholder="${t('log.id.ph')}" />
+        <p class="fieldhelp">${t('log.id.h')}</p>
 
-        <label class="fieldlabel" for="fName">이름</label>
+        <label class="fieldlabel" for="fName">${t('log.name')}</label>
         <input type="text" class="bigfield" id="fName" maxlength="12"
-               autocomplete="name" placeholder="예) 김순자" />
-        <p class="fieldhelp">화면에 표시될 이름이에요.</p>
+               autocomplete="name" placeholder="${t('log.name.ph')}" />
+        <p class="fieldhelp">${t('log.name.h')}</p>
 
         <div class="me__actions">
-          <button type="button" class="btn btn--primary btn--big" id="fDone">시작하기 →</button>
-          <button type="button" class="btn btn--ghost" id="fBack">← 뒤로</button>
+          <button type="button" class="btn btn--primary btn--big" id="fDone">${t('log.done')}</button>
+          <button type="button" class="btn btn--ghost" id="fBack">${t('log.back')}</button>
         </div>`;
 
       const idInput = $('#fId');
@@ -1798,12 +1788,12 @@
       const go = async () => {
         const loginId = idInput.value.trim();
         const name = nameInput.value.trim();
-        if (!loginId) { toast('아이디를 넣어 주세요.'); idInput.focus(); return; }
-        if (!name) { toast('이름을 넣어 주세요.'); nameInput.focus(); return; }
+        if (!loginId) { toast(t('log.e.id')); idInput.focus(); return; }
+        if (!name) { toast(t('log.e.name')); nameInput.focus(); return; }
 
         const btn = $('#fDone');
         btn.disabled = true;
-        btn.textContent = '만드는 중…';
+        btn.textContent = t('log.making');
         try {
           if (cloud) {
             await cloud.signUp(email, password, name);
@@ -1815,13 +1805,13 @@
         } catch (err) {
           const code = (err && err.code) || '';
           if (cloud && code === 'auth/email-already-in-use') {
-            toast('이미 가입된 이메일이에요. 비밀번호를 다시 넣어 주세요.', 4200);
+            toast(t('log.e.dup'), 4200);
             stepPassword();
             return;
           }
-          toast(cloud ? cloud.message(err) : '계정을 만들지 못했어요. 다시 시도해 주세요.', 4200);
+          toast(cloud ? cloud.message(err) : t('log.e.fail'), 4200);
           btn.disabled = false;
-          btn.textContent = '시작하기 →';
+          btn.textContent = t('log.done');
         }
       };
       $('#fDone').onclick = go;
@@ -1837,14 +1827,15 @@
     initToday();
     renderStreak();
     renderAccount();
-    if (currentPage() === 'me') renderMe();
+    if (currentPage() === 'settings') renderMe();
   }
 
   /* ============================================================
      13. 시작
      ============================================================ */
   migrateLegacy();
-  initFontControl();
+  initPrefs();
+  initSettings();
   initAuth();            // 예비 방식(기기 저장)의 로그인 정보 복구
   refreshAll();
   initRouter();          // 페이지 표시는 맨 마지막에 (다른 준비가 끝난 뒤)
