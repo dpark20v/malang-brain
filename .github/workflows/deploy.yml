@@ -1,0 +1,41 @@
+name: 사이트 배포
+
+# main 에 올라가면 자동으로 배포합니다.
+# 필요하면 Actions 탭에서 손으로 실행할 수도 있습니다.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포가 겹치지 않게 한 번에 하나만 돌립니다.
+# (앞의 것을 취소하지 않고 순서대로 끝냅니다)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 코드 내려받기
+        uses: actions/checkout@v4
+
+      - name: Pages 설정
+        uses: actions/configure-pages@v5
+
+      - name: 파일 묶기
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: 배포
+        id: deployment
+        uses: actions/deploy-pages@v4
