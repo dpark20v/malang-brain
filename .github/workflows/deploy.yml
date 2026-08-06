@@ -10,9 +10,14 @@ permissions:
   pages: write
   id-token: write
 
+# 배포는 한 번에 하나씩만 (group: pages).
+# cancel-in-progress 를 켜 두면 새 실행이 대기 중인 실행을 죽입니다. 평소에는
+# 최신 것만 올리면 되니 편하지만, GitHub 이 알림을 늦게 보내 실행이 하나씩
+# 뒤늦게 도착하면 서로 계속 죽여서 아무것도 끝까지 가지 못합니다.
+# 그래서 꺼 둡니다. 대신 차례대로 하나씩 배포됩니다.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
