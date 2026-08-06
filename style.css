@@ -312,11 +312,16 @@ button { font-family: inherit; cursor: pointer; }
   }
 }
 /* 버튼과 상자 사이의 빈 틈에서도 마우스가 끊기지 않도록 다리를 놓습니다.
-   좌우로 조금 넉넉하게 빼 두어야 상자가 옆으로 밀렸을 때도 이어집니다. */
-.nav__drop::before {
+   상자가 아니라 버튼 밑에 붙입니다. 상자에 붙이면 좌우로 삐져나가
+   좁은 화면에서 가로 스크롤이 생깁니다. */
+.nav__item::after {
   content: ""; position: absolute;
-  left: -1.5rem; right: -1.5rem; top: -0.75rem; height: 0.75rem;
+  left: 0; right: 0; top: 100%; height: 0.8rem;
+  display: none;
 }
+.nav__item:hover::after,
+.nav__item:focus-within::after,
+.nav__item.is-open::after { display: block; }
 .nav__drop a {
   display: block;
   padding: 0.6rem 0.9rem;

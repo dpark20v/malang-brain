@@ -598,11 +598,14 @@
     if (!drop) return;
     drop.style.setProperty('--shift', '0px');
     const pad = 12;
+    /* 화면 폭은 clientWidth 로 잽니다. window.innerWidth 는 세로 스크롤 막대
+       두께까지 포함해서, 그만큼 상자가 오른쪽으로 삐져나갑니다. */
+    const vw = document.documentElement.clientWidth;
     const r = drop.getBoundingClientRect();   /* 숨어 있어도 자리는 잡혀 있습니다 */
     if (r.width === 0) return;
     let shift = 0;
     if (r.left < pad) shift = pad - r.left;
-    else if (r.right > window.innerWidth - pad) shift = window.innerWidth - pad - r.right;
+    else if (r.right > vw - pad) shift = vw - pad - r.right;
     drop.style.setProperty('--shift', Math.round(shift) + 'px');
   }
 
