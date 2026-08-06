@@ -18,6 +18,20 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Yeon+Sung&display=swap" />
 
   <link rel="stylesheet" href="style.css" />
+
+  <!-- 저장해 둔 「포맷」을 화면이 그려지기 전에 먼저 정합니다.
+       나중에 정하면 전체 메뉴가 잠깐 보였다가 사라져 깜빡입니다. -->
+  <script>
+    (function () {
+      try {
+        var m = localStorage.getItem('malang:pref:mode');
+        document.documentElement.setAttribute('data-mode', m ? JSON.parse(m) : 'advanced');
+      } catch (e) {
+        document.documentElement.setAttribute('data-mode', 'advanced');
+      }
+    })();
+  </script>
+
   <script src="config.js"></script>
   <script src="i18n.js"></script>
   <script type="module" src="cloud.js"></script>
@@ -61,6 +75,9 @@
             <a href="#learn-life"><span aria-hidden="true">🌙</span> <span data-i18n="l4.title">생활 습관</span></a>
           </div>
         </div>
+        <!-- 쉬운 화면에서는 위 두 개 대신 이 링크 하나만 보입니다.
+             펼쳐지는 상자 없이 누르면 바로 배우기로 갑니다. -->
+        <a class="nav__easylearn" href="#learn-cog" data-i18n="nav.learn">📚 배우기</a>
         <a href="#play"     data-i18n="nav.play">🎮 두뇌게임</a>
         <a href="#streak"   data-i18n="nav.streak">🔥 말랑 스트리크</a>
         <a href="#help"     data-i18n="nav.help">📞 도움받기</a>
@@ -751,6 +768,10 @@
           <!-- 왼쪽 바 -->
           <nav class="setnav" id="setNav">
             <button type="button" class="setprofile" data-set-tab="account" id="setProfile"></button>
+            <button type="button" class="setnav__item" data-set-tab="mode">
+              <span class="setnav__ic setnav__ic--mode" aria-hidden="true">🗂️</span>
+              <span data-i18n="set.nav.mode"></span>
+            </button>
             <button type="button" class="setnav__item" data-set-tab="font">
               <span class="setnav__ic setnav__ic--font" aria-hidden="true">🔤</span>
               <span data-i18n="set.nav.font"></span>
@@ -771,6 +792,25 @@
 
           <!-- 오른쪽 내용 -->
           <div class="setpane">
+
+          <!-- 포맷 (어드밴스드 / 이지) -->
+          <section class="setcard settab" data-tab="mode">
+            <h3 class="setcard__title" data-i18n="set.mode"></h3>
+            <p class="setcard__desc" data-i18n="set.mode.d"></p>
+            <div class="optrow optrow--mode" role="group">
+              <button type="button" class="opt" data-mode-set="advanced">
+                <span class="opt__big" aria-hidden="true">💻</span>
+                <span data-i18n="set.mode.adv"></span>
+                <small data-i18n="set.mode.adv.d"></small>
+              </button>
+              <button type="button" class="opt" data-mode-set="easy">
+                <span class="opt__big" aria-hidden="true">🌿</span>
+                <span data-i18n="set.mode.easy"></span>
+                <small data-i18n="set.mode.easy.d"></small>
+              </button>
+            </div>
+            <p class="setcard__note" data-i18n-html="set.mode.n"></p>
+          </section>
 
           <!-- 글자 크기 -->
           <section class="setcard settab" data-tab="font">

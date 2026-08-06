@@ -774,10 +774,25 @@
   }
 
   /* 저장된 설정을 화면에 먼저 반영 (깜빡임 없이) */
+  /* 포맷: 어드밴스드(advanced) / 이지(easy)
+     이지는 어르신을 위해 메뉴를 다섯 개로 줄입니다.
+     배우기·두뇌게임·말랑 스트리크·도움받기·설정만 남고,
+     플랫폼 소개는 감춥니다. 실제로 보이고 안 보이고는 CSS 가 맡습니다. */
+  function setMode(name) {
+    document.documentElement.setAttribute('data-mode', name);
+    prefs.set('mode', name);
+    $$('[data-mode-set]').forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.modeSet === name));
+    });
+    closeDrops();            // 감춰진 메뉴의 상자가 열린 채 남지 않도록
+    checkHeaderWrap();       // 메뉴 수가 달라지면 줄바꿈 여부도 달라집니다
+  }
+
   function initPrefs() {
     setFont(String(prefs.get('font', '1')));
     setTheme(prefs.get('theme', 'light'));
     setStyle(prefs.get('style', 'cute'));
+    setMode(prefs.get('mode', 'advanced'));
   }
 
   /* ------------------------------------------------------------
@@ -869,6 +884,8 @@
       b.setAttribute('aria-pressed', String(b.dataset.themeSet === document.documentElement.getAttribute('data-theme'))));
     $$('[data-style-set]').forEach(b =>
       b.setAttribute('aria-pressed', String(b.dataset.styleSet === document.documentElement.getAttribute('data-style'))));
+    $$('[data-mode-set]').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.modeSet === document.documentElement.getAttribute('data-mode'))));
   }
 
   function initSettings() {
@@ -879,6 +896,8 @@
       if (th) { setTheme(th.dataset.themeSet); return; }
       const st = e.target.closest && e.target.closest('[data-style-set]');
       if (st) { setStyle(st.dataset.styleSet); return; }
+      const md = e.target.closest && e.target.closest('[data-mode-set]');
+      if (md) { setMode(md.dataset.modeSet); return; }
       const tab = e.target.closest && e.target.closest('[data-set-tab]');
       if (tab) { showSetTab(tab.dataset.setTab); }
     });
