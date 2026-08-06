@@ -867,6 +867,60 @@ button { font-family: inherit; cursor: pointer; }
   border-radius: var(--r-sm); padding: 0.8rem 1rem;
   font-size: calc(0.9rem * var(--text-scale)); font-weight: 700;
 }
+/* ---------- 우리 동네 치매안심센터 찾기 ---------- */
+.finder {
+  margin-top: 1.2rem; padding-top: 1.2rem;
+  border-top: 2px dashed var(--lav-200);
+}
+.finder__t {
+  display: block;
+  font-size: calc(1.02rem * var(--text-scale)); font-weight: 900; color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+.finder__d { font-size: calc(0.88rem * var(--text-scale)) !important; color: var(--ink-mute) !important; }
+
+.finder__form { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
+.finder__in {
+  flex: 1 1 9rem; min-width: 0;
+  font-family: inherit;
+  font-size: calc(1.05rem * var(--text-scale)); font-weight: 700; color: var(--ink);
+  background: var(--white);
+  border: 2px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 0.75rem 1.15rem;
+}
+.finder__in::placeholder { color: var(--ink-mute); font-weight: 600; }
+.finder__in:focus { outline: none; border-color: var(--lav-500); }
+.finder__go { padding: 0.75rem 1.4rem; font-size: calc(1rem * var(--text-scale)); white-space: nowrap; }
+
+.finder__out:empty { display: none; }
+.finder__out { margin-top: 0.9rem; }
+.finder__msg { font-size: calc(0.92rem * var(--text-scale)) !important; font-weight: 700; color: var(--ink-soft) !important; }
+.finder__note {
+  margin-top: 0.7rem;
+  font-size: calc(0.82rem * var(--text-scale)) !important;
+  color: var(--ink-mute) !important; line-height: 1.65;
+}
+
+/* 찾은 센터 한 곳 */
+.fcard {
+  margin-top: 0.7rem;
+  background: var(--lav-50);
+  border: 2px solid var(--lav-200);
+  border-radius: var(--r-lg);
+  padding: 1rem 1.1rem;
+}
+.fcard__n {
+  font-size: calc(1.08rem * var(--text-scale)) !important;
+  font-weight: 900; color: var(--ink) !important;
+}
+.fcard__w { font-size: calc(0.86rem * var(--text-scale)) !important; color: var(--ink-mute) !important; margin-top: 0.15rem; }
+.fcard__btns { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
+.fcard__btns .btn { padding: 0.6rem 1.1rem; font-size: calc(0.92rem * var(--text-scale)); }
+
+html[data-style="simple"] .finder { border-top-style: solid; border-top-width: var(--hairline); }
+html[data-style="simple"] .finder__in { border-width: var(--hairline); border-radius: var(--r-sm); }
+
 .signlist { display: grid; gap: 0.5rem; margin-top: 0.5rem; }
 .signlist li {
   background: var(--lav-50); border-radius: var(--r-sm);
