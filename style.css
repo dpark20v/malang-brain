@@ -1315,6 +1315,17 @@ html[data-theme="dark"] .pagehero__desc { color: rgba(255, 255, 255, 0.82); }
   padding: 1.3rem 1.5rem;
   text-align: center;
 }
+/* 인사말에서 가장 마음이 담긴 한 줄 — 박스 없이 크게 */
+.prose__quote {
+  margin: 2.4rem 0 !important;
+  padding: 1.6rem 0;
+  border-top: 2px solid var(--lav-200);
+  border-bottom: 2px solid var(--lav-200);
+  text-align: center;
+  font-size: calc(clamp(1.15rem, 2.4vw, 1.45rem) * var(--text-scale));
+  font-weight: 800; color: var(--lav-700);
+  line-height: 1.6;
+}
 .prose__sign {
   margin-top: 2.8rem; padding-top: 1.6rem;
   border-top: 2px solid var(--line);
