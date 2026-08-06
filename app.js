@@ -39,7 +39,7 @@
   const store = {
     prefix: () => 'malang:u:' + userId + ':',
     get: (k, d) => readJSON(store.prefix() + k, d),
-    set: (k, v) => writeJSON(store.prefix() + k, v),
+    set: (k, v) => { writeJSON(store.prefix() + k, v); scheduleCloudSave(); },
     keys: () => Object.keys(localStorage).filter(k => k.indexOf(store.prefix()) === 0),
     isEmpty: () => store.keys().length === 0,
     clear: () => store.keys().forEach(k => { try { localStorage.removeItem(k); } catch (e) {} })
@@ -188,6 +188,7 @@
         google.accounts.id.disableAutoSelect();
       }
     } catch (e) {}
+    if (cloud && cloud.user) { try { cloud.signOut(); } catch (e) {} }
     currentUser = null;
     prefs.del('session');
     userId = 'guest';
@@ -196,7 +197,169 @@
   }
 
   /* ------------------------------------------------------------
-     이메일 계정
+     Firebase 동기화
+     ------------------------------------------------------------
+     화면은 늘 이 기기의 저장소를 보고 그립니다(빠르고, 인터넷이 끊겨도 동작).
+     서버는 뒤에서 조용히 맞춰 줍니다.
+       로그인할 때  : 서버 기록을 가져와 이 기기 기록과 합칩니다
+       기록이 바뀌면 : 잠시 뒤 서버로 올립니다
+     ------------------------------------------------------------ */
+  let cloud = null;              // window.MalangCloud (준비되면 채워짐)
+
+  const LOWER_IS_BETTER = ['memory'];   // 짝 맞추기는 횟수가 적을수록 좋음
+
+  async function waitForCloud() {
+    for (let i = 0; i < 80; i++) {
+      if (window.MalangCloud) {
+        await window.MalangCloud.ready;
+        return window.MalangCloud.available ? window.MalangCloud : null;
+      }
+      await new Promise(r => setTimeout(r, 50));
+    }
+    return null;
+  }
+
+  /* 이 기기의 기록을 서버에 보낼 모양으로 모읍니다 */
+  function collectLocal() {
+    const check = {};
+    store.keys().forEach((k) => {
+      const name = k.replace(store.prefix(), '');
+      if (name.indexOf('check:') === 0) check[name.slice(6)] = store.get(name, {});
+    });
+
+    const best = {};
+    GAMES.forEach((g) => {
+      const v = store.get('best:' + g.id, 0);
+      if (v) best[g.id] = v;
+    });
+
+    return {
+      profile: {
+        name: (currentUser && currentUser.name) || '',
+        loginId: (currentUser && currentUser.loginId) || ''
+      },
+      log: store.get('log', {}),
+      check: check,
+      best: best,
+      bestStreak: store.get('bestStreak', 0)
+    };
+  }
+
+  /* 서버 기록을 이 기기 기록과 합칩니다 (어느 쪽 것도 잃지 않게) */
+  function applyCloud(data) {
+    if (!data) return;
+
+    /* 날짜별 실천 개수: 큰 쪽을 남김 */
+    const log = store.get('log', {});
+    Object.keys(data.log || {}).forEach((d) => {
+      log[d] = Math.max(log[d] || 0, data.log[d] || 0);
+    });
+    writeJSON(store.prefix() + 'log', log);
+
+    /* 그날 체크한 항목: 한쪽이라도 했으면 한 것으로 */
+    Object.keys(data.check || {}).forEach((d) => {
+      const merged = store.get('check:' + d, {});
+      const remote = data.check[d] || {};
+      Object.keys(remote).forEach((t) => { if (remote[t]) merged[t] = true; });
+      writeJSON(store.prefix() + 'check:' + d, merged);
+    });
+
+    /* 게임 최고 기록 */
+    Object.keys(data.best || {}).forEach((g) => {
+      const mine = store.get('best:' + g, null);
+      const theirs = data.best[g];
+      let win;
+      if (mine === null) win = theirs;
+      else win = LOWER_IS_BETTER.indexOf(g) >= 0
+        ? Math.min(mine, theirs)
+        : Math.max(mine, theirs);
+      writeJSON(store.prefix() + 'best:' + g, win);
+    });
+
+    /* 최고 연속 기록 */
+    if (typeof data.bestStreak === 'number') {
+      writeJSON(store.prefix() + 'bestStreak',
+        Math.max(store.get('bestStreak', 0), data.bestStreak));
+    }
+  }
+
+  function scheduleCloudSave() {
+    if (cloud && cloud.user && currentUser) cloud.save(collectLocal());
+  }
+
+  /* 로그인이 끝난 뒤 공통 처리 */
+  async function afterCloudLogin(extra) {
+    const u = cloud.user;
+    const guestHadData = Object.keys(localStorage).some(k => k.indexOf('malang:u:guest:') === 0);
+
+    userId = 'fb' + u.uid;
+
+    let remote = null;
+    try { remote = await cloud.load(); } catch (e) { /* 인터넷 문제면 기기 기록으로 진행 */ }
+
+    currentUser = {
+      id: userId,
+      uid: u.uid,
+      kind: 'firebase',
+      email: u.email,
+      name: (extra && extra.name) || (remote && remote.profile && remote.profile.name) || u.name || (u.email || '').split('@')[0],
+      loginId: (extra && extra.loginId) || (remote && remote.profile && remote.profile.loginId) || ''
+    };
+
+    /* 로그인 전에 게스트로 쌓아 둔 기록이 있으면 가져옵니다 */
+    if (guestHadData) {
+      Object.keys(localStorage)
+        .filter(k => k.indexOf('malang:u:guest:') === 0)
+        .forEach((k) => {
+          const name = k.replace('malang:u:guest:', '');
+          if (localStorage.getItem(store.prefix() + name) === null) {
+            localStorage.setItem(store.prefix() + name, localStorage.getItem(k));
+          }
+        });
+      Object.keys(localStorage)
+        .filter(k => k.indexOf('malang:u:guest:') === 0)
+        .forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+    }
+
+    applyCloud(remote);
+
+    upsertProfile(currentUser);
+    prefs.set('session', userId);
+    refreshAll();
+    cloud.save(collectLocal());        // 합친 결과를 서버에도 올려 둡니다
+
+    toast(`${currentUser.name}님, 반가워요! 👋`);
+  }
+
+  /* 시작할 때: 이미 로그인되어 있으면 그대로 이어 갑니다 */
+  async function initCloud() {
+    cloud = await waitForCloud();
+    if (!cloud) { refreshAll(); return; }
+
+    if (cloud.user) {
+      await afterCloudLogin();
+    } else {
+      /* 서버 로그인이 풀렸는데 화면은 로그인 상태로 남아 있는 경우 정리 */
+      if (currentUser && currentUser.kind === 'firebase') {
+        currentUser = null;
+        prefs.del('session');
+        userId = 'guest';
+      }
+      refreshAll();
+    }
+
+    cloud.onAuth((u) => {
+      if (!u && currentUser && currentUser.kind === 'firebase') {
+        currentUser = null;
+        prefs.del('session');
+        userId = 'guest';
+        refreshAll();
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------
+     이메일 계정 (Firebase 를 못 쓸 때 쓰는 예비 방식)
      ------------------------------------------------------------
      이메일을 계정 열쇠로 씁니다. 나중에 서버(Firebase 등)를 붙일 때
      이메일을 그대로 서버 계정 키로 이어 쓸 수 있습니다.
@@ -205,6 +368,7 @@
        다만 서버가 없으므로 이 로그인은 "누구인지 구분"하는 장치일 뿐,
        기기를 만질 수 있는 사람으로부터 기록을 지켜 주지는 못합니다.
      ------------------------------------------------------------ */
+  const MIN_PW = 6;              // Firebase 규정에 맞춘 최소 길이
   const emailKey = (email) => 'e' + String(email).trim().toLowerCase();
   const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v).trim());
 
@@ -1475,24 +1639,28 @@
     /* --- 2단계: 비밀번호 --- */
     function stepPassword() {
       setStep(2);
-      const isNew = !existing;
+      /* Firebase 를 쓸 때는 가입 여부를 미리 알 수 없으므로 중립적으로 묻습니다 */
+      const isNew = cloud ? false : !existing;
+      const neutral = !!cloud;
       stepBody.innerHTML = `
         <p class="whoami">${email}</p>
-        <label class="fieldlabel" for="fPw">${isNew ? '쓰실 비밀번호를 정해 주세요' : '비밀번호'}</label>
+        <label class="fieldlabel" for="fPw">비밀번호</label>
         <div class="pwwrap">
           <input type="password" class="bigfield" id="fPw"
                  autocomplete="${isNew ? 'new-password' : 'current-password'}"
-                 placeholder="${isNew ? '4자 이상' : '비밀번호'}" />
+                 placeholder="${MIN_PW}자 이상" />
           <button type="button" class="pweye" id="fEye" aria-label="비밀번호 보기">👁️</button>
         </div>
-        ${isNew ? `
-          <p class="warnbox">
-            ⚠️ <b>이 사이트에서만 쓰는 비밀번호예요.</b><br />
-            구글·은행·카카오에서 쓰시는 비밀번호는 절대 넣지 마세요.
-          </p>` : ''}
+        <p class="fieldhelp">${neutral
+          ? '처음이시면 여기 넣으신 비밀번호로 계정을 만들어 드려요.'
+          : '이 사이트에서 쓰실 비밀번호를 정해 주세요.'}</p>
+        <p class="warnbox">
+          ⚠️ <b>이 사이트에서만 쓰는 비밀번호예요.</b><br />
+          구글·은행·카카오에서 쓰시는 비밀번호는 넣지 마세요.
+        </p>
         <div class="me__actions">
           <button type="button" class="btn btn--primary btn--big" id="fNext">
-            ${isNew ? '다음 →' : '들어가기 →'}
+            ${neutral ? '다음 →' : (isNew ? '다음 →' : '들어가기 →')}
           </button>
           <button type="button" class="btn btn--ghost" id="fBack">← 뒤로</button>
         </div>`;
@@ -1505,23 +1673,53 @@
       };
       $('#fBack').onclick = stepEmail;
 
+      const restore = () => {
+        const btn = $('#fNext');
+        if (btn) { btn.disabled = false; btn.textContent = existing ? '들어가기 →' : '다음 →'; }
+      };
+
       const go = async () => {
         const pw = input.value;
-        if (pw.length < 4) { toast('비밀번호는 4자 이상으로 넣어 주세요.'); input.focus(); return; }
-        if (!cryptoReady()) {
-          toast('이 브라우저에서는 로그인을 쓸 수 없어요. http://localhost 로 접속해 주세요.', 5000);
-          return;
+        if (pw.length < MIN_PW) {
+          toast(`비밀번호는 ${MIN_PW}자 이상으로 넣어 주세요.`); input.focus(); return;
         }
         const btn = $('#fNext');
         btn.disabled = true;
         btn.textContent = '잠시만요…';
+
+        /* --- Firebase 를 쓸 수 있을 때 --- */
+        if (cloud) {
+          try {
+            await cloud.signIn(email, pw);
+            await afterCloudLogin();
+            location.hash = '#streak';
+          } catch (err) {
+            const code = (err && err.code) || '';
+            if (code === 'auth/invalid-credential' || code === 'auth/user-not-found' ||
+                code === 'auth/wrong-password') {
+              stepAskNew(pw);                    // 처음인지 되물어봅니다
+            } else {
+              toast(cloud.message(err), 4200);
+              input.value = ''; input.focus();
+              restore();
+            }
+          }
+          return;
+        }
+
+        /* --- 예비 방식 (인터넷이 없거나 Firebase 설정이 없을 때) --- */
+        if (!cryptoReady()) {
+          toast('이 브라우저에서는 로그인을 쓸 수 없어요. 인터넷 연결을 확인해 주세요.', 5000);
+          restore();
+          return;
+        }
         try {
           if (existing) {
             const ok = await verifyPassword(existing, pw);
             if (!ok) {
               toast('비밀번호가 맞지 않아요. 다시 넣어 주세요.');
-              btn.disabled = false; btn.textContent = '들어가기 →';
               input.value = ''; input.focus();
+              restore();
               return;
             }
             signIn(existing, false);
@@ -1531,12 +1729,31 @@
           }
         } catch (e) {
           toast('로그인 처리 중 문제가 생겼어요. 다시 시도해 주세요.');
-          btn.disabled = false;
-          btn.textContent = existing ? '들어가기 →' : '다음 →';
+          restore();
         }
       };
       $('#fNext').onclick = go;
       input.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+    }
+
+    /* --- 로그인 실패: 처음 오신 분인지 되묻기 --- */
+    function stepAskNew(password) {
+      setStep(2);
+      stepBody.innerHTML = `
+        <p class="whoami">${email}</p>
+        <p class="askbox">
+          이 이메일로 <b>가입된 계정이 없거나</b>,<br />비밀번호가 다른 것 같아요.
+        </p>
+        <div class="me__actions me__actions--stack">
+          <button type="button" class="btn btn--primary btn--big" id="fMake">
+            처음이에요 · 새로 만들기 →
+          </button>
+          <button type="button" class="btn btn--ghost btn--big" id="fRetry">
+            비밀번호를 다시 넣을게요
+          </button>
+        </div>`;
+      $('#fMake').onclick = () => stepName(password);
+      $('#fRetry').onclick = () => stepPassword();
     }
 
     /* --- 3단계: 아이디 + 이름 (처음 오신 분만) --- */
@@ -1574,10 +1791,21 @@
         btn.disabled = true;
         btn.textContent = '만드는 중…';
         try {
-          await registerAccount(email, password, loginId, name);
+          if (cloud) {
+            await cloud.signUp(email, password, name);
+            await afterCloudLogin({ name: name, loginId: loginId });
+          } else {
+            await registerAccount(email, password, loginId, name);
+          }
           location.hash = '#streak';
-        } catch (e) {
-          toast('계정을 만들지 못했어요. 다시 시도해 주세요.');
+        } catch (err) {
+          const code = (err && err.code) || '';
+          if (cloud && code === 'auth/email-already-in-use') {
+            toast('이미 가입된 이메일이에요. 비밀번호를 다시 넣어 주세요.', 4200);
+            stepPassword();
+            return;
+          }
+          toast(cloud ? cloud.message(err) : '계정을 만들지 못했어요. 다시 시도해 주세요.', 4200);
           btn.disabled = false;
           btn.textContent = '시작하기 →';
         }
@@ -1603,7 +1831,8 @@
      ============================================================ */
   migrateLegacy();
   initFontControl();
-  initAuth();            // 저장된 로그인 정보가 있으면 여기서 복구됩니다
+  initAuth();            // 예비 방식(기기 저장)의 로그인 정보 복구
   refreshAll();
   initRouter();          // 페이지 표시는 맨 마지막에 (다른 준비가 끝난 뒤)
+  initCloud();           // Firebase 는 준비되는 대로 이어서 붙습니다
 })();

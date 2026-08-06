@@ -1,0 +1,38 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "users": {
+      "$uid": {
+        ".read":  "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+
+        "profile": {
+          "name":  { ".validate": "newData.isString() && newData.val().length <= 20" },
+          "loginId": { ".validate": "newData.isString() && newData.val().length <= 30" },
+          "$other": { ".validate": false }
+        },
+
+        "log": {
+          "$day": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" }
+        },
+
+        "check": {
+          "$day": {
+            "$task": { ".validate": "newData.isBoolean()" }
+          }
+        },
+
+        "best": {
+          "$game": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100000" }
+        },
+
+        "bestStreak": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100000" },
+        "updatedAt":  { ".validate": "newData.isNumber()" },
+
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}
