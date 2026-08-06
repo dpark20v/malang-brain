@@ -23,6 +23,10 @@
     'brand.tagline': '치매 예방 놀이터',
     'doc.title': '말랑뇌 · 치매 예방 놀이터',
 
+    'logo.aria': '말랑뇌 홈으로',
+    'nav.about': '🌱 플랫폼 소개',
+    'nav.greeting': '인사말',
+    'nav.overview': '개요',
     'nav.home': '🏠 홈',
     'nav.learn': '📚 배우기',
     'nav.play': '🎮 두뇌게임',
@@ -379,13 +383,25 @@
     'nav.prev.play': '← 두뇌게임',
     'nav.next.help': '도움받는 곳 보기 →',
     'nav.prev.streak': '← 말랑 스트리크',
-    'nav.next.home': '홈으로 돌아가기 →'
+    'nav.next.home': '홈으로 돌아가기 →',
+    'nav.next.overview': '개요 보기 →',
+    'nav.prev.greeting': '← 인사말',
+    'nav.next.learn': '예방법 배우러 가기 →',
+
+    'ab.eyebrow': '플랫폼 소개',
+    'ab.greet.t': '인사말',
+    'ab.greet.d': '말랑뇌를 찾아 주신 분들께 드리는 인사입니다.',
+    'ab.over.t': '개요',
+    'ab.over.d': '말랑뇌가 어떤 곳인지 한눈에 보실 수 있습니다.',
+    'ab.soon': '이곳에 들어갈 내용은 곧 채워집니다. 조금만 기다려 주세요.'
   },
 
   /* ================= English ================= */
   en: {
     'brand.name': 'MalangNoe', 'brand.tagline': 'Brain Health Playground',
     'doc.title': 'MalangNoe · Brain Health Playground',
+    'logo.aria': 'MalangNoe — back to home',
+    'nav.about': '🌱 About', 'nav.greeting': 'Greeting', 'nav.overview': 'Overview',
     'nav.home': '🏠 Home', 'nav.learn': '📚 Learn', 'nav.play': '🎮 Games',
     'nav.streak': '🔥 Streak', 'nav.help': '📞 Get Help', 'nav.settings': '⚙️ Settings',
     'nav.aria': 'Main menu', 'skip': 'Skip to content',
@@ -670,13 +686,24 @@
     'nav.prev.home': '← Home', 'nav.next.play': 'Try it as a game →',
     'nav.prev.learn': '← Learn', 'nav.next.streak': 'See my streak →',
     'nav.prev.play': '← Games', 'nav.next.help': 'Where to get help →',
-    'nav.prev.streak': '← Streak', 'nav.next.home': 'Back to home →'
+    'nav.prev.streak': '← Streak', 'nav.next.home': 'Back to home →',
+    'nav.next.overview': 'See the overview →', 'nav.prev.greeting': '← Greeting',
+    'nav.next.learn': 'Go learn prevention tips →',
+
+    'ab.eyebrow': 'About the platform',
+    'ab.greet.t': 'Greeting',
+    'ab.greet.d': 'A welcome message for everyone who visits MalangNoe.',
+    'ab.over.t': 'Overview',
+    'ab.over.d': 'What MalangNoe is, at a glance.',
+    'ab.soon': 'This part is being written. Please check back soon.'
   },
 
   /* ================= 日本語 ================= */
   ja: {
     'brand.name': 'マランノェ', 'brand.tagline': '認知症予防のあそび場',
     'doc.title': 'マランノェ · 認知症予防のあそび場',
+    'logo.aria': 'マランノェ ホームへ',
+    'nav.about': '🌱 プラットフォーム紹介', 'nav.greeting': 'ごあいさつ', 'nav.overview': '概要',
     'nav.home': '🏠 ホーム', 'nav.learn': '📚 学ぶ', 'nav.play': '🎮 脳トレ',
     'nav.streak': '🔥 ストリーク', 'nav.help': '📞 相談する', 'nav.settings': '⚙️ 設定',
     'nav.aria': 'メインメニュー', 'skip': '本文へ移動',
@@ -961,13 +988,24 @@
     'nav.prev.home': '← ホームへ', 'nav.next.play': '学んだことをゲームで →',
     'nav.prev.learn': '← 学ぶ', 'nav.next.streak': 'ストリークを見る →',
     'nav.prev.play': '← 脳トレ', 'nav.next.help': '相談先を見る →',
-    'nav.prev.streak': '← ストリーク', 'nav.next.home': 'ホームへもどる →'
+    'nav.prev.streak': '← ストリーク', 'nav.next.home': 'ホームへもどる →',
+    'nav.next.overview': '概要を見る →', 'nav.prev.greeting': '← ごあいさつ',
+    'nav.next.learn': '予防法を学びに行く →',
+
+    'ab.eyebrow': 'プラットフォーム紹介',
+    'ab.greet.t': 'ごあいさつ',
+    'ab.greet.d': 'マランノェを訪ねてくださった皆さまへのごあいさつです。',
+    'ab.over.t': '概要',
+    'ab.over.d': 'マランノェがどんな場所か、ひと目でわかります。',
+    'ab.soon': 'ここに入る内容はまもなく用意されます。少々お待ちください。'
   },
 
   /* ================= 中文 ================= */
   zh: {
     'brand.name': '软软脑', 'brand.tagline': '预防痴呆游乐场',
     'doc.title': '软软脑 · 预防痴呆游乐场',
+    'logo.aria': '软软脑 返回首页',
+    'nav.about': '🌱 平台介绍', 'nav.greeting': '致辞', 'nav.overview': '概要',
     'nav.home': '🏠 首页', 'nav.learn': '📚 学习', 'nav.play': '🎮 脑力游戏',
     'nav.streak': '🔥 连续记录', 'nav.help': '📞 寻求帮助', 'nav.settings': '⚙️ 设置',
     'nav.aria': '主菜单', 'skip': '跳到正文',
@@ -1252,7 +1290,16 @@
     'nav.prev.home': '← 回首页', 'nav.next.play': '把学到的用游戏试试 →',
     'nav.prev.learn': '← 学习', 'nav.next.streak': '查看连续记录 →',
     'nav.prev.play': '← 脑力游戏', 'nav.next.help': '查看求助方式 →',
-    'nav.prev.streak': '← 连续记录', 'nav.next.home': '返回首页 →'
+    'nav.prev.streak': '← 连续记录', 'nav.next.home': '返回首页 →',
+    'nav.next.overview': '查看概要 →', 'nav.prev.greeting': '← 致辞',
+    'nav.next.learn': '去学习预防方法 →',
+
+    'ab.eyebrow': '平台介绍',
+    'ab.greet.t': '致辞',
+    'ab.greet.d': '写给每一位来到软软脑的朋友。',
+    'ab.over.t': '概要',
+    'ab.over.d': '一眼了解软软脑是个什么样的地方。',
+    'ab.soon': '这里的内容正在准备中，请稍候。'
   }
   };
 

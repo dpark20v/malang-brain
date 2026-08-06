@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>말랑뇌 · 치매 예방 놀이터</title>
   <meta name="description" content="집에서 혼자서도 할 수 있는 치매 예방 생활습관과 두뇌 자극 게임" />
+
+  <!-- ===== 글꼴 =====
+       본문(한국어 포함) : Pretendard  — 화면에서 읽기 편한 고딕
+       로고 「말랑뇌」   : Nanum Brush Script — 붓으로 휘날려 쓴 손글씨
+       큰 인사말         : Jua — 동글동글 귀여운 글씨
+       글꼴이 늦게 와도 글자는 먼저 보이도록 display=swap 을 씁니다. -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Brush+Script&display=swap" />
+
   <link rel="stylesheet" href="style.css" />
   <script src="config.js"></script>
   <script src="i18n.js"></script>
@@ -17,13 +29,24 @@
   <!-- ============ 헤더 ============ -->
   <header class="header">
     <div class="header__inner">
-      <a class="logo" href="#home">
+      <!-- 로고를 누르면 홈으로 갑니다 (메뉴에 「홈」을 따로 두지 않습니다) -->
+      <a class="logo" href="#home" data-i18n-aria="logo.aria" aria-label="말랑뇌 홈으로">
         <span class="logo__face" aria-hidden="true">🧠</span>
-        <span class="logo__text"><span data-i18n="brand.name">말랑뇌</span><small data-i18n="brand.tagline">치매 예방 놀이터</small></span>
+        <span class="logo__text"><span class="logo__name" data-i18n="brand.name">말랑뇌</span><small data-i18n="brand.tagline">치매 예방 놀이터</small></span>
       </a>
 
       <nav class="nav" data-i18n-aria="nav.aria" aria-label="주요 메뉴">
-        <a href="#home"     data-i18n="nav.home">🏠 홈</a>
+        <!-- 플랫폼 소개: 마우스를 올리면 하얀 상자가 펼쳐집니다 -->
+        <div class="nav__item" id="aboutMenu">
+          <button type="button" class="nav__btn" id="aboutBtn" aria-expanded="false" aria-controls="aboutDrop">
+            <span data-i18n="nav.about">🌱 플랫폼 소개</span>
+            <span class="nav__caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="nav__drop" id="aboutDrop">
+            <a href="#greeting" data-i18n="nav.greeting">인삿말</a>
+            <a href="#overview" data-i18n="nav.overview">개요</a>
+          </div>
+        </div>
         <a href="#learn"    data-i18n="nav.learn">📚 배우기</a>
         <a href="#play"     data-i18n="nav.play">🎮 두뇌게임</a>
         <a href="#streak"   data-i18n="nav.streak">🔥 말랑 스트리크</a>
@@ -208,6 +231,47 @@
             <span class="pick__go" data-i18n="pick.help.go"></span>
           </a>
         </div>
+      </div>
+    </section>
+
+    <!-- ======================= 플랫폼 소개 · 인삿말 =======================
+         내용은 나중에 채웁니다. 지금은 제목과 빈 자리만 있습니다. -->
+    <section class="page" id="greeting" tabindex="-1">
+      <div class="section">
+        <div class="section__head">
+          <p class="eyebrow" data-i18n="ab.eyebrow"></p>
+          <h2 data-i18n="ab.greet.t">인삿말</h2>
+          <p class="section__desc" data-i18n="ab.greet.d"></p>
+        </div>
+
+        <article class="prose" id="greetingBody">
+          <p class="prose__soon" data-i18n="ab.soon"></p>
+        </article>
+
+        <nav class="pagenav">
+          <a class="btn btn--ghost"   href="#home"     data-i18n="nav.prev.home"></a>
+          <a class="btn btn--primary" href="#overview" data-i18n="nav.next.overview"></a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ======================= 플랫폼 소개 · 개요 ======================= -->
+    <section class="page" id="overview" tabindex="-1">
+      <div class="section">
+        <div class="section__head">
+          <p class="eyebrow" data-i18n="ab.eyebrow"></p>
+          <h2 data-i18n="ab.over.t">개요</h2>
+          <p class="section__desc" data-i18n="ab.over.d"></p>
+        </div>
+
+        <article class="prose" id="overviewBody">
+          <p class="prose__soon" data-i18n="ab.soon"></p>
+        </article>
+
+        <nav class="pagenav">
+          <a class="btn btn--ghost"   href="#greeting" data-i18n="nav.prev.greeting"></a>
+          <a class="btn btn--primary" href="#learn"    data-i18n="nav.next.learn"></a>
+        </nav>
       </div>
     </section>
 

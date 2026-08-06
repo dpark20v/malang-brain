@@ -522,9 +522,11 @@
      주소의 #뒤 이름으로 어떤 페이지를 보여줄지 정합니다.
      예) #play → 두뇌게임 페이지. 뒤로가기·새로고침도 그대로 유지돼요.
      ============================================================ */
-  const PAGES = ['home', 'learn', 'play', 'streak', 'help', 'settings'];
+  const PAGES = ['home', 'greeting', 'overview', 'learn', 'play', 'streak', 'help', 'settings'];
   /* 예전 주소도 계속 열리도록 */
-  const ALIASES = { today: 'streak', login: 'settings', me: 'settings' };
+  const ALIASES = { today: 'streak', login: 'settings', me: 'settings', about: 'greeting' };
+  /* 「플랫폼 소개」 상자 안에 들어 있는 페이지들 */
+  const ABOUT_PAGES = ['greeting', 'overview'];
 
   function currentPage() {
     let id = decodeURIComponent(location.hash).replace(/^#\/?/, '');
@@ -546,6 +548,14 @@
       else a.removeAttribute('aria-current');
     });
 
+    /* 「플랫폼 소개」 버튼은 그 안의 페이지를 보고 있을 때 켜집니다 */
+    const aboutBtn = $('#aboutBtn');
+    if (aboutBtn) {
+      if (ABOUT_PAGES.includes(id)) aboutBtn.setAttribute('aria-current', 'page');
+      else aboutBtn.removeAttribute('aria-current');
+    }
+    closeAbout();                               // 메뉴를 고르면 상자를 닫습니다
+
     if (modal && !modal.hidden) closeModal();   // 게임 중에 메뉴를 눌러도 안전하게
     window.scrollTo(0, 0);
 
@@ -556,6 +566,67 @@
     if (page) page.focus({ preventScroll: true });  // 화면 낭독기 사용자를 위해
 
     markReveal();   // 새로 보이게 된 페이지의 요소들도 등장 대상에 넣습니다
+  }
+
+  /* ------------------------------------------------------------
+     「플랫폼 소개」 펼침 상자
+     마우스를 올리면 CSS 가 알아서 펼쳐 줍니다. 여기서 맡는 것은
+     손가락으로 누르는 경우(휴대폰)와 키보드로 여는 경우입니다.
+     ------------------------------------------------------------ */
+  function closeAbout() {
+    const item = $('#aboutMenu');
+    const btn = $('#aboutBtn');
+    if (item) item.classList.remove('is-open');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  /* 상자는 버튼 한가운데에 놓이는 것이 기본입니다. 다만 버튼이 화면 가장자리에
+     가까우면 상자가 화면 밖으로 삐져나가므로, 그만큼 안쪽으로 밀어 줍니다. */
+  function placeAbout() {
+    const drop = $('#aboutDrop');
+    if (!drop) return;
+    drop.style.setProperty('--shift', '0px');
+    const pad = 12;
+    const r = drop.getBoundingClientRect();   /* 숨어 있어도 자리는 잡혀 있습니다 */
+    if (r.width === 0) return;
+    let shift = 0;
+    if (r.left < pad) shift = pad - r.left;
+    else if (r.right > window.innerWidth - pad) shift = window.innerWidth - pad - r.right;
+    drop.style.setProperty('--shift', Math.round(shift) + 'px');
+  }
+
+  function initAboutMenu() {
+    const item = $('#aboutMenu');
+    const btn = $('#aboutBtn');
+    if (!item || !btn) return;
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      placeAbout();
+      const open = item.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    /* 마우스를 올리거나 키보드 초점이 들어오면 CSS 가 알아서 펼칩니다.
+       펼쳐지기 직전에 위치를 한 번 다시 재 둡니다. */
+    item.addEventListener('mouseenter', placeAbout);
+    item.addEventListener('focusin', placeAbout);
+
+    /* 상자 밖을 누르면 닫힙니다 */
+    document.addEventListener('click', (e) => {
+      if (!item.contains(e.target)) closeAbout();
+    });
+
+    /* ESC 키로 닫고, 버튼으로 초점을 돌려 줍니다 */
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (!item.classList.contains('is-open')) return;
+      closeAbout();
+      btn.focus();
+    });
+
+    /* 마우스가 벗어나면 눌러서 연 상태도 함께 닫습니다 */
+    item.addEventListener('mouseleave', () => closeAbout());
   }
 
   function initRouter() {
@@ -609,7 +680,7 @@
   const REVEAL_SEL = [
     '.section__head', '.bignum', '.fig', '.ruralnote', '.panel',
     '.symgroup', '.sym', '.symcta', '.pick', '.topic', '.gcard',
-    '.help__card', '.flamebox', '.statrow', '.setcard', '.mecard'
+    '.help__card', '.flamebox', '.statrow', '.setcard', '.mecard', '.prose'
   ].join(',');
 
   let revealOn = false;
@@ -695,6 +766,7 @@
     inner.classList.remove('is-wrapped');
     const wrapped = nav.offsetTop > logo.offsetTop + logo.offsetHeight / 2;
     inner.classList.toggle('is-wrapped', wrapped);
+    placeAbout();            /* 메뉴가 움직였으니 펼침 상자 위치도 다시 잡습니다 */
   }
 
   function initHeaderWrap() {
@@ -1983,6 +2055,7 @@
   initAuth();            // 예비 방식(기기 저장)의 로그인 정보 복구
   refreshAll();
   initHeaderWrap();
+  initAboutMenu();
   initRouter();          // 페이지 표시는 맨 마지막에 (다른 준비가 끝난 뒤)
   initCloud();           // Firebase 는 준비되는 대로 이어서 붙습니다
 })();

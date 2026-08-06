@@ -5,6 +5,17 @@
 
 /* ---------- 1. 디자인 토큰 ---------- */
 :root {
+  /* 글꼴 세 가지
+     --font-sans : 본문 전부. 한국어는 Pretendard 로 나옵니다.
+     --font-logo : 로고 「말랑뇌」. 붓으로 휘날려 쓴 손글씨.
+     --font-cute : 큰 인사말. 동글동글 귀여운 글씨.
+     뒤쪽 글꼴은 앞 글꼴에 없는 글자(일본어·중국어 등)를 대신 그려 줍니다. */
+  --font-sans: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo",
+               "Noto Sans KR", "Hiragino Sans", "Yu Gothic",
+               "Microsoft YaHei", "맑은 고딕", "Malgun Gothic", system-ui, sans-serif;
+  --font-logo: "Nanum Brush Script", var(--font-sans);
+  --font-cute: "Jua", var(--font-sans);
+
   /* 파스텔 팔레트 */
   --lav-50:  #faf8ff;
   --lav-100: #f3eeff;
@@ -125,8 +136,7 @@ html[data-theme="dark"] .tip__why { background: var(--lav-100); }
 
 body {
   margin: 0;
-  font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR",
-               "맑은 고딕", "Malgun Gothic", system-ui, sans-serif;
+  font-family: var(--font-sans);
   color: var(--ink);
   background: var(--lav-50);
   line-height: 1.75;
@@ -214,27 +224,111 @@ button { font-family: inherit; cursor: pointer; }
   font-size: calc(1.25rem * var(--text-scale)); font-weight: 800; color: var(--ink);
   display: flex; flex-direction: column; line-height: 1.2;
 }
-.logo__text small { font-size: calc(0.62rem * var(--text-scale)); font-weight: 600; color: var(--ink-mute); }
+/* 「말랑뇌」는 붓으로 휘날려 쓴 손글씨.
+   붓글씨는 같은 크기라도 작아 보여서 1.5배쯤 키우고, 굵기는 400 하나뿐입니다. */
+.logo__name {
+  font-family: var(--font-logo);
+  font-weight: 400;
+  font-size: 1.5em;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  padding-top: 0.06em;
+}
+.logo__text small { font-size: calc(0.62rem * var(--text-scale)); font-weight: 600; color: var(--ink-mute); margin-top: 0.15em; }
 
-.nav { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-left: auto; }
-.nav a {
+.nav { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-left: auto; align-items: center; }
+
+/* 메뉴 알약 하나. 바로 아래에 놓인 링크와 「플랫폼 소개」 버튼이 같은 모양입니다.
+   ( > 를 쓴 이유: 펼쳐지는 상자 안의 링크까지 알약이 되면 안 되기 때문입니다 ) */
+.nav > a,
+.nav__btn {
   padding: 0.55rem 1.05rem;
   border-radius: var(--r-pill);
   font-weight: 700; font-size: calc(0.95rem * var(--text-scale));
   color: var(--ink-soft);
   transition: background 0.18s, color 0.18s, transform 0.18s;
 }
-.nav a:hover, .nav a:focus-visible {
+.nav > a:hover, .nav > a:focus-visible,
+.nav__btn:hover, .nav__btn:focus-visible {
   background: var(--lav-200); color: var(--lav-700);
   text-decoration: none; transform: translateY(-2px);
 }
 /* 지금 보고 있는 페이지 표시 */
-.nav a[aria-current="page"] {
+.nav > a[aria-current="page"],
+.nav__btn[aria-current="page"] {
   background: linear-gradient(135deg, var(--lav-500), var(--lav-600));
   color: #fff;
   box-shadow: 0 6px 14px rgba(139, 111, 224, 0.32);
 }
-.nav a[aria-current="page"]:hover { background: var(--lav-600); color: #fff; }
+.nav > a[aria-current="page"]:hover,
+.nav__btn[aria-current="page"]:hover { background: var(--lav-600); color: #fff; }
+
+/* ---------- 플랫폼 소개: 마우스를 올리면 펼쳐지는 하얀 상자 ---------- */
+.nav__item { position: relative; display: flex; }
+
+.nav__btn {
+  background: none; border: none;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  line-height: inherit;
+  font-family: inherit;
+}
+.nav__caret {
+  font-size: 0.72em; line-height: 1;
+  transition: transform 0.2s;
+}
+.nav__btn[aria-expanded="true"] .nav__caret { transform: rotate(180deg); }
+
+/* --shift: 상자가 화면 밖으로 나가려 할 때 app.js 가 넣어 주는 보정값입니다 */
+.nav__drop {
+  --shift: 0px;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  margin-left: var(--shift);      /* 보정은 margin 으로 — 부드럽게 미끄러지지 않고 즉시 적용됩니다 */
+  transform: translate(-50%, -0.5rem);
+  min-width: 12rem;
+  max-width: calc(100vw - 1.5rem);
+  padding: 0.6rem;
+  background: var(--white);
+  border: 2px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: 0 18px 40px rgba(63, 55, 87, 0.18);
+  display: flex; flex-direction: column; gap: 0.2rem;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+  z-index: 120;
+}
+/* 눌러서 열기 — 손가락·키보드 모두 이 방법을 씁니다 */
+.nav__item.is-open .nav__drop {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+/* 마우스가 있는 기기에서만 「올려서 열기」를 켭니다.
+   휴대폰에서 이 규칙이 살아 있으면 한 번 누른 뒤 상자가 계속 붙어 있게 됩니다. */
+@media (hover: hover) and (pointer: fine) {
+  .nav__item:hover .nav__drop {
+    opacity: 1; visibility: visible; pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+}
+/* 버튼과 상자 사이의 빈 틈에서도 마우스가 끊기지 않도록 다리를 놓습니다 */
+.nav__drop::before {
+  content: ""; position: absolute;
+  left: 0; right: 0; top: -0.6rem; height: 0.6rem;
+}
+.nav__drop a {
+  display: block;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--r-md);
+  font-weight: 700; font-size: calc(0.95rem * var(--text-scale));
+  color: var(--ink);
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.nav__drop a:hover, .nav__drop a:focus-visible {
+  background: var(--lav-100); color: var(--lav-700); text-decoration: none;
+}
+.nav__drop a[aria-current="page"] { background: var(--lav-200); color: var(--lav-700); }
 
 .fontctl {
   display: flex; align-items: center; gap: 0.3rem;
@@ -313,7 +407,16 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: var(--shadow-sm);
   margin-bottom: 1.6rem;
 }
-.hero h1 { font-size: calc(clamp(2.1rem, 5.5vw, 3.1rem) * var(--text-scale)); font-weight: 900; margin-bottom: 1.2rem; }
+/* 인사말은 동글동글 귀여운 글씨(Jua).
+   굵기가 400 하나뿐이라 900 을 주면 억지로 굵어져 뭉개집니다. */
+.hero h1 {
+  font-family: var(--font-cute);
+  font-size: calc(clamp(2.2rem, 5.8vw, 3.3rem) * var(--text-scale));
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  margin-bottom: 1.2rem;
+}
 .hero__desc { font-size: calc(1.1rem * var(--text-scale)); color: var(--ink-soft); font-weight: 500; margin-bottom: 2.2rem; }
 .hero__cta { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
 
@@ -1050,6 +1153,30 @@ button { font-family: inherit; cursor: pointer; }
 .toast[hidden] { display: none; }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 18px); } }
 
+/* ---------- 12-B. 플랫폼 소개 (인삿말 · 개요) ----------
+   글은 나중에 채웁니다. 지금은 읽기 좋은 폭과 「준비 중」 자리만 잡아 둡니다. */
+.prose {
+  max-width: 46rem;
+  margin: 0 auto;
+  font-size: calc(1.05rem * var(--text-scale));
+  color: var(--ink-soft);
+  line-height: 1.9;
+}
+.prose p + p { margin-top: 1.1rem; }
+.prose h3 {
+  font-size: calc(1.25rem * var(--text-scale));
+  color: var(--ink); margin: 2rem 0 0.8rem;
+}
+.prose__soon {
+  background: var(--white);
+  border: 2px dashed var(--lav-200);
+  border-radius: var(--r-xl);
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--ink-mute);
+  font-weight: 700;
+}
+
 /* ---------- 13. 푸터 ---------- */
 .footer {
   background: var(--lav-100);
@@ -1060,6 +1187,7 @@ button { font-family: inherit; cursor: pointer; }
   font-size: calc(0.92rem * var(--text-scale));
 }
 .footer__logo { font-size: calc(1.3rem * var(--text-scale)); font-weight: 900; color: var(--ink); margin-bottom: 0.8rem; }
+.footer__logo span { font-family: var(--font-logo); font-weight: 400; font-size: 1.45em; line-height: 1; }
 .footer p + p { margin-top: 0.8rem; }
 .footer__small { font-size: calc(0.8rem * var(--text-scale)); color: var(--ink-mute); }
 
@@ -1074,6 +1202,13 @@ button { font-family: inherit; cursor: pointer; }
   html { font-size: 18px; }
   .header__inner { padding: 0.6rem 1rem; }
   .nav { order: 3; width: 100%; margin-left: 0; justify-content: center; }
+  /* 작은 화면에서는 펼쳐지는 상자가 화면 밖으로 나가지 않도록
+     메뉴 전체 폭에 맞춰 가운데로 붙입니다. */
+  .nav__item { position: static; }
+  .nav__drop {
+    left: 50%; right: auto;
+    min-width: min(20rem, calc(100vw - 2rem));
+  }
   .fontctl__label { display: none; }
   .flame__num { font-size: calc(3.6rem * var(--text-scale)); }
   .flame__emoji { font-size: calc(3rem * var(--text-scale)); }
@@ -1398,18 +1533,32 @@ html[data-style="simple"] .btn:hover { transform: none; }
 html[data-style="simple"] .btn:active { transform: none; }
 
 /* ---------- 심플: 메뉴 ---------- */
-html[data-style="simple"] .nav a {
+html[data-style="simple"] .nav > a,
+html[data-style="simple"] .nav__btn {
   letter-spacing: 0.04em;
   border-bottom: 2px solid transparent;
   border-radius: 0;
 }
-html[data-style="simple"] .nav a:hover { background: transparent; color: var(--ink); transform: none; }
-html[data-style="simple"] .nav a[aria-current="page"] {
+html[data-style="simple"] .nav > a:hover,
+html[data-style="simple"] .nav__btn:hover { background: transparent; color: var(--ink); transform: none; }
+html[data-style="simple"] .nav > a[aria-current="page"],
+html[data-style="simple"] .nav__btn[aria-current="page"] {
   background: transparent; color: var(--ink);
   border-bottom-color: var(--lemon-600);   /* 노란 밑줄 — 그들의 시그니처 */
   box-shadow: none;
 }
-html[data-style="simple"] .nav a[aria-current="page"]:hover { background: transparent; color: var(--ink); }
+html[data-style="simple"] .nav > a[aria-current="page"]:hover,
+html[data-style="simple"] .nav__btn[aria-current="page"]:hover { background: transparent; color: var(--ink); }
+
+/* 심플에서는 펼쳐지는 상자도 각지게 — 한세실업 홈페이지처럼 */
+html[data-style="simple"] .nav__drop {
+  border-width: var(--hairline);
+  box-shadow: 0 10px 24px rgba(22, 32, 45, 0.12);
+  padding: 0.35rem;
+}
+html[data-style="simple"] .nav__drop a { border-radius: 0; letter-spacing: 0.03em; }
+html[data-style="simple"] .nav__drop a:hover { background: var(--lav-100); color: var(--ink); }
+html[data-style="simple"] .nav__drop a[aria-current="page"] { background: var(--lav-200); color: var(--ink); }
 
 /* ---------- 심플: 움직임 줄이기 ---------- */
 html[data-style="simple"] .pick:hover,
