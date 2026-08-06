@@ -142,10 +142,6 @@
     saveProfiles(list);
   }
 
-  function removeProfile(id) {
-    saveProfiles(loadProfiles().filter(p => p.id !== id));
-  }
-
   function avatarHtml(p, cls) {
     return p && p.picture
       ? `<img class="${cls}" src="${p.picture}" alt="" referrerpolicy="no-referrer" />`
@@ -188,7 +184,14 @@
         google.accounts.id.disableAutoSelect();
       }
     } catch (e) {}
-    if (cloud && cloud.user) { try { cloud.signOut(); } catch (e) {} }
+    /* 서버에 저장된 계정이면, 이 기기에 남은 사본은 지웁니다.
+       (여러 사람이 함께 쓰는 태블릿에서 앞사람 기록이 남지 않도록)
+       인터넷 없이 쓰는 예비 방식에서는 이게 유일한 사본이라 지우지 않습니다. */
+    if (cloud && cloud.user && currentUser && currentUser.kind === 'firebase') {
+      store.clear();
+      try { cloud.signOut(); } catch (e) {}
+    }
+
     currentUser = null;
     prefs.del('session');
     userId = 'guest';
@@ -284,7 +287,11 @@
   }
 
   function scheduleCloudSave() {
-    if (cloud && cloud.user && currentUser) cloud.save(collectLocal());
+    if (!cloud || !cloud.user || !currentUser) return;
+    /* 로그아웃·계정 전환 중에는 저장 칸과 로그인 계정이 어긋날 수 있습니다.
+       이때 올리면 남의(또는 빈) 기록이 서버를 덮어쓰므로 건너뜁니다. */
+    if (userId !== 'fb' + cloud.user.uid) return;
+    cloud.save(collectLocal());
   }
 
   /* 로그인이 끝난 뒤 공통 처리 */
@@ -1521,7 +1528,7 @@
             </div>
           </div>
           <div class="me__actions">
-            <button type="button" class="btn btn--primary" id="btnSwitch">🔄 다른 사람으로 바꾸기</button>
+            <button type="button" class="btn btn--ghost" id="btnSignOut">🚪 로그아웃</button>
           </div>
         </div>
 
@@ -1540,11 +1547,11 @@
         </div>
 
         <div class="mecard">
-          <p>기록은 <b>지금 쓰는 이 기기 안에만</b> 저장돼요.<br />
-             다른 휴대폰이나 컴퓨터에서는 보이지 않습니다.</p>
+          <p>${cloud && cloud.user
+            ? '기록이 <b>서버에 안전하게 저장</b>돼요.<br />휴대폰이든 컴퓨터든 같은 이메일로 들어오면 그대로 보입니다.'
+            : '기록은 <b>지금 쓰는 이 기기 안에만</b> 저장돼요.<br />다른 휴대폰이나 컴퓨터에서는 보이지 않습니다.'}</p>
           <div class="me__actions">
-            <button type="button" class="btn btn--danger" id="btnReset">기록만 지우기</button>
-            <button type="button" class="btn btn--danger" id="btnDelete">이 사람 지우기</button>
+            <button type="button" class="btn btn--danger" id="btnReset">기록 모두 지우기</button>
           </div>
         </div>`;
     } else {
@@ -1553,25 +1560,20 @@
       renderLoginFlow(body);
     }
 
-    const switchBtn = $('#btnSwitch');
-    if (switchBtn) switchBtn.onclick = () => { signOut(); };
+    const outBtn = $('#btnSignOut');
+    if (outBtn) outBtn.onclick = () => { signOut(); location.hash = '#home'; };
 
     const resetBtn = $('#btnReset');
-    if (resetBtn) resetBtn.onclick = () => {
+    if (resetBtn) resetBtn.onclick = async () => {
       if (!window.confirm(`${currentUser.name}님의 스트리크와 게임 기록이 모두 지워집니다. 정말 지울까요?`)) return;
       store.clear();
+      /* 서버에도 빈 상태를 올려야 다른 기기에서 되살아나지 않습니다 */
+      if (cloud && cloud.user) {
+        cloud.save(collectLocal());
+        try { await cloud.flush(); } catch (e) {}
+      }
       refreshAll();
       toast('기록을 모두 지웠어요.');
-    };
-
-    const delBtn = $('#btnDelete');
-    if (delBtn) delBtn.onclick = () => {
-      if (!window.confirm(`${currentUser.name}님을 목록에서 지웁니다. 기록도 함께 사라져요. 계속할까요?`)) return;
-      const id = currentUser.id;
-      store.clear();
-      removeProfile(id);
-      signOut(true);
-      toast('지웠어요.');
     };
   }
 
