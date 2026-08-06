@@ -1680,3 +1680,51 @@ html[data-style="simple"] .row__f { background: var(--lav-600); }
 html[data-style="simple"] .row--peak .row__f { background: var(--lemon-600); }
 html[data-style="simple"] .row--peak .row__v { color: var(--lemon-600); }
 html[data-style="simple"] .fig__n { color: var(--ink); }
+
+/* ---------- 20. 가장 중요한 숫자 (박스 없이) ---------- */
+.bignum {
+  max-width: var(--maxw);
+  margin: 0.5rem auto 2.4rem;
+  text-align: center;
+}
+.bignum__n {
+  display: block;
+  font-size: calc(clamp(3.4rem, 11vw, 6.4rem) * var(--text-scale));
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  color: var(--lav-600);
+}
+.bignum__c {
+  display: block;
+  margin-top: 0.9rem;
+  font-size: calc(1.05rem * var(--text-scale));
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+html[data-style="simple"] .bignum__n { color: var(--ink); letter-spacing: -0.03em; }
+
+/* ---------- 21. 스크롤하면 아래에서 올라오는 등장 ----------
+   JS 가 붙었을 때만 숨겼다가 보여 줍니다.
+   (JS 가 없거나 실패하면 그냥 처음부터 보입니다) */
+html.has-reveal .reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.75s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.75s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+html.has-reveal .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+/* 큰 숫자는 조금 더 크게 움직여 눈에 들어오게 */
+html.has-reveal .bignum.reveal { transform: translateY(30px) scale(0.96); }
+html.has-reveal .bignum.reveal.is-in { transform: none; }
+
+/* 움직임을 불편해하는 분에게는 애니메이션을 끕니다 */
+@media (prefers-reduced-motion: reduce) {
+  html.has-reveal .reveal,
+  html.has-reveal .bignum.reveal {
+    opacity: 1; transform: none; transition: none;
+  }
+}

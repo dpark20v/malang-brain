@@ -554,6 +554,8 @@
 
     const page = document.getElementById(id);
     if (page) page.focus({ preventScroll: true });  // 화면 낭독기 사용자를 위해
+
+    markReveal();   // 새로 보이게 된 페이지의 요소들도 등장 대상에 넣습니다
   }
 
   function initRouter() {
@@ -596,6 +598,80 @@
       b.setAttribute('aria-pressed', String(b.dataset.styleSet === name));
     });
     checkHeaderWrap();       // 모양이 바뀌면 줄바꿈 여부도 달라집니다
+  }
+
+  /* ============================================================
+     1-A. 스크롤하면 아래에서 올라오는 등장 효과
+     ------------------------------------------------------------
+     화면에 들어오는 순간 한 번만 나타나게 합니다.
+     한 줄에 여러 개가 있으면 살짝씩 시차를 둬 차례로 올라옵니다.
+     ============================================================ */
+  const REVEAL_SEL = [
+    '.section__head', '.bignum', '.fig', '.ruralnote', '.panel',
+    '.symgroup', '.sym', '.symcta', '.pick', '.topic', '.gcard',
+    '.help__card', '.flamebox', '.statrow', '.setcard', '.mecard'
+  ].join(',');
+
+  let revealOn = false;
+  let revealTicking = false;
+
+  /* 등장 대상으로 표시 (같은 줄에 여럿이면 차례로 올라오도록 시차) */
+  function markReveal() {
+    if (!revealOn) return;
+    const counts = new Map();
+    $$(REVEAL_SEL).forEach((el) => {
+      if (el.classList.contains('reveal') || el.classList.contains('is-in')) return;
+      el.classList.add('reveal');
+      const parent = el.parentElement;
+      const i = counts.get(parent) || 0;
+      counts.set(parent, i + 1);
+      if (i > 0) el.style.transitionDelay = Math.min(i * 0.08, 0.32) + 's';
+    });
+    checkReveal();
+  }
+
+  /* 화면에 들어온 것을 보이게 합니다.
+     스크롤 위치를 직접 재는 방식이라, 탭이 잠깐 가려져 있어도
+     다시 보는 순간 정상 동작합니다. */
+  function checkReveal() {
+    revealTicking = false;
+    if (!revealOn) return;
+    const h = window.innerHeight || 800;
+    $$('.reveal').forEach((el) => {
+      if (el.classList.contains('is-in')) return;
+      const r = el.getBoundingClientRect();
+      if (r.width === 0 && r.height === 0) return;      // 숨은 페이지의 요소는 건너뜀
+      if (r.top < h * 0.92 && r.bottom > 0) el.classList.add('is-in');
+    });
+  }
+
+  function queueReveal() {
+    if (revealTicking) return;
+    revealTicking = true;
+    requestAnimationFrame(checkReveal);
+  }
+
+  /* 안전장치 — 무슨 일이 있어도 글이 사라진 채로 남지 않게 합니다 */
+  function revealEverything() {
+    $$('.reveal').forEach((el) => { el.style.transitionDelay = '0s'; el.classList.add('is-in'); });
+  }
+
+  function initReveal() {
+    try {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    } catch (e) {}
+
+    revealOn = true;
+    document.documentElement.classList.add('has-reveal');
+
+    window.addEventListener('scroll', queueReveal, { passive: true });
+    window.addEventListener('resize', queueReveal);
+    document.addEventListener('visibilitychange', queueReveal);
+
+    markReveal();
+
+    /* 혹시 스크롤 신호를 못 받는 환경이면 10초 뒤 전부 보이게 */
+    setTimeout(revealEverything, 10000);
   }
 
   /* 저장된 설정을 화면에 먼저 반영 (깜빡임 없이) */
@@ -1334,6 +1410,7 @@
         </article>`;
     }).join('');
 
+    markReveal();
     $$('[data-game]', grid).forEach((btn) => {
       btn.onclick = () => {
         const g = GAMES.find(x => x.id === btn.dataset.game);
@@ -1902,6 +1979,7 @@
   migrateLegacy();
   initPrefs();
   initSettings();
+  initReveal();
   initAuth();            // 예비 방식(기기 저장)의 로그인 정보 복구
   refreshAll();
   initHeaderWrap();
