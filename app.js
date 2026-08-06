@@ -1512,31 +1512,12 @@
   /* ============================================================
      12. 계정 칩 · 내 기록 페이지
      ============================================================ */
+  /* 로그인 상태가 화면에 드러나는 곳들을 한 번에 갱신합니다.
+     프로필은 헤더에 두지 않고 설정 안에서만 보여 줍니다. */
   function renderAccount() {
-    const box = $('#account');
-    if (!box) return;
     const streak = calcStreak();
 
-    if (currentUser) {
-      box.innerHTML = `
-        <a class="account__btn" href="#me">
-          ${avatarHtml(currentUser, 'account__avatar')}
-          <span class="account__name">${currentUser.name}</span>
-          <span class="account__flame">🔥${streak}</span>
-        </a>`;
-    } else {
-      box.innerHTML = `
-        <a class="account__btn" href="#me">
-          <span class="account__avatar">👤</span>
-          <span class="account__name">${t('log.btn')}</span>
-        </a>`;
-    }
-
-    /* 헤더의 계정 칩을 누르면 설정의 「계정」 항목이 바로 열리도록 */
-    const chip = $('.account__btn', box);
-    if (chip) chip.addEventListener('click', () => { setTab = 'account'; });
-
-    renderSetProfile();      // 왼쪽 바 맨 위 프로필도 함께 갱신
+    renderSetProfile();      // 설정 왼쪽 바 맨 위 프로필
 
     /* 푸터의 저장 위치 안내 — 로그인 여부에 따라 사실이 달라집니다 */
     const priv = $('#footerPrivacy');

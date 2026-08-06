@@ -768,30 +768,6 @@ button { font-family: inherit; cursor: pointer; }
 }
 .signlist li::before { content: "•"; color: var(--lav-500); font-weight: 900; margin-right: 0.5rem; }
 
-/* ---------- 12-1. 헤더 오른쪽 도구 & 계정 칩 ---------- */
-.header__tools { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-
-.account { display: flex; align-items: center; }
-.account__btn {
-  display: flex; align-items: center; gap: 0.55rem;
-  background: var(--white);
-  border: 2px solid var(--line);
-  border-radius: var(--r-full);
-  padding: 0.32rem 0.9rem 0.32rem 0.4rem;
-  font-weight: 800; font-size: calc(0.88rem * var(--text-scale)); color: var(--ink);
-  box-shadow: var(--shadow-sm);
-  text-decoration: none;
-  transition: border-color 0.18s, transform 0.18s;
-}
-.account__btn:hover { text-decoration: none; border-color: var(--lav-300); transform: translateY(-2px); }
-.account__avatar {
-  width: 2.1rem; height: 2.1rem; border-radius: var(--r-full);
-  object-fit: cover; background: var(--lav-200);
-  display: grid; place-items: center; font-size: calc(1.1rem * var(--text-scale)); flex: none;
-}
-.account__name { max-width: 8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.account__flame { color: var(--peach-600); font-weight: 900; }
-
 /* ---------- 12-2. 내 기록 / 로그인 ---------- */
 .me { max-width: 780px; margin: 0 auto; display: grid; gap: 1.4rem; }
 
@@ -1096,9 +1072,7 @@ button { font-family: inherit; cursor: pointer; }
   html { font-size: 18px; }
   .header__inner { padding: 0.6rem 1rem; }
   .nav { order: 3; width: 100%; margin-left: 0; justify-content: center; }
-  .header__tools { margin-left: auto; }
   .fontctl__label { display: none; }
-  .account__name { max-width: 5rem; }
   .flame__num { font-size: calc(3.6rem * var(--text-scale)); }
   .flame__emoji { font-size: calc(3rem * var(--text-scale)); }
   .panel { padding: 1.4rem 1.1rem; }
@@ -1127,7 +1101,6 @@ button { font-family: inherit; cursor: pointer; }
 .gcard__emoji    { font-size: 2.6rem; }   /* 4.6rem 동그라미 안 */
 .pick__emoji     { font-size: 2.4rem; }   /* 4.4rem 동그라미 안 */
 .profile__pic    { font-size: 2rem; }     /* 4.6rem 동그라미 안 */
-.account__avatar { font-size: 1.1rem; }   /* 2.1rem 동그라미 안 */
 .check__box      { font-size: 1.2rem; }   /* 2.3rem 네모 안 (✓) */
 .modal__close    { font-size: 1.1rem; }   /* 2.8rem 동그라미 안 (✕) */
 .pweye           { font-size: 1.2rem; }   /* 2.6rem 버튼 안 (👁️) */
