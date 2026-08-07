@@ -220,6 +220,14 @@ button { font-family: inherit; cursor: pointer; }
   display: grid; place-items: center;
   box-shadow: var(--shadow-sm);
 }
+/* 로고가 이모지가 아니라 그림일 때.
+   그림이 스스로 모양을 갖고 있어서 동그란 배경과 그림자는 뺍니다. */
+.logo__face--img {
+  background: none; box-shadow: none;
+  width: 3.2rem; height: 3.2rem;
+}
+.logo__face--img img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
 .logo__text {
   font-size: calc(1.25rem * var(--text-scale)); font-weight: 800; color: var(--ink);
   display: flex; flex-direction: column; line-height: 1.2;
@@ -613,38 +621,89 @@ button { font-family: inherit; cursor: pointer; }
 }
 .gcard .btn { width: 100%; }
 
-/* ---------- 9. 모달 ---------- */
-.modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 1rem; }
-.modal[hidden] { display: none; }
-.modal__backdrop { position: absolute; inset: 0; background: var(--backdrop); backdrop-filter: blur(4px); }
-.modal__panel {
-  position: relative;
-  background: var(--lav-50);
-  border-radius: var(--r-xl);
-  width: min(680px, 100%);
-  max-height: 92vh; overflow: auto;
-  box-shadow: var(--shadow-lg);
-  animation: pop-in 0.25s ease-out;
-}
-@keyframes pop-in { from { opacity: 0; transform: scale(0.94) translateY(12px); } }
+/* ---------- 9. 게임 페이지 ----------
+   예전에는 화면 가운데 작은 창이었지만, 이제 한 페이지를 통째로 씁니다.
+   눈이 어두운 분도 크게 보시도록 넉넉하게 잡았습니다. */
+.section--game { padding-top: 2rem; max-width: 900px; margin: 0 auto; }
 
-.modal__head {
-  position: sticky; top: 0; z-index: 2;
-  display: flex; align-items: center; gap: 1rem;
-  padding: 1.2rem 1.5rem;
-  background: var(--lav-100);
-  border-bottom: 2px solid var(--lav-200);
+.gameback {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-weight: 800; font-size: calc(0.95rem * var(--text-scale));
+  color: var(--ink-soft);
+  padding: 0.55rem 1.05rem;
+  border-radius: var(--r-pill);
+  background: var(--white); border: 2px solid var(--line);
 }
-.modal__head h3 { font-size: calc(1.3rem * var(--text-scale)); font-weight: 900; flex: 1; }
-.modal__close {
-  border: none; background: var(--white); color: var(--ink-soft);
-  width: 2.8rem; height: 2.8rem; border-radius: var(--r-full);
-  font-size: calc(1.1rem * var(--text-scale)); font-weight: 800; flex: none;
+.gameback:hover { text-decoration: none; color: var(--lav-700); border-color: var(--lav-300); }
+
+.gamehead { text-align: center; margin: 1.6rem 0 1.8rem; }
+.gamehead__emoji { font-size: calc(3rem * var(--text-scale)); display: block; line-height: 1; }
+.gamehead__t {
+  font-size: calc(clamp(1.7rem, 4vw, 2.3rem) * var(--text-scale));
+  font-weight: 900; margin-top: 0.6rem;
+}
+.gamehead__d { font-size: calc(1.02rem * var(--text-scale)); color: var(--ink-soft); margin-top: 0.5rem; }
+.gamehead__best {
+  display: inline-block; margin-top: 0.9rem;
+  background: var(--lemon-100); color: var(--lemon-600);
+  border-radius: var(--r-pill); padding: 0.4rem 1rem;
+  font-size: calc(0.88rem * var(--text-scale)); font-weight: 800;
+}
+
+/* 난이도 고르기 */
+.levels { text-align: center; margin-bottom: 1.6rem; }
+.levels__label { font-size: calc(0.95rem * var(--text-scale)); font-weight: 800; color: var(--ink); }
+.levels__row { display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.7rem; }
+.lvbtn {
+  display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+  min-width: 6.5rem;
+  padding: 0.75rem 1.2rem;
+  border: 3px solid var(--line); background: var(--white);
+  border-radius: var(--r-lg);
+  font-family: inherit; font-weight: 800; color: var(--ink);
+  font-size: calc(0.92rem * var(--text-scale));
+  transition: transform 0.15s, border-color 0.15s, background 0.15s;
+}
+.lvbtn__n { color: var(--lav-500); letter-spacing: 0.14em; font-size: 0.9em; }
+.lvbtn:hover { transform: translateY(-2px); border-color: var(--lav-300); }
+.lvbtn[aria-pressed="true"] {
+  background: var(--lav-500); border-color: var(--lav-500); color: #fff;
+  box-shadow: 0 6px 16px rgba(139, 111, 224, 0.28);
+}
+.lvbtn[aria-pressed="true"] .lvbtn__n { color: #fff; }
+.levels__note { font-size: calc(0.8rem * var(--text-scale)); color: var(--ink-mute); margin-top: 0.6rem; }
+
+/* 게임이 실제로 그려지는 자리 */
+.gamestage {
+  background: var(--white);
+  border: 3px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 2rem 1.5rem 2.4rem;
   box-shadow: var(--shadow-sm);
-  transition: background 0.15s, transform 0.15s;
+  min-height: 20rem;
 }
-.modal__close:hover { background: var(--peach-100); transform: rotate(90deg); }
-.modal__body { padding: 1.8rem 1.5rem 2.2rem; }
+
+/* 두 판을 채우면 나오는 알림 */
+.result__bonus {
+  margin-top: 1rem; padding: 0.9rem 1.1rem;
+  background: var(--mint-100); border-radius: var(--r-lg);
+  color: var(--mint-600); font-weight: 800;
+  font-size: calc(0.95rem * var(--text-scale));
+}
+.result__more {
+  margin-top: 1rem; font-size: calc(0.92rem * var(--text-scale));
+  color: var(--ink-mute); font-weight: 700;
+}
+
+html[data-style="simple"] .gamestage,
+html[data-style="simple"] .lvbtn,
+html[data-style="simple"] .gameback { border-width: var(--hairline); }
+html[data-style="simple"] .lvbtn[aria-pressed="true"] { box-shadow: none; }
+
+@media (max-width: 560px) {
+  .gamestage { padding: 1.4rem 0.9rem 1.8rem; }
+  .lvbtn { min-width: 5.4rem; padding: 0.7rem 0.9rem; }
+}
 
 /* ---------- 10. 게임 내부 공통 UI ---------- */
 .stage { text-align: center; }
@@ -1366,6 +1425,7 @@ html[data-theme="dark"] .pagehero__desc { color: rgba(255, 255, 255, 0.82); }
 }
 .footer__logo { font-size: calc(1.3rem * var(--text-scale)); font-weight: 900; color: var(--ink); margin-bottom: 0.8rem; }
 .footer__logo span { font-family: var(--font-logo); font-weight: 400; font-size: 1.4em; line-height: 1; }
+.footer__mark { height: 1.6em; width: auto; vertical-align: -0.45em; }
 .footer p + p { margin-top: 0.8rem; }
 .footer__small { font-size: calc(0.8rem * var(--text-scale)); color: var(--ink-mute); }
 
@@ -1391,7 +1451,6 @@ html[data-theme="dark"] .pagehero__desc { color: rgba(255, 255, 255, 0.82); }
   .section { padding: 3.5rem 1rem; }
   .hero { padding: 3.5rem 1rem 4rem; }
   .topic { padding: 1.5rem 1.2rem; }
-  .modal__body { padding: 1.4rem 1rem 1.8rem; }
   .memory-grid { grid-template-columns: repeat(3, 1fr); }
   .bigdigit { font-size: calc(4rem * var(--text-scale)); height: 6.5rem; }
   .quiz__q { font-size: calc(2.2rem * var(--text-scale)); }
@@ -1413,7 +1472,6 @@ html[data-theme="dark"] .pagehero__desc { color: rgba(255, 255, 255, 0.82); }
 .pick__emoji     { font-size: 2.4rem; }   /* 4.4rem 동그라미 안 */
 .profile__pic    { font-size: 2rem; }     /* 4.6rem 동그라미 안 */
 .check__box      { font-size: 1.2rem; }   /* 2.3rem 네모 안 (✓) */
-.modal__close    { font-size: 1.1rem; }   /* 2.8rem 동그라미 안 (✕) */
 .pweye           { font-size: 1.2rem; }   /* 2.6rem 버튼 안 (👁️) */
 .steps li::before { font-size: 0.8rem; }  /* 1.7rem 동그라미 안 (숫자) */
 
@@ -1730,10 +1788,6 @@ html[data-style="simple"] .today__progress,
 html[data-style="simple"] .check,
 html[data-style="simple"] .badge-item,
 html[data-style="simple"] .opt,
-html[data-style="simple"] .modal__panel {
-  border-width: var(--hairline);
-  border-color: var(--line);
-}
 
 /* ---------- 심플: 납작하게 (그라데이션 제거) ---------- */
 html[data-style="simple"] .hero { background: var(--lav-50); }

@@ -14,6 +14,7 @@
 
   const CFG = window.MALANG_CONFIG || {};
   const STREAK_GOAL = CFG.STREAK_GOAL || 3;      // 하루 몇 개를 해내면 "달성"인지
+  const GAME_STREAK_MIN = 2;                     // 게임을 이만큼 끝내면 그날은 "달성"
 
   const readJSON = (fullKey, fallback) => {
     try {
@@ -236,11 +237,19 @@
       if (v) best[g.id] = v;
     });
 
+    /* 날짜별 게임 판수도 함께 보냅니다 (다른 기기에서도 보너스가 이어지도록) */
+    const games = {};
+    store.keys().forEach((k) => {
+      const name = k.replace(store.prefix(), '');
+      if (name.indexOf('games:') === 0) games[name.slice(6)] = store.get(name, 0);
+    });
+
     return {
       profile: {
         name: (currentUser && currentUser.name) || '',
         loginId: (currentUser && currentUser.loginId) || ''
       },
+      games: games,
       log: store.get('log', {}),
       check: check,
       best: best,
@@ -251,6 +260,12 @@
   /* 서버 기록을 이 기기 기록과 합칩니다 (어느 쪽 것도 잃지 않게) */
   function applyCloud(data) {
     if (!data) return;
+
+    /* 날짜별 게임 판수: 큰 쪽을 남김 */
+    Object.keys(data.games || {}).forEach((d) => {
+      const mine = Number(store.get('games:' + d, 0)) || 0;
+      writeJSON(store.prefix() + 'games:' + d, Math.max(mine, Number(data.games[d]) || 0));
+    });
 
     /* 날짜별 실천 개수: 큰 쪽을 남김 */
     const log = store.get('log', {});
@@ -523,19 +538,27 @@
      예) #play → 두뇌게임 페이지. 뒤로가기·새로고침도 그대로 유지돼요.
      ============================================================ */
   const PAGES = ['home', 'greeting', 'overview',
-                 'learn-cog', 'learn-move', 'learn-social', 'learn-life',
-                 'play', 'streak', 'help', 'settings'];
+                 'learn-cog', 'learn-move', 'learn-social', 'learn-life', 'learn-today',
+                 'play', 'game', 'streak', 'help', 'settings'];
   /* 예전 주소도 계속 열리도록 — 「배우기」는 한 페이지였다가 넷으로 나뉘었습니다 */
   const ALIASES = { today: 'streak', login: 'settings', me: 'settings', about: 'greeting',
                     learn: 'learn-cog' };
   /* 「플랫폼 소개」 상자 안에 들어 있는 페이지들 */
   const ABOUT_PAGES = ['greeting', 'overview'];
   /* 「배우기」 상자 안에 들어 있는 페이지들 */
-  const LEARN_PAGES = ['learn-cog', 'learn-move', 'learn-social', 'learn-life'];
+  const LEARN_PAGES = ['learn-cog', 'learn-move', 'learn-social', 'learn-life', 'learn-today'];
+
+  /* 게임 한 판은 「#game-reverse」 처럼 게임 이름이 붙은 주소를 씁니다.
+     어떤 게임이든 화면은 하나(#game)를 함께 씁니다. */
+  function currentGameId() {
+    const raw = decodeURIComponent(location.hash).replace(/^#\/?/, '');
+    return raw.indexOf('game-') === 0 ? raw.slice(5) : null;
+  }
 
   function currentPage() {
     let id = decodeURIComponent(location.hash).replace(/^#\/?/, '');
     if (ALIASES[id]) id = ALIASES[id];
+    if (id.indexOf('game-') === 0) return 'game';
     return PAGES.includes(id) ? id : 'home';
   }
 
@@ -567,9 +590,13 @@
     }
     closeDrops();                               // 메뉴를 고르면 상자를 닫습니다
 
-    if (modal && !modal.hidden) closeModal();   // 게임 중에 메뉴를 눌러도 안전하게
+    clearTimers();                              // 게임 중에 메뉴를 눌러도 안전하게
     window.scrollTo(0, 0);
 
+    if (id === 'game') mountGamePage(currentGameId());
+    else if (gameRoot) gameRoot.innerHTML = '';  // 게임 화면을 떠나면 비웁니다
+
+    if (id === 'play') renderGameCards();       // 최고 기록이 바뀌었을 수 있습니다
     if (id === 'streak') renderStreak();        // 날짜가 바뀌었을 수 있으니 새로 그림
     if (id === 'settings') { renderSettings(); renderMe(); renderGoogleButton(); }
 
@@ -912,55 +939,82 @@
   }
 
   /* ============================================================
-     2. 모달 (게임 창)
+     2. 게임 화면 (예전에는 가운데 작은 창이었지만 이제 한 페이지입니다)
      ============================================================ */
-  const modal = $('#modal');
-  const modalTitle = $('#modalTitle');
   const gameRoot = $('#gameRoot');
-  let lastFocused = null;
 
-  function openModal(title, mountFn) {
-    lastFocused = document.activeElement;
-    modalTitle.textContent = title;
-    gameRoot.innerHTML = '';
-    modal.hidden = false;
-    document.body.style.overflow = 'hidden';
-    mountFn(gameRoot);
-    const focusable = gameRoot.querySelector('button, [href], input');
-    (focusable || $('.modal__close')).focus();
+  /* 난이도 1=쉬움 2=보통 3=어려움. 게임마다 따로 기억합니다. */
+  const LEVELS = [1, 2, 3];
+  function getLevel(id) {
+    const v = Number(store.get('lv:' + id, 2));
+    return LEVELS.includes(v) ? v : 2;
   }
 
-  function closeModal() {
+  /* 게임 페이지를 차립니다: 제목·설명·최고 기록·난이도 + 게임 자체 */
+  function mountGamePage(id) {
+    const g = GAMES.find(x => x.id === id);
+    if (!g) { location.hash = '#play'; return; }   // 없는 게임 주소면 목록으로
+
+    const set = (sel, txt) => { const e = $(sel); if (e) e.textContent = txt; };
+    set('#gameEmoji', g.emoji);
+    set('#gameTitle', t('g.' + g.id + '.t'));
+    /* 설명글에는 <b> 같은 표시가 들어 있어 innerHTML 로 넣습니다 (우리 사전 글이라 안전) */
+    const desc = $('#gameDesc');
+    if (desc) desc.innerHTML = t('g.' + g.id + '.d');
+
+    const bestVal = store.get('best:' + g.id, 0);
+    set('#gameBest', bestVal ? t('g.best.' + g.best, { n: bestVal }) : t('g.norecord'));
+
+    /* 난이도 버튼 */
+    const row = $('#levelRow');
+    if (row) {
+      const now = getLevel(g.id);
+      row.innerHTML = LEVELS.map(l => `
+        <button type="button" class="lvbtn" data-lv="${l}" aria-pressed="${l === now}">
+          <span class="lvbtn__n" aria-hidden="true">${'●'.repeat(l)}${'○'.repeat(3 - l)}</span>
+          <span>${t('g.level.' + l)}</span>
+        </button>`).join('');
+      $$('[data-lv]', row).forEach((b) => {
+        b.onclick = () => {
+          store.set('lv:' + g.id, Number(b.dataset.lv));
+          mountGamePage(g.id);            // 고른 난이도로 새로 시작
+        };
+      });
+    }
+
     clearTimers();
-    modal.hidden = true;
     gameRoot.innerHTML = '';
-    document.body.style.overflow = '';
-    renderGameCards();          // 최고 기록 갱신 반영
-    if (lastFocused) lastFocused.focus();
+    g.mount(gameRoot, getLevel(g.id));
   }
 
-  modal.addEventListener('click', (e) => {
-    if (e.target.hasAttribute('data-close')) closeModal();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modal.hidden) closeModal();
-  });
+  /* 게임을 그만두고 목록으로 */
+  function leaveGame() {
+    clearTimers();
+    location.hash = '#play';
+  }
 
   /* 게임 안에서 쓰는 결과 화면 */
   function showResult(root, { emoji, title, desc, retry, close }) {
-    markTaskDone('game');           // 한 판 끝내면 오늘의 실천에 자동 표시
+    const played = noteGamePlayed();     // 오늘의 실천 표시 + 게임 판수 세기
+    /* 오늘 두 판을 채우면 말랑 스트리크가 저절로 올라갑니다 */
+    const bonus = played === GAME_STREAK_MIN
+      ? `<p class="result__bonus">${t('g.bonus', { n: GAME_STREAK_MIN })}</p>`
+      : (played < GAME_STREAK_MIN
+          ? `<p class="result__more">${t('g.more', { n: GAME_STREAK_MIN - played })}</p>` : '');
+
     root.innerHTML = `
       <div class="result">
         <span class="result__emoji">${emoji}</span>
         <p class="result__title">${title}</p>
         <p class="result__desc">${desc}</p>
+        ${bonus}
         <div class="result__actions">
-          <button type="button" class="btn btn--primary btn--big" id="rsRetry">🔄 한 번 더</button>
-          <button type="button" class="btn btn--ghost btn--big" id="rsClose">그만하기</button>
+          <button type="button" class="btn btn--primary btn--big" id="rsRetry">${t('g.again')}</button>
+          <button type="button" class="btn btn--ghost btn--big" id="rsClose">${t('g.stop')}</button>
         </div>
       </div>`;
     $('#rsRetry', root).onclick = retry;
-    $('#rsClose', root).onclick = close || closeModal;
+    $('#rsClose', root).onclick = close || leaveGame;
   }
 
   /* 최고 기록 저장 (클수록 좋은 기록) */
@@ -979,8 +1033,9 @@
   /* ============================================================
      3. 게임 1 — 거꾸로 숫자 말하기
      ============================================================ */
-  function gameReverse(root) {
-    let level = 3;
+  function gameReverse(root, lv) {
+    const START = { 1: 2, 2: 3, 3: 4 }[lv || 2];   /* 난이도별 시작 자릿수 */
+    let level = START;
 
     intro();
 
@@ -1069,7 +1124,7 @@
             title: '아쉬워요!',
             desc: `정답은 <b>${answer}</b> 였어요. 입력하신 답은 ${typed} 였습니다.<br />
                    틀려도 괜찮아요 — 애쓰는 순간에 뇌가 가장 많이 자랍니다.`,
-            retry: () => { level = Math.max(3, level); sequence(); }
+            retry: () => { level = Math.max(START, level); sequence(); }
           });
         }
       }
@@ -1079,8 +1134,10 @@
   /* ============================================================
      4. 게임 2 — 카드 짝 맞추기
      ============================================================ */
-  function gameMemory(root) {
-    const FACES = ['🍎', '🐶', '🌻', '🚗', '🐟', '🎵'];
+  function gameMemory(root, lv) {
+    const ALL = ['🍎', '🐶', '🌻', '🚗', '🐟', '🎵', '🌙', '🍓'];
+    const PAIRS = { 1: 4, 2: 6, 3: 8 }[lv || 2];   /* 난이도별 짝 수 */
+    const FACES = ALL.slice(0, PAIRS);
     start();
 
     function start() {
@@ -1154,17 +1211,18 @@
   /* ============================================================
      5. 게임 3 — 암산 훈련 (60초)
      ============================================================ */
-  function gameMath(root) {
+  function gameMath(root, lv) {
+    const TIME = { 1: 90, 2: 60, 3: 40 }[lv || 2];   /* 난이도별 제한 시간 */
     start();
 
     function start() {
-      let score = 0, left = 60, locked = false;
+      let score = 0, left = TIME, locked = false;
 
       root.innerHTML = `
         <div class="stage quiz">
           <div class="hud">
             <span class="hud__item">맞힌 개수 <b id="sc">0</b></span>
-            <span class="hud__item">남은 시간 <b id="tm">60</b>초</span>
+            <span class="hud__item">남은 시간 <b id="tm">${TIME}</b>초</span>
           </div>
           <div class="quiz__q" id="q">…</div>
           <div class="choices" id="ch"></div>
@@ -1238,7 +1296,10 @@
   /* ============================================================
      6. 게임 4 — 장보기 목록 외우기
      ============================================================ */
-  function gameShopping(root) {
+  function gameShopping(root, lv) {
+    /* 난이도: 외울 물건 수와 보여 주는 시간 */
+    const N    = { 1: 4, 2: 5, 3: 7 }[lv || 2];
+    const SHOW = { 1: 13, 2: 10, 3: 8 }[lv || 2];
     const POOL = [
       ['🥬', '배추'], ['🧅', '양파'], ['🥔', '감자'], ['🐟', '고등어'],
       ['🥚', '계란'], ['🍚', '쌀'],   ['🧄', '마늘'], ['🥛', '우유'],
@@ -1248,12 +1309,12 @@
     start();
 
     function start() {
-      const targets = pick(POOL, 5);
-      let left = 10;
+      const targets = pick(POOL, N);
+      let left = SHOW;
 
       root.innerHTML = `
         <div class="stage">
-          <p class="stage__hint">🛒 오늘 장 볼 물건 5가지예요</p>
+          <p class="stage__hint">🛒 오늘 장 볼 물건 ${N}가지예요</p>
           <p class="countdown" id="cd">${left}초 뒤에 사라져요</p>
           <div class="items-grid">
             ${targets.map(([e, n]) => `<span class="item-chip item-chip--static"><em>${e}</em>${n}</span>`).join('')}
@@ -1327,7 +1388,8 @@
   /* ============================================================
      7. 게임 5 — 색깔 맞추기 (스트룹)
      ============================================================ */
-  function gameStroop(root) {
+  function gameStroop(root, lv) {
+    const TIME = { 1: 60, 2: 45, 3: 30 }[lv || 2];   /* 난이도별 제한 시간 */
     const COLORS = [
       { name: '빨강', hex: '#e2574c' },
       { name: '파랑', hex: '#4b7be5' },
@@ -1337,13 +1399,13 @@
     start();
 
     function start() {
-      let score = 0, left = 45, locked = false;
+      let score = 0, left = TIME, locked = false;
 
       root.innerHTML = `
         <div class="stage quiz">
           <div class="hud">
             <span class="hud__item">맞힌 개수 <b id="sc">0</b></span>
-            <span class="hud__item">남은 시간 <b id="tm">45</b>초</span>
+            <span class="hud__item">남은 시간 <b id="tm">${TIME}</b>초</span>
           </div>
           <p class="stage__hint">글자의 <b>뜻</b>이 아니라 <b>색깔</b>을 고르세요!</p>
           <div class="stroop-word" id="w">준비</div>
@@ -1411,7 +1473,10 @@
   /* ============================================================
      8. 게임 6 — 순서 기억하기
      ============================================================ */
-  function gameSequence(root) {
+  function gameSequence(root, lv) {
+    /* 난이도: 불빛을 보여 주는 속도 (숫자가 작을수록 빠릅니다) */
+    const BASE  = { 1: 900, 2: 700, 3: 560 }[lv || 2];
+    const FLOOR = { 1: 520, 2: 360, 3: 260 }[lv || 2];
     const TONES = [392, 523, 659, 784];
     let best = 0;
     start();
@@ -1451,7 +1516,7 @@
         const hint = $('#hint', root); if (hint) hint.textContent = '불빛 순서를 잘 보세요 👀';
         setPadsEnabled(false);
 
-        const speed = Math.max(360, 700 - round * 25);
+        const speed = Math.max(FLOOR, BASE - round * 25);
         order.forEach((v, idx) => after(600 + idx * (speed + 180), () => light(v, speed)));
         after(600 + order.length * (speed + 180) + 200, () => {
           const h = $('#hint', root); if (h) h.textContent = '이제 똑같이 눌러 주세요 👆';
@@ -1531,11 +1596,7 @@
 
     markReveal();
     $$('[data-game]', grid).forEach((btn) => {
-      btn.onclick = () => {
-        const g = GAMES.find(x => x.id === btn.dataset.game);
-        clearTimers();
-        openModal(`${g.emoji} ${t('g.' + g.id + '.t')}`, g.mount);
-      };
+      btn.onclick = () => { location.hash = '#game-' + btn.dataset.game; };
     });
   }
 
@@ -1570,9 +1631,35 @@
     renderStreak();
   }
 
+  /* 오늘 게임을 몇 판 끝냈는지 */
+  function gamesOn(key) { return Number(store.get('games:' + key, 0)) || 0; }
+
+  /* 한 판을 끝냈을 때: 오늘의 실천에 표시하고 판수를 셉니다 */
+  function noteGamePlayed() {
+    const key = todayKey();
+    const n = gamesOn(key) + 1;
+    store.set('games:' + key, n);
+    markTaskDone('game');                 // 체크가 이미 되어 있으면 그냥 넘어갑니다
+    saveDayCount(key, todayCount());      // 게임 보너스가 반영되도록 다시 계산
+    initToday();
+    renderStreak();
+    return n;
+  }
+
+  /* 그날의 「달성 개수」.
+     체크리스트 개수가 기본이지만, 게임을 GAME_STREAK_MIN 판 이상 끝낸 날은
+     그것만으로 달성으로 봅니다. 체크리스트를 못 채워도 스트리크가 이어지도록.
+     기록을 적는 곳이 두 군데(saveDayCount, renderStreak)라 반드시 이 함수를
+     거쳐야 합니다. 한쪽만 쓰면 다른 쪽이 보너스를 덮어써 버립니다. */
+  function effectiveCount(key, checkCount) {
+    const c = (checkCount === undefined) ? todayCount() : checkCount;
+    return gamesOn(key) >= GAME_STREAK_MIN ? Math.max(c, STREAK_GOAL) : c;
+  }
+
   function saveDayCount(key, count) {
     const log = store.get('log', {});
     const was = (log[key] || 0) >= STREAK_GOAL;
+    count = effectiveCount(key, count);
     log[key] = count;
     store.set('log', log);
 
@@ -1677,8 +1764,8 @@
     /* 오늘 기록을 체크리스트에 맞춰 둡니다.
        (페이지를 켜 둔 채 자정을 넘긴 경우처럼 둘이 어긋날 수 있어요) */
     const log = store.get('log', {});
-    const count = todayCount();
     const tk = todayKey();
+    const count = effectiveCount(tk);      /* 게임 보너스까지 포함한 개수 */
     if ((count > 0 || log[tk] !== undefined) && log[tk] !== count) {
       log[tk] = count;
       store.set('log', log);

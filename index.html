@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Yeon+Sung&display=swap" />
 
+  <link rel="icon" href="img/logo.png" type="image/png" />
+  <link rel="apple-touch-icon" href="img/logo.png" />
+
   <link rel="stylesheet" href="style.css" />
 
   <!-- 저장해 둔 「포맷」을 화면이 그려지기 전에 먼저 정합니다.
@@ -34,6 +37,7 @@
 
   <script src="config.js"></script>
   <script src="i18n.js"></script>
+  <script src="today.js" defer></script>
   <script type="module" src="cloud.js"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -45,7 +49,7 @@
     <div class="header__inner">
       <!-- 로고를 누르면 홈으로 갑니다 (메뉴에 「홈」을 따로 두지 않습니다) -->
       <a class="logo" href="#home" data-i18n-aria="logo.aria" aria-label="말랑뇌 홈으로">
-        <span class="logo__face" aria-hidden="true">🧠</span>
+        <span class="logo__face logo__face--img" aria-hidden="true"><img src="img/logo.png" alt="" /></span>
         <span class="logo__text"><span class="logo__name" data-i18n="brand.name">말랑뇌</span><small data-i18n="brand.tagline">치매 예방 놀이터</small></span>
       </a>
 
@@ -73,6 +77,7 @@
             <a href="#learn-move"><span aria-hidden="true">🚶</span> <span data-i18n="l2.title">신체 운동</span></a>
             <a href="#learn-social"><span aria-hidden="true">💬</span> <span data-i18n="l3.title">사회적 활동</span></a>
             <a href="#learn-life"><span aria-hidden="true">🌙</span> <span data-i18n="l4.title">생활 습관</span></a>
+            <a href="#learn-today"><span aria-hidden="true">✅</span> <span data-i18n="one.tab">오늘 딱 하나만</span></a>
           </div>
         </div>
         <!-- 쉬운 화면에서는 위 두 개 대신 이 링크 하나만 보입니다.
@@ -375,6 +380,7 @@
         <a href="#learn-move"   data-i18n="l2.title">신체 운동</a>
         <a href="#learn-social" data-i18n="l3.title">사회적 활동</a>
         <a href="#learn-life"   data-i18n="l4.title">생활 습관</a>
+        <a href="#learn-today"  data-i18n="one.tab">오늘 딱 하나만</a>
       </nav>
 
       <div class="section section--doc">
@@ -440,6 +446,7 @@
         <a href="#learn-move"   data-i18n="l2.title">신체 운동</a>
         <a href="#learn-social" data-i18n="l3.title">사회적 활동</a>
         <a href="#learn-life"   data-i18n="l4.title">생활 습관</a>
+        <a href="#learn-today"  data-i18n="one.tab">오늘 딱 하나만</a>
       </nav>
 
       <div class="section section--doc">
@@ -501,6 +508,7 @@
         <a href="#learn-move"   data-i18n="l2.title">신체 운동</a>
         <a href="#learn-social" data-i18n="l3.title">사회적 활동</a>
         <a href="#learn-life"   data-i18n="l4.title">생활 습관</a>
+        <a href="#learn-today"  data-i18n="one.tab">오늘 딱 하나만</a>
       </nav>
 
       <div class="section section--doc">
@@ -562,6 +570,7 @@
         <a href="#learn-move"   data-i18n="l2.title">신체 운동</a>
         <a href="#learn-social" data-i18n="l3.title">사회적 활동</a>
         <a href="#learn-life"   data-i18n="l4.title">생활 습관</a>
+        <a href="#learn-today"  data-i18n="one.tab">오늘 딱 하나만</a>
       </nav>
 
       <div class="section section--doc">
@@ -607,7 +616,95 @@
 
         <nav class="pagenav">
           <a class="btn btn--ghost"   href="#learn-social" data-i18n="nav.p.l3"></a>
-          <a class="btn btn--primary" href="#play" data-i18n="nav.next.play"></a>
+          <a class="btn btn--primary" href="#learn-today" data-i18n="nav.n.one"></a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ======================= 배우기 · 오늘 딱 하나만 =======================
+         네 주제에서 「오늘 딱 하나만」을 하나씩 모아 둔 곳입니다.
+         체크는 today.js 가 그날 날짜로 저장합니다. 자정이 지나면 새 목록이 됩니다. -->
+    <section class="page" id="learn-today" tabindex="-1">
+      <div class="pagehero">
+        <div class="pagehero__inner">
+          <p class="pagehero__en">TODAY</p>
+          <p class="pagehero__desc" data-i18n="one.hero.d"></p>
+        </div>
+      </div>
+
+      <nav class="subnav" data-i18n-aria="learn.section" aria-label="배우기">
+        <a href="#learn-cog"    data-i18n="l1.title">인지 훈련</a>
+        <a href="#learn-move"   data-i18n="l2.title">신체 운동</a>
+        <a href="#learn-social" data-i18n="l3.title">사회적 활동</a>
+        <a href="#learn-life"   data-i18n="l4.title">생활 습관</a>
+        <a href="#learn-today"  data-i18n="one.tab">오늘 딱 하나만</a>
+      </nav>
+
+      <div class="section section--doc">
+        <header class="pagetitle">
+          <h2><span aria-hidden="true">✅</span> <span data-i18n="one.title">오늘 딱 하나만</span></h2>
+          <p class="crumb"><span data-i18n="crumb.home"></span> &rsaquo; <span data-i18n="learn.section"></span> &rsaquo; <span data-i18n="one.tab"></span></p>
+        </header>
+
+        <article class="prose">
+          <p class="prose__lead" data-i18n-html="one.lead"></p>
+          <p data-i18n-html="one.p1"></p>
+        </article>
+
+        <ul class="checklist" id="oneList">
+          <li>
+            <label class="check">
+              <input type="checkbox" data-one="l1" />
+              <span class="check__box" aria-hidden="true">✓</span>
+              <span class="check__emoji" aria-hidden="true">🧩</span>
+              <span class="check__text"><span data-i18n-html="l1.one"></span><small data-i18n="l1.title"></small></span>
+            </label>
+          </li>
+          <li>
+            <label class="check">
+              <input type="checkbox" data-one="l2" />
+              <span class="check__box" aria-hidden="true">✓</span>
+              <span class="check__emoji" aria-hidden="true">🚶</span>
+              <span class="check__text"><span data-i18n-html="l2.one"></span><small data-i18n="l2.title"></small></span>
+            </label>
+          </li>
+          <li>
+            <label class="check">
+              <input type="checkbox" data-one="l3" />
+              <span class="check__box" aria-hidden="true">✓</span>
+              <span class="check__emoji" aria-hidden="true">💬</span>
+              <span class="check__text"><span data-i18n-html="l3.one"></span><small data-i18n="l3.title"></small></span>
+            </label>
+          </li>
+          <li>
+            <label class="check">
+              <input type="checkbox" data-one="l4" />
+              <span class="check__box" aria-hidden="true">✓</span>
+              <span class="check__emoji" aria-hidden="true">🌙</span>
+              <span class="check__text"><span data-i18n-html="l4.one"></span><small data-i18n="l4.title"></small></span>
+            </label>
+          </li>
+        </ul>
+
+        <article class="prose">
+          <!-- 이 줄은 today.js 가 채웁니다 (몇 개 했는지 세어서 문장이 바뀝니다) -->
+          <p class="prose__big" id="oneDone"></p>
+
+          <h3 data-i18n="one.h.more"></h3>
+          <p data-i18n-html="one.more"></p>
+          <div class="hero__cta">
+            <a class="btn btn--ghost" href="#learn-cog"><span aria-hidden="true">🧩</span> <span data-i18n="l1.title"></span></a>
+            <a class="btn btn--ghost" href="#learn-move"><span aria-hidden="true">🚶</span> <span data-i18n="l2.title"></span></a>
+            <a class="btn btn--ghost" href="#learn-social"><span aria-hidden="true">💬</span> <span data-i18n="l3.title"></span></a>
+            <a class="btn btn--ghost" href="#learn-life"><span aria-hidden="true">🌙</span> <span data-i18n="l4.title"></span></a>
+          </div>
+
+          <p data-i18n-html="one.streak"></p>
+        </article>
+
+        <nav class="pagenav">
+          <a class="btn btn--ghost"   href="#learn-life" data-i18n="nav.p.l4"></a>
+          <a class="btn btn--primary" href="#streak" data-i18n="nav.next.streak"></a>
         </nav>
       </div>
     </section>
@@ -627,6 +724,35 @@
           <a class="btn btn--ghost"   href="#learn"  data-i18n="nav.prev.learn"></a>
           <a class="btn btn--primary" href="#streak" data-i18n="nav.next.streak"></a>
         </nav>
+      </div>
+    </section>
+
+    <!-- ======================= 게임 한 판 =======================
+         게임을 고르면 이 페이지로 넘어와 화면 가득 크게 합니다.
+         주소는 #game-reverse 처럼 게임 이름이 붙습니다. -->
+    <section class="page page--game" id="game" tabindex="-1">
+      <div class="section section--game">
+
+        <a class="gameback" href="#play">
+          <span aria-hidden="true">←</span> <span data-i18n="g.back"></span>
+        </a>
+
+        <header class="gamehead">
+          <span class="gamehead__emoji" id="gameEmoji" aria-hidden="true"></span>
+          <h2 class="gamehead__t" id="gameTitle"></h2>
+          <p class="gamehead__d" id="gameDesc"></p>
+          <p class="gamehead__best" id="gameBest"></p>
+        </header>
+
+        <!-- 난이도 -->
+        <div class="levels">
+          <p class="levels__label" data-i18n="g.level"></p>
+          <div class="levels__row" id="levelRow" role="group" data-i18n-aria="g.level" aria-label="난이도"></div>
+          <p class="levels__note" data-i18n="g.level.n"></p>
+        </div>
+
+        <div class="gamestage" id="gameRoot"></div>
+
       </div>
     </section>
 
@@ -674,7 +800,7 @@
         </div>
 
         <div class="panel">
-          <h3 class="panel__title" data-i18n="today.title"></h3>
+          <h3 class="panel__title" data-i18n="one.title"></h3>
           <div class="today">
             <div class="today__progress">
               <div class="ring" id="ring">
@@ -900,23 +1026,12 @@
   </main>
 
   <footer class="footer">
-    <p class="footer__logo">🧠 <span data-i18n="brand.name">말랑뇌</span></p>
+    <p class="footer__logo"><img class="footer__mark" src="img/logo.png" alt="" /> <span data-i18n="brand.name">말랑뇌</span></p>
     <p data-i18n-html="foot.disc"></p>
     <p class="footer__small" id="footerPrivacy"></p>
   </footer>
 
   <!-- ============ 게임 모달 ============ -->
-  <div class="modal" id="modal" hidden>
-    <div class="modal__backdrop" data-close></div>
-    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <header class="modal__head">
-        <h3 id="modalTitle">게임</h3>
-        <button type="button" class="modal__close" data-close data-i18n-aria="g.close" aria-label="게임 닫기">✕</button>
-      </header>
-      <div class="modal__body" id="gameRoot"></div>
-    </div>
-  </div>
-
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
   <script src="app.js"></script>

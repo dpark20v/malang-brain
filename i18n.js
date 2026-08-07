@@ -20,6 +20,21 @@
   /* ================= 한국어 ================= */
   ko: {
 
+    /* ===== 배우기 · 오늘 딱 하나만 ===== */
+    'one.tab': '오늘 딱 하나만',
+    'one.title': '오늘 딱 하나만',
+    'one.hero.d': '네 가지를 다 하려 애쓰지 마세요. 오늘 하나면 충분합니다.',
+    'one.lead': '앞의 네 주제에서 「오늘 딱 하나만」을 하나씩 모았습니다.',
+    'one.p1': '치매 예방에서 가장 어려운 것은 아는 일이 아니라 <b>계속하는 일</b>입니다. 한꺼번에 많이 벌이면 사흘을 넘기기 어렵습니다. 그래서 주제마다 딱 하나씩만 골라 두었어요. <b>넷을 다 하지 않으셔도 됩니다.</b> 오늘 하나에 표시를 남기는 것, 그것으로 충분합니다.',
+    'one.h.more': '왜 이걸 하는지 궁금하다면',
+    'one.more': '각 항목이 어디에서 왔는지, 왜 도움이 되는지는 해당 주제에서 자세히 볼 수 있어요.',
+    'one.streak': '표시는 오늘 하루만 남고 <b>내일이면 새로 시작</b>합니다. 며칠을 이어 왔는지 기록으로 보고 싶으시면 <b>말랑 스트리크</b>를 써 보세요.',
+    'one.done0': '아직 시작 전이에요. 가장 쉬워 보이는 것 하나만 골라 보세요.',
+    'one.doneN': '{all}개 중 {n}개 하셨어요. 오늘은 이걸로 충분합니다!',
+    'one.doneAll': '네 가지를 모두 해내셨어요. 정말 대단합니다! 👏',
+    'nav.p.l4': '\u2190 생활 습관',
+    'nav.n.one': '오늘 딱 하나만 \u2192',
+
     /* ===== 배우기 — 네 페이지 공통 ===== */
     'learn.section': '배우기',
     'learn.hero.d': '오늘 하는 작은 습관 하나가 10년 뒤의 기억을 지킵니다.',
@@ -300,6 +315,16 @@
     'g.best.questions': '🏆 최고 {n}문제',
     'g.best.items': '🏆 최고 {n}개',
     'g.best.rounds': '🏆 최고 {n}단계',
+    'g.back': '게임 목록으로',
+    'g.level': '난이도를 골라 주세요',
+    'g.level.1': '쉬움',
+    'g.level.2': '보통',
+    'g.level.3': '어려움',
+    'g.level.n': '난이도를 누르면 그 난이도로 새로 시작해요.',
+    'g.again': '🔄 한 번 더',
+    'g.stop': '그만하기',
+    'g.bonus': '🔥 오늘 {n}판을 채우셨어요! 말랑 스트리크가 올라갔습니다.',
+    'g.more': '한 판만 더 하시면 오늘 말랑 스트리크가 올라가요.',
     'g.start': '시작하기 →',
     'g.retry': '🔄 한 번 더',
     'g.quit': '그만하기',
@@ -332,7 +357,7 @@
     'today.title': '✅ 오늘의 실천',
     't.walk': '20~30분 걷기', 't.walk.s': '10분씩 나눠서 해도 좋아요',
     't.talk': '누군가와 대화하기', 't.talk.s': '전화나 영상통화도 괜찮아요',
-    't.game': '두뇌게임 한 가지 하기', 't.game.s': '위 게임 중 아무거나 하나',
+    't.game': '두뇌게임 한 가지 하기', 't.game.s': '게임을 한 판 하시면 저절로 표시돼요',
     't.sleep': '어젯밤 7시간 이상 잤어요', 't.sleep.s': '자는 동안 뇌가 청소를 해요',
     't.water': '물 6잔 이상 마시기', 't.water.s': '탈수는 기억력을 떨어뜨려요',
     't.hand': '반대 손으로 무언가 하기', 't.hand.s': '양치질, 숟가락질 등',
@@ -522,6 +547,21 @@
 
   /* ================= English ================= */
   en: {
+
+    /* ===== Learn · Just one thing today ===== */
+    'one.tab': 'Just one thing',
+    'one.title': 'Just one thing today',
+    'one.hero.d': 'Do not try to do all four. One today is enough.',
+    'one.lead': 'One action taken from each of the four topics.',
+    'one.p1': 'The hard part of prevention is not knowing what to do — it is <b>keeping it up</b>. Start too much at once and it rarely lasts three days. So there is just one item from each topic. <b>You do not have to do all four.</b> Ticking one today is enough.',
+    'one.h.more': 'Curious why these help?',
+    'one.more': 'Where each item comes from, and why it helps, is set out in full on its own topic page.',
+    'one.streak': 'Ticks last for today only and <b>start fresh tomorrow</b>. If you would like to see how many days you have kept going, try <b>Streak</b>.',
+    'one.done0': 'Nothing yet. Pick whichever one looks easiest.',
+    'one.doneN': '{n} of {all} done. That is plenty for today!',
+    'one.doneAll': 'All four done. That is remarkable! 👏',
+    'nav.p.l4': '\u2190 Lifestyle',
+    'nav.n.one': 'Just one thing today \u2192',
 
     /* ===== Learn — shared across the four pages ===== */
     'learn.section': 'Learn',
@@ -769,6 +809,16 @@
     'g.norecord': 'No record yet',
     'g.best.digits': '🏆 Best {n} digits', 'g.best.moves': '🏆 Fewest {n} flips',
     'g.best.questions': '🏆 Best {n} correct', 'g.best.items': '🏆 Best {n} items', 'g.best.rounds': '🏆 Best level {n}',
+    'g.back': 'Back to games',
+    'g.level': 'Choose a difficulty',
+    'g.level.1': 'Easy',
+    'g.level.2': 'Normal',
+    'g.level.3': 'Hard',
+    'g.level.n': 'Tapping a difficulty starts a fresh round at that level.',
+    'g.again': '🔄 Once more',
+    'g.stop': 'Stop',
+    'g.bonus': '🔥 That is {n} games today! Your streak went up.',
+    'g.more': 'One more game and today’s streak goes up.',
     'g.start': 'Start →', 'g.retry': '🔄 Once more', 'g.quit': 'Stop', 'g.close': 'Close game',
 
     'streak.eyebrow': 'Once a day',
@@ -790,7 +840,7 @@
     'today.title': "✅ Today's practice",
     't.walk': 'Walk 20–30 minutes', 't.walk.s': 'Splitting it into 10-minute walks is fine',
     't.talk': 'Talk with someone', 't.talk.s': 'A phone or video call counts',
-    't.game': 'Play one brain game', 't.game.s': 'Any one of the games above',
+    't.game': 'Play one brain game', 't.game.s': 'Ticks itself when you finish a game',
     't.sleep': 'Slept 7+ hours last night', 't.sleep.s': 'The brain cleans itself while you sleep',
     't.water': 'Drink 6+ glasses of water', 't.water.s': 'Dehydration dulls memory',
     't.hand': 'Do something with your other hand', 't.hand.s': 'Brushing teeth, using a spoon, etc.',
@@ -948,6 +998,21 @@
 
   /* ================= 日本語 ================= */
   ja: {
+
+    /* ===== 学ぶ · 今日ひとつだけ ===== */
+    'one.tab': '今日ひとつだけ',
+    'one.title': '今日ひとつだけ',
+    'one.hero.d': '四つ全部やろうとしなくて大丈夫。今日ひとつで十分です。',
+    'one.lead': '四つの主題から「今日ひとつだけ」をひとつずつ集めました。',
+    'one.p1': '予防でいちばん難しいのは、知ることではなく<b>続けること</b>です。いちどにたくさん始めると三日ももちません。ですから主題ごとにひとつだけ選んでおきました。<b>四つ全部やらなくてかまいません。</b>今日ひとつに印をつける、それだけで十分です。',
+    'one.h.more': 'なぜ良いのか気になったら',
+    'one.more': 'それぞれがどこから来たのか、なぜ役に立つのかは、その主題のページで詳しく読めます。',
+    'one.streak': '印は今日だけ残り、<b>明日はまた新しく</b>始まります。何日続いたかを記録で見たい方は<b>ストリーク</b>をお使いください。',
+    'one.done0': 'まだこれからですね。いちばんやさしそうなものをひとつ選んでみましょう。',
+    'one.doneN': '{all}つのうち{n}つできました。今日はこれで十分です！',
+    'one.doneAll': '四つとも やりとげました。本当にすばらしいです！ 👏',
+    'nav.p.l4': '\u2190 生活習慣',
+    'nav.n.one': '今日ひとつだけ \u2192',
 
     /* ===== 学ぶ — 4ページ共通 ===== */
     'learn.section': '学ぶ',
@@ -1195,6 +1260,16 @@
     'g.norecord': 'まだ記録がありません',
     'g.best.digits': '🏆 最高{n}桁', 'g.best.moves': '🏆 最少{n}回',
     'g.best.questions': '🏆 最高{n}問', 'g.best.items': '🏆 最高{n}個', 'g.best.rounds': '🏆 最高{n}段階',
+    'g.back': 'ゲーム一覧へ',
+    'g.level': '難しさを選んでください',
+    'g.level.1': 'やさしい',
+    'g.level.2': 'ふつう',
+    'g.level.3': 'むずかしい',
+    'g.level.n': '難しさを押すと、その難しさで新しく始まります。',
+    'g.again': '🔄 もう一度',
+    'g.stop': 'やめる',
+    'g.bonus': '🔥 今日{n}回そろいました！ストリークが伸びました。',
+    'g.more': 'あと一回でストリークが伸びます。',
     'g.start': 'はじめる →', 'g.retry': '🔄 もう一度', 'g.quit': 'やめる', 'g.close': 'ゲームを閉じる',
 
     'streak.eyebrow': '1日1回',
@@ -1216,7 +1291,7 @@
     'today.title': '✅ 今日の実践',
     't.walk': '20〜30分歩く', 't.walk.s': '10分ずつ分けても良いです',
     't.talk': '誰かと話す', 't.talk.s': '電話やビデオ通話でも大丈夫',
-    't.game': '脳トレをひとつする', 't.game.s': '上のゲームのどれでも',
+    't.game': '脳トレをひとつする', 't.game.s': 'ゲームを一回終えると自動でつきます',
     't.sleep': '昨夜7時間以上眠った', 't.sleep.s': '眠る間に脳が掃除をします',
     't.water': '水を6杯以上飲む', 't.water.s': '脱水は記憶力を落とします',
     't.hand': '反対の手で何かをする', 't.hand.s': '歯みがき、スプーンなど',
@@ -1374,6 +1449,21 @@
 
   /* ================= 中文 ================= */
   zh: {
+
+    /* ===== 学习 · 今天只做一件 ===== */
+    'one.tab': '今天只做一件',
+    'one.title': '今天只做一件',
+    'one.hero.d': '不用四件都做。今天做一件就够了。',
+    'one.lead': '从前面四个主题里各取了一件「今天只做一件」。',
+    'one.p1': '预防最难的不是知道该做什么，而是<b>坚持下去</b>。一下子铺开太多，往往撑不过三天。所以每个主题只挑了一件。<b>不必四件都做。</b>今天在其中一件上打个勾，就已经足够。',
+    'one.h.more': '想知道为什么有用？',
+    'one.more': '每一件出自哪里、为什么有帮助，都在各自的主题页里写得很清楚。',
+    'one.streak': '勾选只保留今天，<b>明天重新开始</b>。想看看自己坚持了多少天，可以用<b>连续记录</b>。',
+    'one.done0': '还没开始。挑一件看起来最容易的吧。',
+    'one.doneN': '{all}件里做了{n}件。今天这样就够了！',
+    'one.doneAll': '四件全做到了。真了不起！ 👏',
+    'nav.p.l4': '\u2190 生活习惯',
+    'nav.n.one': '今天只做一件 \u2192',
 
     /* ===== 学习 — 四个页面通用 ===== */
     'learn.section': '学习',
@@ -1621,6 +1711,16 @@
     'g.norecord': '还没有记录',
     'g.best.digits': '🏆 最高{n}位', 'g.best.moves': '🏆 最少{n}次',
     'g.best.questions': '🏆 最多{n}题', 'g.best.items': '🏆 最多{n}个', 'g.best.rounds': '🏆 最高{n}级',
+    'g.back': '返回游戏列表',
+    'g.level': '请选择难度',
+    'g.level.1': '简单',
+    'g.level.2': '普通',
+    'g.level.3': '困难',
+    'g.level.n': '点击难度会以该难度重新开始。',
+    'g.again': '🔄 再来一次',
+    'g.stop': '不玩了',
+    'g.bonus': '🔥 今天已经玩满 {n} 局！连续记录增加了。',
+    'g.more': '再玩一局，今天的连续记录就会增加。',
     'g.start': '开始 →', 'g.retry': '🔄 再来一次', 'g.quit': '不玩了', 'g.close': '关闭游戏',
 
     'streak.eyebrow': '每天一次',
@@ -1642,7 +1742,7 @@
     'today.title': '✅ 今日实践',
     't.walk': '走20〜30分钟', 't.walk.s': '分成每次10分钟也可以',
     't.talk': '和人说说话', 't.talk.s': '打电话或视频也算',
-    't.game': '玩一个脑力游戏', 't.game.s': '上面任意一个都行',
+    't.game': '玩一个脑力游戏', 't.game.s': '玩完一局会自动打勾',
     't.sleep': '昨晚睡了7小时以上', 't.sleep.s': '睡觉时大脑在做清理',
     't.water': '喝6杯以上水', 't.water.s': '缺水会让记忆变差',
     't.hand': '用另一只手做点事', 't.hand.s': '刷牙、拿勺子等',
