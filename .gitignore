@@ -1,1 +1,7 @@
 .DS_Store
+
+# Higgsfield 등 에이전트 도구가 설치한 스킬 — 말랑뇌 사이트와 무관하므로
+# 저장소에 올리지 않습니다 (실수로 커밋되면 배포 용량만 늘어납니다)
+.agents/
+.claude/skills/
+skills-lock.json
