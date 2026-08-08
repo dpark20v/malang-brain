@@ -1,29 +1,19 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-
-  "//": [
-    "말랑뇌는 빌드 과정이 없는 정적 사이트입니다. 그래서 따로 빌드 설정이 없습니다.",
-    "주소는 #home 처럼 # 뒤에서만 바뀌므로 rewrite 규칙도 필요 없습니다.",
-    "여기서 정하는 것은 브라우저가 파일을 얼마나 오래 붙들고 있을지뿐입니다."
-  ],
-
   "headers": [
     {
-      "//": "화면을 이루는 파일은 고칠 때마다 바로 반영되어야 하므로 매번 새로 확인하게 합니다",
       "source": "/(.*)\\.(html|js|css|json)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     },
     {
-      "//": "첫 화면(주소 끝에 파일 이름이 없을 때)도 마찬가지입니다",
       "source": "/",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     },
     {
-      "//": "사진은 바뀌는 일이 드물어 하루 동안 붙들고 있게 둡니다 (느린 인터넷에서 유리)",
       "source": "/img/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400" }
